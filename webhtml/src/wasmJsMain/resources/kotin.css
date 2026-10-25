@@ -225,7 +225,8 @@ body {
 .selection-title { display: flex; gap: 10px; }
 .selection-title .swatch { width: 14px; height: 14px; border-radius: 4px; margin-top: 4px; }
 .selection-title .texts { flex: 1; min-width: 0; }
-.selection-title .name { color: var(--ink); font-size: 16px; line-height: 21px; font-weight: 600; overflow-wrap: anywhere; }
+.selection-title .name { color: var(--ink); font-size: 16px; line-height: 21px; font-weight: 600; overflow-wrap: anywhere; width: fit-content; max-width: 100%; }
+/* выделяемый текст — по ширине текста: правее него шапку тянут, а выделение не тянется до края */
 .selection-title .layer { display: inline-block; color: var(--accent); font-size: 13px; line-height: 18px; margin-left: -4px; padding: 2px 4px; border-radius: 6px; overflow-wrap: anywhere; }
 .selection-title .partial { color: var(--muted); font-size: 12px; }
 .card-button { border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); transition: transform 200ms var(--los); }
@@ -240,9 +241,12 @@ body {
 .attr-row { display: flex; gap: 8px; }
 .attr-cell { flex: 1 1 0; min-width: 0; border-radius: 10px; background: var(--subtle); padding: 8px 10px; line-height: 17.5px; }
 .attr-cell.empty { background: none; }
-.attr-cell .label { display: block; color: var(--muted); font-size: 12px; }
-.attr-cell .value { display: block; color: var(--ink); font-size: 14px; font-family: var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
-.slide { transition: none; }
+.attr-cell .label { display: block; width: fit-content; max-width: 100%; color: var(--muted); font-size: 12px; }
+.attr-cell .value { display: block; width: fit-content; max-width: 100%; color: var(--ink); font-size: 14px; font-family: var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
+/* въезд содержимого карточки при смене объекта: на 10 % ширины, шапка ещё и проявляется */
+@keyframes slide-from-right { from { transform: translateX(10%); } }
+@keyframes slide-from-left { from { transform: translateX(-10%); } }
+@keyframes fade-in { from { opacity: 0; } }
 .candidate-switch { margin-top: 10px; background: var(--subtle); border-radius: 14px; padding: 4px; display: flex; flex-direction: column; flex: none; min-height: 0; }
 .candidate-list-wrap { overflow: hidden; display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 150ms ease-out, opacity 150ms ease-out; }
 .candidate-list-wrap.in { grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 200ms var(--los), opacity 200ms var(--fos); }

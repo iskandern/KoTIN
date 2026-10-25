@@ -2,14 +2,12 @@ package dev.iskandern.kotin.web
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.withFrameNanos
 import dev.iskandern.kotin.ObjectSelection
 import dev.iskandern.kotin.attributeName
 import dev.iskandern.kotin.localized
@@ -68,13 +66,6 @@ fun SelectionCard(
   val step = if (selection.index == last[0]) 0 else arrow?.takeIf { it.first == selection.index }?.second ?: if (selection.index > last[0]) 1 else -1
   SideEffect { last[0] = selection.index }
   val from = remember(selection.objectId) { step }
-  var entered by remember(selection.objectId) { mutableStateOf(from == 0) }
-  LaunchedEffect(selection.objectId) {
-    if (entered) return@LaunchedEffect
-    withFrameNanos { }
-    withFrameNanos { }
-    entered = true
-  }
   // прокрутка свойств и её переполнение — свои у каждого объекта
   val parts = remember { arrayOfNulls<HTMLElement>(4) } // карточка, тело, прокрутка свойств, сетка
   val overflowState = remember(selection.candidates) { mutableStateOf(false) }
@@ -116,7 +107,8 @@ fun SelectionCard(
     Div({ classes("selection-body") }, ref = { parts[1] = it as HTMLElement; {} }) {
       Div({ classes("selection-head"); header?.invoke(this) }) {
         Div({ classes("selection-title-box") }) {
-          SelectionTitle(selection, swatch(selection.objectInfo), onShowLayer, from, entered)
+          // новый объект — новые элементы: въезд CSS-анимацией идёт с первого кадра
+          key(selection.objectId) { SelectionTitle(selection, swatch(selection.objectInfo), onShowLayer, from) }
         }
         if (onExpand != null && (expanded || overflow)) {
           CardIconButton(
@@ -132,7 +124,7 @@ fun SelectionCard(
       if (attributes.isNotEmpty()) {
         Div({ classes("attr-scroll") }, ref = { parts[2] = it as HTMLElement; ({ parts[2] = null }) }) {
           key(selection.objectId) {
-            Div({ classes("attr-grid"); slide(from, entered, fade = false) }, ref = { parts[3] = it as HTMLElement; ({ parts[3] = null }) }) {
+            Div({ classes("attr-grid"); slide(from, fade = false) }, ref = { parts[3] = it as HTMLElement; ({ parts[3] = null }) }) {
               for (row in 0 until (attributes.size + 1) / 2) AttributeRow(attributes[2 * row], attributes.getOrNull(2 * row + 1), swapXY)
             }
           }
@@ -153,18 +145,15 @@ fun SelectionCard(
 @Composable
 private fun key(value: Any, content: @Composable () -> Unit) = androidx.compose.runtime.key(value) { content() }
 
-/** Въезд содержимого при смене объекта: [from] — откуда (1 — справа, −1 — слева, 0 — без сдвига), [fade] — ещё и проявление. */
-private fun AttrsScope.slide(from: Int, entered: Boolean, fade: Boolean) {
+/**
+ * Въезд содержимого при смене объекта: [from] — откуда (1 — справа, −1 — слева, 0 — без сдвига), [fade] — ещё и
+ * проявление. Анимация CSS, а не переход по состоянию «въехало»: тому нужны два кадра композиции, и всё это время
+ * шапка была пустой, а свойства стояли сдвинутыми
+ */
+private fun AttrsScope.slide(from: Int, fade: Boolean) {
   if (from == 0) return
-  style {
-    if (entered) {
-      property("transform", "none")
-      property("transition", "transform 200ms var(--los)" + if (fade) ", opacity 200ms var(--los)" else "")
-    } else {
-      property("transform", "translateX(${from * SLIDE_PERCENT}%)")
-      if (fade) property("opacity", "0")
-    }
-  }
+  val name = if (from > 0) "slide-from-right" else "slide-from-left"
+  style { property("animation", "$name 200ms var(--los)" + if (fade) ", fade-in 200ms var(--los)" else "") }
 }
 
 /** Строка сетки свойств: две ячейки пополам ширины, подложки во всю высоту строки (по более высокой ячейке). */
@@ -187,9 +176,9 @@ private fun AttributeCell(attribute: SceneAttribute, swapXY: Boolean) {
 
 /** Шапка карточки: цветной квадрат, «Вид · Имя», ссылка на слой, пометка о частичной подсветке. */
 @Composable
-private fun SelectionTitle(selection: ObjectSelection, swatch: String?, onShowLayer: () -> Unit, from: Int, entered: Boolean) {
+private fun SelectionTitle(selection: ObjectSelection, swatch: String?, onShowLayer: () -> Unit, from: Int) {
   val info = selection.objectInfo
-  Div({ classes("selection-title"); slide(from, entered, fade = true) }) {
+  Div({ classes("selection-title"); slide(from, fade = true) }) {
     if (info.color != SceneObject.NO_COLOR) {
       Div({ classes("swatch"); style { property("background", swatch ?: cssColor(info.color)) } })
     }
