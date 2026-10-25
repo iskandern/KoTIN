@@ -16,10 +16,14 @@ import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.pointerevents.PointerEvent
+import kotlin.math.abs
 import kotlin.math.max
 
 /** Сдвиг шторки ниже свёрнутой, после которого она закрывается, px. */
 private const val SHEET_DISMISS_DRAG = 64.0
+
+/** Сдвиг пальца, после которого нажатие на шапку становится жестом шторки, px. */
+private const val SHEET_SLOP = 8.0
 
 /** Зона натяжения шторки выше предела: на её краю шторка упирается, px. */
 private const val SHEET_STRETCH = 48.0
@@ -62,13 +66,25 @@ fun BottomSheet(
     val scroll = element.querySelector(".attr-scroll") as? HTMLElement
     val grid = scroll?.firstElementChild as? HTMLElement
     val hidden = if (scroll != null && grid != null) (grid.offsetHeight - scroll.clientHeight).coerceAtLeast(0) else 0
-    return (element.scrollHeight + hidden).toDouble()
+    // по детям, а не scrollHeight: в него входит и подложка ::before под шторкой
+    var children = 0
+    var child = element.firstElementChild as? HTMLElement
+    while (child != null) {
+      children += child.offsetHeight
+      child = child.nextElementSibling as? HTMLElement
+    }
+    return (children + hidden).toDouble()
   }
 
   val drag: AttrsScope.() -> Unit = {
     style { property("touch-action", "none") }
-    onPointerDown { e -> startDrag(e, sheet, expanded, collapsedPx, expandedPx, ::naturalHeight) { position = it; settle = null } }
-    on("pointermove") { e -> moveDrag(e as PointerEvent, sheet) { position = it } }
+    onPointerDown { e -> pressDrag(e, sheet) }
+    on("pointermove") { e ->
+      e as PointerEvent
+      if (startDrag(e, sheet, expanded, collapsedPx, expandedPx, ::naturalHeight) { position = it; settle = null }) {
+        moveDrag(e, sheet) { position = it }
+      }
+    }
     on("pointerup") { e ->
       endDrag(e as PointerEvent, sheet, position) { target, bounce, dismiss ->
         settle = Settle(target, bounce, dismiss)
@@ -126,6 +142,9 @@ private class Settle(val target: Double, val bounce: Boolean, val dismiss: Boole
 private class SheetDrag {
   var element: HTMLElement? = null
   var pointer = -1
+  // палец нажал, но ещё не сдвинулся на SHEET_SLOP: нажатие может оказаться кнопкой в шапке
+  var pending = false
+  var downY = 0.0
   var lastY = 0.0
   var top = 0.0
   var rest = 0.0
@@ -134,12 +153,25 @@ private class SheetDrag {
   val samples = ArrayList<Pair<Double, Double>>() // время, мс; высота
 }
 
-private fun startDrag(
-  e: PointerEvent, sheet: SheetDrag, expanded: Boolean, collapsedPx: Double, expandedPx: Double, natural: () -> Double, onPosition: (Double) -> Unit,
-) {
-  val element = sheet.element ?: return
+private fun pressDrag(e: PointerEvent, sheet: SheetDrag) {
   if (sheet.pointer >= 0) return
   sheet.pointer = e.pointerId
+  sheet.pending = true
+  sheet.downY = e.clientY.toDouble()
+}
+
+/**
+ * Жест начинается, когда палец ушёл от нажатия на [SHEET_SLOP]: только тогда шторка захватывает указатель — раньше
+ * захват уводил click с крестика и ссылки на слой в шапку. Возвращает, идёт ли жест.
+ */
+private fun startDrag(
+  e: PointerEvent, sheet: SheetDrag, expanded: Boolean, collapsedPx: Double, expandedPx: Double, natural: () -> Double, onPosition: (Double) -> Unit,
+): Boolean {
+  if (e.pointerId != sheet.pointer) return false
+  if (!sheet.pending) return true
+  val element = sheet.element ?: return false
+  if (abs(e.clientY - sheet.downY) < SHEET_SLOP) return false
+  sheet.pending = false
   (e.currentTarget as? HTMLElement)?.setPointerCapture(e.pointerId)
   val height = element.offsetHeight.toDouble()
   sheet.startHeight = height
@@ -151,6 +183,7 @@ private fun startDrag(
   sheet.samples.clear()
   sheet.samples += e.timeStamp.toDouble() to height
   onPosition(height)
+  return true
 }
 
 private fun moveDrag(e: PointerEvent, sheet: SheetDrag, onPosition: (Double) -> Unit) {
@@ -169,6 +202,11 @@ private fun moveDrag(e: PointerEvent, sheet: SheetDrag, onPosition: (Double) -> 
 private fun endDrag(e: PointerEvent, sheet: SheetDrag, position: Double?, onSettle: (target: Double, bounce: Boolean, dismiss: Boolean) -> Unit) {
   if (e.pointerId != sheet.pointer) return
   sheet.pointer = -1
+  // не сдвинулся — это было нажатие, его обработает click
+  if (sheet.pending) {
+    sheet.pending = false
+    return
+  }
   val from = position ?: return
   // скорость шторки по последним ~100 мс, px/с: вверх — плюс
   val last = sheet.samples.last()
@@ -202,7 +240,7 @@ fun MenuDrawer(open: Boolean, width: Int, onClose: () -> Unit, content: @Composa
   }
   Appear(open, MOTION_MS) { shown ->
     Div({
-      classes("drawer", "soft-24")
+      classes("drawer")
       classIf(shown, "in")
       style { property("width", width.px) }
     }) { content() }

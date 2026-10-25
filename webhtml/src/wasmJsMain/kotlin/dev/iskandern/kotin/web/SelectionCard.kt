@@ -7,6 +7,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import dev.iskandern.kotin.ObjectSelection
@@ -76,10 +77,15 @@ fun SelectionCard(
   }
   // прокрутка свойств и её переполнение — свои у каждого объекта
   val parts = remember { arrayOfNulls<HTMLElement>(4) } // карточка, тело, прокрутка свойств, сетка
-  var overflow by remember(selection.candidates) { mutableStateOf(false) }
+  val overflowState = remember(selection.candidates) { mutableStateOf(false) }
+  val overflow by overflowState
   // высота карточки — по содержимому (не выше maxHeight), меняется плавно: низ на месте, растёт вверх
   var height by remember { mutableStateOf<Double?>(null) }
-  val maxNow = maxHeight
+  // measure зовёт и наблюдатель, поставленный один раз в первой композиции, — с тем, что она захватила тогда.
+  // Поэтому нынешние maxHeight и overflow она берёт из запомненных состояний: иначе раскрытая карточка
+  // тут же сжималась обратно до свёрнутого maxHeight
+  val limitNow = rememberUpdatedState(maxHeight)
+  val overflowNow = rememberUpdatedState(overflowState)
   fun measure() {
     val card = parts[0] ?: return
     val body = parts[1] ?: return
@@ -89,16 +95,17 @@ fun SelectionCard(
     val hidden = if (scroll != null && grid != null) (grid.offsetHeight - scroll.clientHeight).coerceAtLeast(0) else 0
     val border = card.offsetHeight - card.clientHeight
     val natural = (body.scrollHeight + hidden + border).toDouble()
-    val limit = maxNow?.toDouble()
+    val limit = limitNow.value?.toDouble()
     height = if (limit != null) minOf(natural, limit) else natural
-    overflow = scroll != null && scroll.scrollHeight > scroll.clientHeight + 0.5
+    overflowNow.value.value = scroll != null && scroll.scrollHeight > scroll.clientHeight + 0.5
   }
   Div({
     classes("selection-card")
     style {
       if (maxHeight != null) property("max-height", maxHeight.px)
       height?.let { property("height", "${it}px") }
-      if (animateSize) property("transition", "height 200ms var(--los), opacity var(--appear-ms, 0ms) var(--los), transform var(--appear-ms, 0ms) var(--los)")
+      // left — сдвиг вслед за меню (на десктопе карточка стоит справа от открытого меню), как animateDpAsState в app
+      if (animateSize) property("transition", "height 200ms var(--los), left 200ms var(--fos), opacity var(--appear-ms, 0ms) var(--los), transform var(--appear-ms, 0ms) var(--los)")
     }
     attrs?.invoke(this)
   }, ref = { element ->

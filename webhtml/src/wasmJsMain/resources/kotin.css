@@ -276,4 +276,11 @@ body {
 .sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: var(--handle); }
 .drawer-scrim { position: absolute; inset: 0; background: var(--scrim); }
 .drawer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card); border-radius: 0 20px 20px 0; transform: translateX(-100%); transition: transform 200ms var(--fos); display: flex; flex-direction: column; }
+/*
+ * Тень меню — та же 0,16 в 8 слоёв на 24 px, но копиями со сдвигом вправо, а не кольцами со сдвигом вниз: у краёв
+ * экрана кольца заливали вырез скругления и торчали углом, а копии скруглены как само меню
+ */
+.drawer { box-shadow:
+  3px 0 0 rgba(21,32,43,.02), 6px 0 0 rgba(21,32,43,.02), 9px 0 0 rgba(21,32,43,.02), 12px 0 0 rgba(21,32,43,.02),
+  15px 0 0 rgba(21,32,43,.02), 18px 0 0 rgba(21,32,43,.02), 21px 0 0 rgba(21,32,43,.02), 24px 0 0 rgba(21,32,43,.02); }
 .drawer.in { transform: none; }
