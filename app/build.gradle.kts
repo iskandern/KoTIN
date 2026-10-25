@@ -91,7 +91,7 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "KoTIN"
             packageVersion = appVersion
-            description = "Просмотр TIN-поверхностей, DXF и LandXML в 3D"
+            description = "3D viewer for TIN surfaces, DXF and LandXML"  // латиница: WiX (msi) падает на кириллице, LGHT0311
             vendor = "iskandern"
             // suggestRuntimeModules
             modules("java.instrument", "java.prefs", "jdk.unsupported")
