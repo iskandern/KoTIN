@@ -143,10 +143,11 @@ body {
 .menu-scroll { overflow-y: auto; overflow-x: hidden; flex: 1 1 auto; min-height: 0; padding: 10px 16px 8px 16px; scrollbar-width: none; }
 .menu-scroll::-webkit-scrollbar { display: none; }
 .menu-scroll.in-drawer { padding-top: 6px; }
-.fade-edge { position: absolute; left: 0; right: 0; height: 12px; pointer-events: none; opacity: 0; }
+/* затемнение края прокрутки: у самого края плотное — срезанные кнопки и плашки не торчат из-под него скруглёнными углами */
+.fade-edge { position: absolute; left: 0; right: 0; height: 24px; pointer-events: none; opacity: 0; }
 .fade-edge.on { opacity: 1; }
-.fade-edge.top { top: 6px; background: linear-gradient(var(--card), rgba(255, 255, 255, 0)); }
-.fade-edge.bottom { bottom: 6px; background: linear-gradient(rgba(255, 255, 255, 0), var(--card)); }
+.fade-edge.top { top: 6px; background: linear-gradient(var(--card) 50%, rgba(255, 255, 255, 0)); }
+.fade-edge.bottom { bottom: 6px; background: linear-gradient(rgba(255, 255, 255, 0), var(--card) 65%); }
 .menu-head { display: flex; align-items: center; padding: 4px 0 8px 0; }
 .menu-head .title { flex: 1; color: var(--ink); font-size: 20px; font-weight: 600; }
 .menu-head .close { border-radius: 12px; background: var(--subtle); }

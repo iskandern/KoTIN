@@ -1,6 +1,7 @@
 package dev.iskandern.kotin.web
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,9 +13,12 @@ import dev.iskandern.kotin.resources.close_menu
 import dev.iskandern.kotin.web.dom.AttrsScope
 import dev.iskandern.kotin.web.dom.Div
 import dev.iskandern.kotin.web.dom.px
+import kotlinx.browser.window
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import org.w3c.dom.pointerevents.PointerEvent
 import kotlin.math.abs
 import kotlin.math.max
@@ -79,19 +83,33 @@ fun BottomSheet(
   val drag: AttrsScope.() -> Unit = {
     style { property("touch-action", "none") }
     onPointerDown { e -> pressDrag(e, sheet) }
-    on("pointermove") { e ->
-      e as PointerEvent
-      if (startDrag(e, sheet, expanded, collapsedPx, expandedPx, ::naturalHeight) { position = it; settle = null }) {
-        moveDrag(e, sheet) { position = it }
-      }
+  }
+  // движение и отпускание — на окне: до порога шторка указатель не захватывает (иначе click уходит с кнопок шапки),
+  // и мышь, быстро ушедшая с ручки, присылала бы события уже не ей — жест не начинался, а нажатие оставалось висеть
+  val onEnd = rememberUpdatedState { e: PointerEvent ->
+    endDrag(e, sheet, position) { target, bounce, dismiss ->
+      settle = Settle(target, bounce, dismiss)
+      position = target
     }
-    on("pointerup") { e ->
-      endDrag(e as PointerEvent, sheet, position) { target, bounce, dismiss ->
-        settle = Settle(target, bounce, dismiss)
-        position = target
-      }
+  }
+  val onMove = rememberUpdatedState { e: PointerEvent ->
+    // кнопку мыши отпустили вне окна: жест кончился, а не идёт за курсором
+    if (e.pointerType == "mouse" && (e.buttons.toInt() and 1) == 0) onEnd.value(e)
+    else if (startDrag(e, sheet, expanded, collapsedPx, expandedPx, ::naturalHeight) { position = it; settle = null }) {
+      moveDrag(e, sheet) { position = it }
     }
-    on("pointercancel") { e -> endDrag(e as PointerEvent, sheet, position) { target, bounce, dismiss -> settle = Settle(target, bounce, dismiss); position = target } }
+  }
+  DisposableEffect(Unit) {
+    val move: (Event) -> Unit = { onMove.value(it as PointerEvent) }
+    val end: (Event) -> Unit = { onEnd.value(it as PointerEvent) }
+    window.addEventListener("pointermove", move)
+    window.addEventListener("pointerup", end)
+    window.addEventListener("pointercancel", end)
+    onDispose {
+      window.removeEventListener("pointermove", move)
+      window.removeEventListener("pointerup", end)
+      window.removeEventListener("pointercancel", end)
+    }
   }
   // доводка закончилась: шторка в покое на новой высоте или закрыта
   LaunchedEffect(settle) {
@@ -154,16 +172,20 @@ private class SheetDrag {
 }
 
 private fun pressDrag(e: PointerEvent, sheet: SheetDrag) {
-  if (sheet.pointer >= 0) return
+  // идёт жест — второй палец его не перехватывает; оставшееся от прошлого нажатия без pointerup — забывается
+  if (sheet.pointer >= 0 && !sheet.pending) return
+  // мышью текст шапки выделяют, а не тянут шторку: её тянут за ручку и за пустое место шапки
+  if (e.pointerType == "mouse" && ((e.target as? Element)?.closest(".selectable") != null || e.button.toInt() != 0)) {
+    sheet.pointer = -1
+    sheet.pending = false
+    return
+  }
   sheet.pointer = e.pointerId
   sheet.pending = true
   sheet.downY = e.clientY.toDouble()
 }
 
-/**
- * Жест начинается, когда палец ушёл от нажатия на [SHEET_SLOP]: только тогда шторка захватывает указатель — раньше
- * захват уводил click с крестика и ссылки на слой в шапку. Возвращает, идёт ли жест.
- */
+/** Жест начинается, когда палец ушёл от нажатия на [SHEET_SLOP]: короче — это нажатие на кнопку шапки. Возвращает, идёт ли жест. */
 private fun startDrag(
   e: PointerEvent, sheet: SheetDrag, expanded: Boolean, collapsedPx: Double, expandedPx: Double, natural: () -> Double, onPosition: (Double) -> Unit,
 ): Boolean {
@@ -172,7 +194,6 @@ private fun startDrag(
   val element = sheet.element ?: return false
   if (abs(e.clientY - sheet.downY) < SHEET_SLOP) return false
   sheet.pending = false
-  (e.currentTarget as? HTMLElement)?.setPointerCapture(e.pointerId)
   val height = element.offsetHeight.toDouble()
   sheet.startHeight = height
   sheet.startExpanded = expanded
