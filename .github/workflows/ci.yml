@@ -1,0 +1,68 @@
+name: CI
+
+# Тесты и пробная сборка на пушах в main и на PR. Документы CI не запускают.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "androidApp/**"
+      - "drawingworker/**"
+      - "baselineprofile/**"
+      - "gradle/**"
+      - "kotlin-js-store/**"
+      - "*.gradle.kts"
+      - "gradle.properties"
+      - "gradlew"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    paths:
+      - "app/**"
+      - "androidApp/**"
+      - "drawingworker/**"
+      - "baselineprofile/**"
+      - "gradle/**"
+      - "kotlin-js-store/**"
+      - "*.gradle.kts"
+      - "gradle.properties"
+      - "gradlew"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    name: Тесты (jvmTest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 24
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew :app:jvmTest
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-report
+          path: app/build/reports/tests/jvmTest
+          retention-days: 7
+
+  build:
+    name: Сборка web и Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 24
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew :app:wasmJsBrowserDistribution :androidApp:assembleDebug

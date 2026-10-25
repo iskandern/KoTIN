@@ -15,9 +15,9 @@ android {
         applicationId = "dev.iskandern.kotin"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
         versionName = Regex("""APP_VERSION = "([\d.]+)"""")
             .find(rootProject.file("app/src/commonMain/kotlin/dev/iskandern/kotin/AppVersion.kt").readText())!!.groupValues[1]
+        versionCode = versionName!!.split(".").map { it.toInt() }.let { (a, b, c) -> a * 10000 + b * 100 + c }
     }
     // Ключ релиза в репо нет: берём keystore из local.properties или переменных окружения
     // (RELEASE_STORE_FILE, RELEASE_STORE_PASSWORD, RELEASE_KEY_ALIAS, RELEASE_KEY_PASSWORD),
