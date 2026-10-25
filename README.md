@@ -6,6 +6,12 @@
 
 TIN-поверхности, чертежи, трассы и сети в 3D — на Android, desktop и в браузере. Kotlin Multiplatform, рендер Filament, свой потоковый разборщик DXF и LandXML.
 
+### Запустить
+
+<a href="https://iskandern.github.io/KoTIN/"><img src="docs/media/open-in-browser.svg" width="264" height="48" alt="Открыть в браузере"></a>
+
+Скачать: [Android APK](https://github.com/iskandern/KoTIN/releases/latest/download/KoTIN.apk) · [Windows](https://github.com/iskandern/KoTIN/releases/latest/download/KoTIN-windows.msi) · [macOS](https://github.com/iskandern/KoTIN/releases/latest/download/KoTIN-macos.dmg) (Apple Silicon) · [Linux (deb)](https://github.com/iskandern/KoTIN/releases/latest/download/KoTIN-linux.deb) · [все выпуски](https://github.com/iskandern/KoTIN/releases)
+
 <details open>
 <summary><h2>Сравнение с другими реализациями</h2></summary>
 
