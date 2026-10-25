@@ -56,19 +56,6 @@ import dev.iskandern.kotin.resources.open_hint
 import dev.iskandern.kotin.resources.open_other_file
 import dev.iskandern.kotin.resources.triangles
 
-/** Формат файла по расширению — для строки под именем: «LandXML», «DXF». */
-internal fun fileFormat(name: String): String = when (val ext = name.substringAfterLast('.', "").lowercase()) {
-  "xml" -> "LandXML"
-  else -> ext.uppercase()
-}
-
-/** Целое с разделителем разрядов — узким неразрывным пробелом: «12 345». */
-internal fun groupDigits(n: Long): String {
-  val s = n.toString()
-  val sign = if (n < 0) "-" else ""
-  val digits = s.removePrefix("-")
-  return sign + digits.reversed().chunked(3).joinToString(" ").reversed()
-}
 
 /** Кнопка меню ≡: квадратная; пока меню открыто — тёмная. */
 @Composable

@@ -1,0 +1,279 @@
+/* KoTIN на DOM: те же цвета (KotinColors), шрифты, размеры и тени, что у Compose-версии (app) */
+:root {
+  --scene: #E3E7EB;
+  --card: #FFFFFF;
+  --subtle: #F3F5F7;
+  --outline: #D3D9DF;
+  --ink: #15202B;
+  --muted: #56636F;
+  --accent: #1F5EFF;
+  --accent-soft: #E8EEFF;
+  --accent-ink: #1440B8;
+  --warning: #8A5A00;
+  --error: #C4312A;
+  --selection: rgba(255, 214, 0, 0.278);
+  --highlight: #F5C400;
+  --check-outline: #8A96A1;
+  --handle: #C7CED5;
+  --scrim: rgba(21, 32, 43, 0.32);
+  --pressed: rgba(21, 32, 43, 0.10);
+  --hint: rgba(21, 32, 43, 0.86);
+  /* LinearOutSlowInEasing и FastOutSlowInEasing Compose */
+  --los: cubic-bezier(0, 0, 0.2, 1);
+  --fos: cubic-bezier(0.4, 0, 0.2, 1);
+  --golos: "Golos Text", sans-serif;
+  --mono: "JetBrains Mono", monospace;
+  /* floatingCard: тень 3 dp */
+  --float-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 1px 1.5px rgba(0, 0, 0, 0.10);
+}
+
+@font-face { font-family: "Golos Text"; font-weight: 400; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/golos_text_regular.ttf"); }
+@font-face { font-family: "Golos Text"; font-weight: 500; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/golos_text_medium.ttf"); }
+@font-face { font-family: "Golos Text"; font-weight: 600; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/golos_text_semibold.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_regular.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 500; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_medium.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 700; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_bold.ttf"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 600; font-style: italic; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_semibold_italic.ttf"); }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--scene); }
+body {
+  /* MaterialTheme: текст по умолчанию — bodyLarge (16/24 sp, разрядка 0,5 sp) */
+  font-family: var(--golos); font-size: 16px; line-height: 24px; letter-spacing: 0.5px; color: #000;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+  user-select: none; -webkit-user-select: none;
+  /* текст Compose: пробелы и переводы строк как есть, длинное слово переносится */
+  white-space: pre-wrap; overflow-wrap: break-word;
+  overscroll-behavior: none;
+}
+/* SelectionContainer: текст выделяется и копируется */
+.selectable, .selectable * { user-select: text; -webkit-user-select: text; }
+.mono { font-family: var(--mono); }
+.semibold { font-weight: 600; }
+/* typography.bodyMedium: 14/20 sp, разрядка 0,25 sp */
+.body-medium { font-size: 14px; line-height: 20px; letter-spacing: 0.25px; }
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nowrap { white-space: nowrap; }
+
+#root { position: fixed; inset: 0; overflow: hidden; }
+.screen { position: absolute; inset: 0; }
+.scene-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; outline: none; }
+.layer { position: absolute; }
+
+.icon { display: block; flex: none; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+
+/* clickable: подсветка ripple Material — наведение 8 %, нажатие 10 % цвета содержимого (чёрного) */
+.ripple { position: relative; overflow: hidden; }
+.ripple::after { content: ""; position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity 15ms linear; border-radius: inherit; }
+@media (hover: hover) { .ripple:hover::after { opacity: 0.08; } }
+.ripple:active::after { opacity: 0.10; }
+
+/* Белая плавающая карточка поверх сцены: мягкая тень, рамка */
+.floating { background: var(--card); border: 1px solid var(--outline); box-shadow: var(--float-shadow); }
+
+.icon-box { display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); }
+
+/*
+ * appearingCard + Appear: масштаб 0,94 → 1 от угла, прозрачность — появление 200 мс, уход 150 мс (LinearOutSlowIn).
+ * Тень — softShadow: 8 скруглённых слоёв с суммарной непрозрачностью 0,16, сдвиг вниз 0,3 высоты
+ */
+.appear { --appear-ms: 150ms; opacity: 0; transform: scale(0.94); transition: opacity var(--appear-ms) var(--los), transform var(--appear-ms) var(--los); }
+.appear.in { --appear-ms: 200ms; opacity: 1; transform: none; }
+.fade { opacity: 0; transition: opacity 200ms var(--fos); }
+.fade.in { opacity: 1; }
+
+.soft-8 { box-shadow:
+  0 2.4px 0 1px rgba(21,32,43,.02), 0 2.4px 0 2px rgba(21,32,43,.02), 0 2.4px 0 3px rgba(21,32,43,.02), 0 2.4px 0 4px rgba(21,32,43,.02),
+  0 2.4px 0 5px rgba(21,32,43,.02), 0 2.4px 0 6px rgba(21,32,43,.02), 0 2.4px 0 7px rgba(21,32,43,.02), 0 2.4px 0 8px rgba(21,32,43,.02); }
+.soft-12 { box-shadow:
+  0 3.6px 0 1.5px rgba(21,32,43,.02), 0 3.6px 0 3px rgba(21,32,43,.02), 0 3.6px 0 4.5px rgba(21,32,43,.02), 0 3.6px 0 6px rgba(21,32,43,.02),
+  0 3.6px 0 7.5px rgba(21,32,43,.02), 0 3.6px 0 9px rgba(21,32,43,.02), 0 3.6px 0 10.5px rgba(21,32,43,.02), 0 3.6px 0 12px rgba(21,32,43,.02); }
+.soft-16 { box-shadow:
+  0 4.8px 0 2px rgba(21,32,43,.02), 0 4.8px 0 4px rgba(21,32,43,.02), 0 4.8px 0 6px rgba(21,32,43,.02), 0 4.8px 0 8px rgba(21,32,43,.02),
+  0 4.8px 0 10px rgba(21,32,43,.02), 0 4.8px 0 12px rgba(21,32,43,.02), 0 4.8px 0 14px rgba(21,32,43,.02), 0 4.8px 0 16px rgba(21,32,43,.02); }
+.soft-24 { box-shadow:
+  0 7.2px 0 3px rgba(21,32,43,.02), 0 7.2px 0 6px rgba(21,32,43,.02), 0 7.2px 0 9px rgba(21,32,43,.02), 0 7.2px 0 12px rgba(21,32,43,.02),
+  0 7.2px 0 15px rgba(21,32,43,.02), 0 7.2px 0 18px rgba(21,32,43,.02), 0 7.2px 0 21px rgba(21,32,43,.02), 0 7.2px 0 24px rgba(21,32,43,.02); }
+
+/* ---------- строка «≡ + карточка файла» ---------- */
+.top-row { position: absolute; left: 16px; top: 16px; display: flex; gap: 8px; align-items: flex-start; }
+.menu-button { border-radius: 12px; flex: none; }
+.menu-button.open { background: var(--ink); }
+.file-card { border-radius: 12px; overflow: hidden; position: relative; flex: 1; min-width: 0; }
+.file-card .row { display: flex; align-items: center; }
+.file-card .texts { flex: 1; min-width: 0; padding: 4px 4px 4px 12px; }
+.file-card .title { color: var(--ink); font-weight: 600; }
+.file-card .meta-row { display: flex; align-items: center; }
+.file-card .meta { color: var(--muted); font-size: 12px; line-height: 15px; min-width: 0; }
+.file-card .meta.error { color: var(--error); }
+.file-card .open-other { margin-right: 2px; border-radius: 10px; background: var(--subtle); flex: none; }
+.file-card .details { padding: 0 12px 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; overflow: hidden; }
+.progress .track { position: absolute; top: 0; bottom: 0; right: 0; background: var(--accent-soft); border-radius: 1.5px; }
+.progress .bar { position: absolute; top: 0; bottom: 0; left: 0; background: var(--accent); border-radius: 1.5px; }
+.progress .stop { position: absolute; top: 0; right: 0; width: 3px; height: 3px; border-radius: 50%; background: var(--accent); }
+.progress.indeterminate .bar { width: 40%; animation: progress-run 1.75s linear infinite; }
+.progress.indeterminate .track { left: 0; }
+@keyframes progress-run { from { left: -40%; } to { left: 100%; } }
+
+.wordmark { display: flex; align-items: center; }
+.wordmark .name { padding-left: 6px; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.wordmark .name .accent { color: var(--accent); }
+
+/* ---------- пустой экран ---------- */
+.empty-state {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(100% - 48px); max-width: 420px;
+  padding: 32px 28px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14), 0 1px 3px rgba(0, 0, 0, 0.10);
+}
+.empty-state .hint-title { color: var(--ink); font-size: 20px; line-height: 26px; font-weight: 600; text-align: center; }
+.empty-state .hint { color: var(--muted); font-size: 13px; line-height: 18px; text-align: center; }
+.m3-button {
+  height: 48px; min-width: 58px; padding: 0 24px; border-radius: 12px; background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; letter-spacing: 0.1px; font-weight: 600;
+}
+.m3-button.ripple::after { background: #fff; }
+@media (hover: hover) { .m3-button.ripple:hover::after { opacity: 0.08; } }
+.m3-button.ripple:active::after { opacity: 0.10; }
+
+/* ---------- меню ---------- */
+.menu-panel { position: absolute; left: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 0; display: flex; flex-direction: column; }
+.menu-panel > .menu, .drawer > .menu { flex: 1 1 auto; min-height: 0; }
+.menu { position: relative; display: flex; flex-direction: column; padding: 6px 0; min-height: 0; }
+.menu-scroll { overflow-y: auto; overflow-x: hidden; flex: 1 1 auto; min-height: 0; padding: 10px 16px 8px 16px; scrollbar-width: none; }
+.menu-scroll::-webkit-scrollbar { display: none; }
+.menu-scroll.in-drawer { padding-top: 6px; }
+.fade-edge { position: absolute; left: 0; right: 0; height: 12px; pointer-events: none; opacity: 0; }
+.fade-edge.on { opacity: 1; }
+.fade-edge.top { top: 6px; background: linear-gradient(var(--card), rgba(255, 255, 255, 0)); }
+.fade-edge.bottom { bottom: 6px; background: linear-gradient(rgba(255, 255, 255, 0), var(--card)); }
+.menu-head { display: flex; align-items: center; padding: 4px 0 8px 0; }
+.menu-head .title { flex: 1; color: var(--ink); font-size: 20px; font-weight: 600; }
+.menu-head .close { border-radius: 12px; background: var(--subtle); }
+.menu-top { display: flex; flex-direction: column; gap: 10px; padding-bottom: 14px; }
+.menu-divider { height: 1px; background: var(--scene); flex: none; }
+.menu-section-head { display: flex; align-items: center; border-radius: 8px; padding: 0 8px; }
+.menu-section-head .label { flex: 1; color: var(--ink); font-weight: 600; }
+.chevron { color: var(--muted); transition: none; }
+.check-row { display: flex; align-items: center; gap: 10px; border-radius: 8px; padding: 6px 8px; }
+.check-row.indent { padding-left: 34px; }
+.check-row.highlighted { background: var(--selection); }
+.check-row .label { color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.checkbox { width: 20px; height: 20px; flex: none; border-radius: 5px; border: 2px solid var(--check-outline); display: flex; align-items: center; justify-content: center; color: #fff; }
+.checkbox.on { background: var(--accent); border: none; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.chip {
+  height: 40px; border-radius: 10px; background: var(--card); border: 1px solid var(--outline); padding: 0 10px;
+  display: flex; align-items: center; justify-content: center; color: var(--ink); min-width: 0; white-space: nowrap; flex: none;
+}
+.chip.on { background: var(--accent-soft); border: 2px solid var(--accent); color: var(--accent-ink); font-weight: 600; }
+.chips { display: flex; gap: 6px; }
+.chips > .chip.weighted { flex: 1 1 0; }
+.chips.column { flex-direction: column; }
+.chips.scroll { overflow-x: auto; scrollbar-width: none; }
+.chips.scroll::-webkit-scrollbar { display: none; }
+.action { height: 44px; border-radius: 12px; padding: 0 12px; display: flex; align-items: center; justify-content: center; white-space: nowrap; min-width: 0; }
+.action.primary { background: var(--accent); color: #fff; font-weight: 600; }
+.action.primary.ripple::after { background: #fff; }
+.action.secondary { background: var(--card); border: 1px solid var(--outline); color: var(--ink); }
+.actions { display: flex; gap: 8px; }
+.actions > .action { flex: 1 1 0; }
+.small-button { height: 32px; border-radius: 8px; border: 1px solid var(--outline); padding: 0 12px; display: flex; align-items: center; color: var(--ink); font-size: 13px; }
+.small-label { color: var(--muted); font-size: 13px; }
+.group-row { height: 36px; display: flex; align-items: center; gap: 6px; border-radius: 8px; padding: 0 8px; color: var(--muted); font-size: 13px; }
+
+/* ---------- система координат ---------- */
+.crs-row { display: flex; align-items: center; gap: 4px; }
+.crs-code { color: var(--ink); font-family: var(--mono); font-size: 13px; line-height: 18px; font-weight: 500; white-space: nowrap; flex: none; }
+.crs-name { color: var(--muted); font-size: 13px; line-height: 18px; flex: 1; min-width: 0; }
+.crs-cells { display: flex; flex-direction: column; gap: 4px; }
+.crs-pair { display: flex; gap: 4px; }
+.crs-pair > .crs-cell { flex: 1 1 0; min-width: 0; }
+.crs-cell { border-radius: 8px; background: var(--subtle); padding: 6px 8px; }
+.crs-cell .label { color: var(--muted); font-size: 12px; line-height: 16px; }
+.crs-cell .value { color: var(--ink); font-size: 13px; line-height: 18px; overflow-wrap: anywhere; }
+.crs-cell .value.one-line { font-size: 12px; line-height: 16px; }
+
+/* ---------- кнопки камеры ---------- */
+.camera-buttons { position: absolute; right: 16px; bottom: 16px; display: flex; gap: 8px; align-items: center; }
+.camera-group { border-radius: 14px; padding: 4px; display: flex; gap: 2px; }
+.mode-segment { border-radius: 10px; padding: 0 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); white-space: nowrap; }
+.mode-segment.on { background: var(--ink); color: var(--card); font-weight: 600; }
+.camera-rail { position: absolute; right: 16px; top: 50%; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 200ms var(--fos); }
+.rail-zoom { border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; }
+.rail-zoom .sep { height: 1px; background: var(--scene); }
+.rail-mode { border-radius: 50%; }
+
+/* ---------- индикатор осей ---------- */
+.axis-indicator { position: absolute; right: 16px; top: 16px; width: 72px; height: 72px; border-radius: 50%; background: var(--card); border: 1px solid var(--outline); }
+.axis-indicator svg { position: absolute; left: -1px; top: -1px; overflow: visible; }
+.axis-label { font-family: var(--golos); font-size: 11px; font-weight: 700; letter-spacing: 0; }
+
+/* ---------- указатель на чертёж ---------- */
+.pointer { position: absolute; left: 0; top: 0; border-radius: 20px; display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; white-space: nowrap; }
+.pointer .arrow { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--card); display: flex; align-items: center; justify-content: center; flex: none; }
+.pointer .label { color: var(--ink); }
+.pointer .distance { color: var(--muted); font-family: var(--mono); }
+
+/* ---------- карточка выбранного ---------- */
+.selection-card { border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 100%; display: flex; flex-direction: column; overflow: hidden; }
+.selection-body { display: flex; flex-direction: column; padding: 14px 16px; min-height: 0; flex: 0 1 auto; }
+.selection-card.plain { border: none; border-radius: 0; background: none; flex: 0 1 auto; min-height: 0; }
+.selection-head { display: flex; gap: 8px; flex: none; }
+.selection-title-box { flex: 1; min-width: 0; overflow: hidden; }
+.selection-title { display: flex; gap: 10px; }
+.selection-title .swatch { width: 14px; height: 14px; border-radius: 4px; margin-top: 4px; }
+.selection-title .texts { flex: 1; min-width: 0; }
+.selection-title .name { color: var(--ink); font-size: 16px; line-height: 21px; font-weight: 600; overflow-wrap: anywhere; }
+.selection-title .layer { display: inline-block; color: var(--accent); font-size: 13px; line-height: 18px; margin-left: -4px; padding: 2px 4px; border-radius: 6px; overflow-wrap: anywhere; }
+.selection-title .partial { color: var(--muted); font-size: 12px; }
+.card-button { border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); transition: transform 200ms var(--los); }
+.card-button::after { content: ""; position: absolute; inset: 0; background: var(--pressed); opacity: 0; transition: opacity 200ms var(--los); pointer-events: none; }
+.card-button:active { transform: scale(0.94); transition-duration: 75ms; }
+.card-button:active::after { opacity: 1; transition-duration: 75ms; }
+.card-button.subtle { background: var(--subtle); }
+.card-button.card { background: var(--card); }
+.attr-scroll { overflow-y: auto; min-height: 0; flex: 0 1 auto; scrollbar-width: none; }
+.attr-scroll::-webkit-scrollbar { display: none; }
+.attr-grid { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
+.attr-row { display: flex; gap: 8px; }
+.attr-cell { flex: 1 1 0; min-width: 0; border-radius: 10px; background: var(--subtle); padding: 8px 10px; line-height: 17.5px; }
+.attr-cell.empty { background: none; }
+.attr-cell .label { display: block; color: var(--muted); font-size: 12px; }
+.attr-cell .value { display: block; color: var(--ink); font-size: 14px; font-family: var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
+.slide { transition: none; }
+.candidate-switch { margin-top: 10px; background: var(--subtle); border-radius: 14px; padding: 4px; display: flex; flex-direction: column; flex: none; min-height: 0; }
+.candidate-list-wrap { overflow: hidden; display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 150ms ease-out, opacity 150ms ease-out; }
+.candidate-list-wrap.in { grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 200ms var(--los), opacity 200ms var(--fos); }
+.candidate-list-wrap > div { min-height: 0; }
+.candidate-list { padding-bottom: 4px; max-height: 176px; overflow-y: auto; scrollbar-width: none; }
+.candidate-list::-webkit-scrollbar { display: none; }
+.candidate-item { height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 6px; border-radius: 8px; }
+.candidate-item.on { background: var(--selection); }
+.candidate-item .text { color: var(--ink); font-size: 13px; line-height: 18px; min-width: 0; }
+.candidate-number {
+  width: 22px; height: 22px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: var(--card); font-family: var(--mono); font-size: 11px; line-height: 11px; font-weight: 600; letter-spacing: 0;
+  transition: background-color 200ms var(--fos), color 200ms var(--fos);
+}
+.candidate-number.on { background: var(--highlight); color: var(--ink); }
+.switch-row { display: flex; gap: 4px; align-items: center; flex: none; }
+.switch-middle { flex: 1; min-width: 0; align-self: stretch; }
+.switch-middle .inner { display: flex; align-items: center; padding: 0 8px; min-width: 0; }
+.switch-middle .nearby { color: var(--muted); font-size: 12px; line-height: 16px; min-width: 0; }
+.switch-middle .count { color: var(--ink); font-size: 12px; line-height: 16px; font-family: var(--mono); white-space: nowrap; }
+
+/* ---------- плашки-подсказки ---------- */
+.hint-plate { border-radius: 14px; background: var(--hint); display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 14px; }
+.hint-plate .text { flex: 1; color: #fff; font-size: 13px; line-height: 18px; min-width: 0; }
+.hint-plate .hide { border-radius: 10px; background: rgba(255, 255, 255, 0.14); color: #fff; }
+.hint-plate .action-hint { min-height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.14); padding: 0 12px; display: flex; align-items: center; color: #fff; font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+
+/* ---------- телефон: шторка и боковое меню ---------- */
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--card); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; transition: transform 200ms var(--fos); }
+.sheet::before { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 48px; background: var(--card); }
+.sheet .handle-area { height: 24px; flex: none; display: flex; align-items: center; justify-content: center; touch-action: none; }
+.sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: var(--handle); }
+.drawer-scrim { position: absolute; inset: 0; background: var(--scrim); }
+.drawer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card); border-radius: 0 20px 20px 0; transform: translateX(-100%); transition: transform 200ms var(--fos); display: flex; flex-direction: column; }
+.drawer.in { transform: none; }

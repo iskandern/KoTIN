@@ -32,10 +32,8 @@ import dev.iskandern.kotin.resources.Res
 import dev.iskandern.kotin.resources.distance_m
 import dev.iskandern.kotin.resources.drawing_pointer
 import dev.iskandern.kotin.resources.to_drawing
-import dev.iskandern.kotin.scene.OutlierGroup
 import kotlin.math.PI
 import kotlin.math.abs
-import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.min
 
@@ -121,63 +119,6 @@ fun DrawingPointer(
   }
 }
 
-/**
- * Расстояние для плашки: до 100 м — до метра, до 1 км — до 10 м, дальше — до 100 м; null — ближе метра. Крупный шаг
- * не только читается легче, но и реже пересобирает текст, пока камера едет.
- */
-internal fun roundedDistance(meters: Float): Double? {
-  if (!(meters >= 1f)) return null
-  val step = when {
-    meters < 100f -> 1.0
-    meters < 1000f -> 10.0
-    else -> 100.0
-  }
-  return kotlin.math.round(meters / step) * step
-}
-
-/** Плашка у края: [group] — номер группы далёких объектов, −1 — сам чертёж; [count] — объектов за ней. */
-internal data class PointerTarget(val group: Int, val count: Int)
-
-/** Только плашка «Чертёж». */
-internal val DRAWING_POINTERS = listOf(PointerTarget(-1, 0))
-
-/**
- * Плашки на группы [groups] далёких объектов, которые [offscreen] нашёл вне кадра: ближние первыми, не больше
- * [MAX_OUTLIER_POINTERS]. Группа почти в том же направлении (угол меньше [mergeAngle], радианы), что уже взятая
- * ближняя, отдельной плашки не получает — её объекты прибавляются к ближней.
- */
-internal fun outlierPointers(
-  groups: List<OutlierGroup>, mergeAngle: Float, offscreen: (OutlierGroup) -> OffscreenDrawing?,
-): List<PointerTarget> {
-  val found = groups.indices.mapNotNull { i -> offscreen(groups[i])?.let { i to it } }.sortedBy { it.second.distance }
-  val result = ArrayList<PointerTarget>()
-  val directions = ArrayList<OffscreenDrawing>()
-  for ((i, d) in found) {
-    val near = directions.indexOfFirst { acos((it.dirX * d.dirX + it.dirY * d.dirY).coerceIn(-1f, 1f)) < mergeAngle }
-    if (near >= 0) {
-      result[near] = result[near].copy(count = result[near].count + groups[i].count)
-    } else if (result.size < MAX_OUTLIER_POINTERS) {
-      result += PointerTarget(i, groups[i].count)
-      directions += d
-    }
-  }
-  return result
-}
-
-/**
- * Плашки у края: «Чертёж», если [drawingOffscreen]; иначе плашки на далёкие объекты — только при [showOutliers]
- * (выключено — [offscreen] не зовётся).
- */
-internal fun pointerTargets(
-  drawingOffscreen: Boolean, showOutliers: Boolean, groups: List<OutlierGroup>, mergeAngle: Float,
-  offscreen: (OutlierGroup) -> OffscreenDrawing?,
-): List<PointerTarget> = when {
-  drawingOffscreen -> DRAWING_POINTERS
-  !showOutliers || groups.isEmpty() -> emptyList()
-  else -> outlierPointers(groups, mergeAngle, offscreen)
-}
-
-private const val MAX_OUTLIER_POINTERS = 3
 
 private class LastDrawing {
   var value: OffscreenDrawing? = null

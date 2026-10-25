@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KoTIN</title>
+    <meta name="description" content="Просмотр DXF-чертежей и LandXML (поверхности, трассы, сети) в 3D в браузере">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#E3E7EB">
+    <!-- шрифты интерфейса — сразу, вместе с кодом: иначе текст ждёт, пока страница их попросит -->
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_semibold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="kotin.css">
+</head>
+<body>
+    <div id="root"></div>
+    <script src="filament-kmp.js" defer></script>
+    <script src="kotin.js" defer></script>
+</body>
+</html>

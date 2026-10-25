@@ -23,25 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.math.cos
-import kotlin.math.sin
 
-/**
- * Оси чертежа X, Y (север), Z (вверх) на экране при азимуте [yaw] и угле места [pitch] камеры: для каждой по три
- * числа подряд в [out] — (вправо, вверх по экрану, к зрителю), длина вектора 1. Сцена: X чертежа — X, Y чертежа — −Z,
- * Z чертежа — Y.
- */
-internal fun axesOnScreen(yaw: Float, pitch: Float, out: FloatArray = FloatArray(9)): FloatArray {
-  val sy = sin(yaw)
-  val cy = cos(yaw)
-  val sp = sin(pitch)
-  val cp = cos(pitch)
-  // вправо (cos yaw, 0, −sin yaw), вверх (−sin p·sin y, cos p, −sin p·cos y), к камере (cos p·sin y, sin p, cos p·cos y)
-  out[0] = cy; out[1] = -sp * sy; out[2] = cp * sy
-  out[3] = sy; out[4] = sp * cy; out[5] = -cp * cy
-  out[6] = 0f; out[7] = cp; out[8] = sp
-  return out
-}
 
 /**
  * Оси на экране для текущей позы: линии и три подписи читают их на одном кадре, считаются они один раз и в один буфер —

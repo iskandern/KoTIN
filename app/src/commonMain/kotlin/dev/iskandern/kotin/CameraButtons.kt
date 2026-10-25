@@ -48,8 +48,6 @@ import dev.iskandern.kotin.resources.camera_orbit
 import dev.iskandern.kotin.resources.zoom_in
 import dev.iskandern.kotin.resources.zoom_out
 
-/** Шаг кнопок «− +»: во сколько раз меняется расстояние до точки интереса. */
-internal const val ZOOM_STEP = 1.25f
 
 /** Белая плавающая карточка поверх сцены: мягкая тень, рамка; жесты по ней до сцены не доходят. */
 fun Modifier.floatingCard(shape: Shape, elevation: Dp = 3.dp): Modifier =

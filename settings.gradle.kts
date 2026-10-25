@@ -18,4 +18,5 @@ dependencyResolutionManagement {
 include(":app")
 include(":androidApp")
 include(":drawingworker")
+include(":webhtml")
 include(":baselineprofile")
