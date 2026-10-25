@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Сеть: 3 колодца (круглый с диаметром в мм, прямоугольный с центром по pntRef, без отметок) и 3 трубы:
+     Т1 прямая (лоток в конце — дно К2: Invert для Т1 у К2 нет), Т2 — дуга через Center (четверть окружности R 20),
+     Т3 — на несуществующий колодец К9 (пропускается). Точка центра К2 — в CgPoints после сети. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-14" time="12:00:00" version="1.2">
+	<Units><Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars" diameterUnit="millimeter"/></Units>
+	<Project name="Сеть"/>
+	<Application name="KoTIN" version="1.0"/>
+	<PipeNetworks>
+		<PipeNetwork name="Канализация" pipeNetType="sanitary">
+			<Structs>
+				<Struct name="К1" elevRim="105" elevSump="100">
+					<Center>1000 2000</Center>
+					<CircStruct diameter="1500"/>
+					<Invert elev="100.5" flowDir="out" refPipe="Т1"/>
+				</Struct>
+				<Struct name="К2" elevRim="104" elevSump="99">
+					<Center pntRef="К2-центр"/>
+					<RectStruct length="2" width="1.5" lengthDir="90"/>
+					<Invert elev="99.8" flowDir="out" refPipe="Т2"/>
+				</Struct>
+				<Struct name="К3">
+					<Center>1020 2050</Center>
+					<Connection/>
+					<Invert elev="99" flowDir="in" refPipe="Т2"/>
+					<Invert elev="98.5" flowDir="out" refPipe="Т3"/>
+				</Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Т1" refStart="К1" refEnd="К2" length="30" slope="0.05">
+					<CircPipe diameter="300"/>
+				</Pipe>
+				<Pipe name="Т2" refStart="К2" refEnd="К3">
+					<EggPipe height="0.6" span="0.4"/>
+					<Center>1014.142135623731 2035.857864376269</Center>
+				</Pipe>
+				<Pipe name="Т3" refStart="К3" refEnd="К9">
+					<CircPipe diameter="200"/>
+				</Pipe>
+			</Pipes>
+		</PipeNetwork>
+	</PipeNetworks>
+	<CgPoints>
+		<CgPoint name="К2-центр">1000 2030</CgPoint>
+	</CgPoints>
+</LandXML>

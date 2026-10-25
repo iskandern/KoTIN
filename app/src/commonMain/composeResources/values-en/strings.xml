@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Английский перевод строк из values/strings.xml: те же имена и те же подстановки %N$s / %N$d. -->
+<resources>
+    <string name="open_hint">Open a DXF or a LandXML file with a surface</string>
+    <string name="open_file">Open file</string>
+    <string name="open_hint_web">On the web a file can also be opened by link: ?file=path/to/file.dxf</string>
+    <string name="open_hint_android">Or open a file from a file manager: “Open with” → KoTIN</string>
+    <string name="open_hint_desktop">Or pass the file path as a launch argument</string>
+    <string name="open_other_file">Open another file</string>
+    <string name="menu">Menu</string>
+    <string name="no_file">No file open</string>
+    <string name="loading_meta">Reading… %1$s</string>
+    <!-- размер файла меньше мегабайта -->
+    <string name="kilobytes">%1$d KB</string>
+    <!-- строка под именем файла: формат · размер · треугольники -->
+    <plurals name="triangles">
+        <item quantity="one">%1$s triangle</item>
+        <item quantity="other">%1$s triangles</item>
+    </plurals>
+
+    <!-- камера -->
+    <string name="camera_orbit">Orbit</string>
+    <string name="camera_map">Map</string>
+    <string name="saved_view">Drawing view</string>
+    <string name="home_view">Home view</string>
+    <string name="drawing_pointer">Drawing</string>
+    <string name="to_drawing">Back to drawing</string>
+    <string name="more_object">One more object</string>
+    <string name="more_objects">More objects</string>
+    <string name="to_more_objects">Go to off-screen objects</string>
+    <string name="distance_m">%1$s m</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="zoom_out">Zoom out</string>
+    <string name="camera_orbit_hint">Controls: orbit. Tap for map</string>
+    <string name="camera_map_hint">Controls: map. Tap for orbit</string>
+    <string name="close_menu">Close menu</string>
+    <string name="selection_hint_touch">Press and hold an object to select it</string>
+
+    <!-- выбор объекта -->
+    <string name="selection_hint">Press and hold an object to select it</string>
+    <string name="selection_layer">Layer: %1$s</string>
+    <string name="selection_partial">Only part is highlighted</string>
+    <string name="clear_selection">Clear selection</string>
+    <string name="selection_nearby">Other objects nearby</string>
+    <string name="selection_prev">Previous nearby object</string>
+    <string name="selection_next">Next nearby object</string>
+    <string name="selection_list">List of nearby objects</string>
+    <string name="selection_expand">Expand card</string>
+    <string name="selection_collapse">Collapse card</string>
+    <string name="hide_hint">Hide hint</string>
+
+    <!-- загрузка -->
+    <string name="load_failed">Couldn’t open</string>
+    <string name="crs_system">System</string>
+    <string name="crs_code">Code</string>
+    <string name="crs_datum">Datum</string>
+    <string name="crs_heights">Heights</string>
+    <string name="crs_ellipsoid">Ellipsoid</string>
+    <string name="crs_description">Description</string>
+    <string name="crs_file_units">File units</string>
+    <string name="crs_note">Coordinates are shown as in the file, not transformed.</string>
+    <string name="crs_expand">Coordinate system from the file</string>
+    <string name="load_failed_reason">This isn’t DXF or LandXML, or the file is damaged.</string>
+    <string name="load_failed_kept">Still showing the previous file: %1$s</string>
+    <string name="load_failed_dismiss">Hide</string>
+    <!-- размер файла в мегабайтах: целая часть и десятые -->
+    <string name="megabytes">%1$d.%2$d MB</string>
+
+    <!-- сведения о сцене -->
+    <string name="timing">reading %1$d ms, preparing %2$d ms</string>
+    <string name="timing_show">, display %1$d ms</string>
+    <string name="scene_stats">Surfaces %1$d: vertices %2$d, triangles %3$d; drawing: segments %4$d, fills %5$d, labels %6$d, points %7$d</string>
+    <string name="scene_truncated">Too many blocks — not all graphics are shown</string>
+    <string name="hidden_body_faces">Solid faces not shown: %1$d (non-planar)</string>
+    <string name="unread_bodies">Solids not shown: %1$d (SAB from R2013+ or unreadable SAT)</string>
+    <string name="scene_empty">The file has no supported objects</string>
+    <string name="sheet_model">Model</string>
+
+    <!-- разделы меню -->
+    <string name="section_display">Show</string>
+    <string name="section_settings">Settings</string>
+    <string name="sheets">Sheets</string>
+
+    <!-- настройки показа -->
+    <string name="show_surface">Surface</string>
+    <string name="show_wire">Wireframe</string>
+    <string name="show_drawing">Drawing (lines, arcs, blocks)</string>
+    <string name="show_labels">Labels</string>
+    <string name="thin_labels">Thin out labels by scale</string>
+    <string name="labels_auto_off">Labels hidden: %1$s</string>
+    <string name="labels_auto_thin">Showing some of the labels</string>
+    <string name="labels_show">Show</string>
+    <string name="labels_show_all">Show all</string>
+    <string name="labels_auto_off_menu">Hidden automatically: %1$s</string>
+    <string name="labels_auto_thin_menu">Thinning turned on automatically</string>
+    <string name="show_structures">Pipes</string>
+    <string name="show_stationing">Stationing</string>
+    <string name="show_all_stations">All stations</string>
+    <string name="show_outlier_pointers">Pointers to distant objects</string>
+    <string name="show_points">Points</string>
+    <string name="show_point_thickness">Point thickness</string>
+    <string name="show_line_weights">Line weights</string>
+    <string name="hide_occluded">Hide behind surface</string>
+    <string name="flatten_drawing">Flatten drawing (no elevations)</string>
+    <string name="axes">X and Y axes</string>
+    <string name="axes_east_north">X — easting, Y — northing</string>
+    <string name="axes_north_east">X — northing, Y — easting</string>
+    <string name="vertical_scale">Vertical exaggeration</string>
+
+    <!-- список слоёв -->
+    <string name="layers_title">Layers (%1$d)</string>
+    <string name="elements_title">Elements (%1$d)</string>
+    <string name="layers_all">All</string>
+    <string name="layers_none">None</string>
+
+    <!-- язык интерфейса -->
+    <string name="language">Language</string>
+
+    <!-- листы DXF без имени -->
+    <string name="sheet">Sheet</string>
+    <string name="sheet_n">Sheet %1$s</string>
+
+    <!-- группы списка «Элементы» LandXML -->
+    <string name="group_surfaces">Surfaces</string>
+    <string name="group_source_data">Surface source data</string>
+    <string name="group_alignments">Alignments</string>
+    <string name="group_cross_sections">Cross sections</string>
+    <string name="group_networks">Networks</string>
+    <string name="group_planimetry">Plan features and parcels</string>
+    <string name="group_points">Points</string>
+
+    <!-- слои LandXML -->
+    <string name="layer_surface">Surface</string>
+    <string name="layer_boundaries">%1$s: boundaries</string>
+    <string name="layer_breaklines">%1$s: breaklines</string>
+    <string name="layer_contours">%1$s: contours</string>
+    <string name="layer_data_points">%1$s: data points</string>
+    <string name="layer_alignments">Alignments</string>
+    <string name="layer_alignment_speed">Alignments: speed by station</string>
+    <string name="layer_alignment_pi">Alignments: points of intersection</string>
+    <string name="layer_alignment_ground">Alignments: ground</string>
+    <string name="layer_road_signs">Alignments: road signs</string>
+    <string name="layer_design_speed">Alignments: design speed</string>
+    <string name="layer_design_speed_85">Alignments: 85th percentile speed</string>
+    <string name="layer_posted_speed">Alignments: posted speed</string>
+    <string name="layer_traffic">Alignments: traffic volume</string>
+    <string name="layer_stationing">Stationing</string>
+    <string name="layer_stationing_mid">Stationing: intermediate stations</string>
+    <string name="layer_cross_ground">Cross sections: ground</string>
+    <string name="layer_cross_design">Cross sections: design</string>
+    <string name="layer_structs_storm">Structures: storm</string>
+    <string name="layer_structs_sanitary">Structures: sanitary</string>
+    <string name="layer_structs_water">Structures: water</string>
+    <string name="layer_structs_other">Structures: other</string>
+    <string name="layer_pipes">Pipes</string>
+    <string name="layer_tubes_storm">Pipes: storm</string>
+    <string name="layer_tubes_sanitary">Pipes: sanitary</string>
+    <string name="layer_tubes_water">Pipes: water</string>
+    <string name="layer_tubes_other">Pipes: other</string>
+    <string name="layer_planimetry">Plan features</string>
+    <string name="layer_planimetry_kind">Plan features: %1$s</string>
+    <string name="layer_parcels">Parcels</string>
+    <string name="layer_points">Points</string>
+    <string name="layer_monuments">Points: monuments</string>
+    <string name="layer_survey">Points: survey</string>
+
+    <!-- имя поперечника: трасса и пикет -->
+    <string name="cross_section_name">%1$s STA %2$s</string>
+    <string name="station_label">STA %1$s</string>
+    <string name="station_decimal">.</string>
+
+    <!-- свойства объектов -->
+    <string name="attr_name">Name</string>
+    <string name="attr_code">Code</string>
+    <string name="attr_description">Description</string>
+    <string name="attr_type">Type</string>
+    <string name="attr_class">Class</string>
+    <string name="attr_state">State</string>
+    <string name="attr_shape">Shape</string>
+    <string name="attr_points">Points</string>
+    <string name="attr_faces">Faces</string>
+    <string name="attr_invisible_faces">Invisible faces</string>
+    <string name="attr_visible_faces">Visible faces</string>
+    <string name="attr_elements">Elements</string>
+    <string name="attr_observations">Observations</string>
+    <string name="attr_area">Area</string>
+    <string name="attr_area_2d">Area 2D</string>
+    <string name="attr_area_3d">Area 3D</string>
+    <string name="attr_elev_min">Min. elevation</string>
+    <string name="attr_elev_max">Max. elevation</string>
+    <string name="attr_file_area_2d">2D area in file</string>
+    <string name="attr_file_area_3d">3D area in file</string>
+    <string name="attr_file_elev_min">Min. elevation in file</string>
+    <string name="attr_file_elev_max">Max. elevation in file</string>
+    <string name="value_m2">%1$s m²</string>
+    <string name="attr_edge_trim">Edge trim (edgeTrim)</string>
+    <string name="attr_alignment">Alignment</string>
+    <string name="attr_station">Station</string>
+    <string name="attr_start_station">Start station</string>
+    <string name="attr_profile">Profile</string>
+    <string name="attr_ground_points">Ground profile, points</string>
+    <string name="attr_drawn_points">Points drawn</string>
+    <string name="attr_length">Length</string>
+    <string name="attr_length_m">Length, m</string>
+    <string name="attr_plan_length_m">Plan length, m</string>
+    <string name="attr_file_length">Length in file</string>
+    <string name="attr_file_length_m">Length in file, m</string>
+    <string name="attr_width">Width</string>
+    <string name="attr_top_width">Top width</string>
+    <string name="attr_bottom_width">Bottom width</string>
+    <string name="attr_height">Height</string>
+    <string name="attr_span">Span</string>
+    <string name="attr_diameter">Diameter</string>
+    <string name="attr_length_direction">Length direction</string>
+    <string name="attr_rim_elev">Rim elevation</string>
+    <string name="attr_sump_elev">Sump elevation</string>
+    <string name="attr_invert">Invert %1$s</string>
+    <string name="attr_start">Start</string>
+    <string name="attr_end">End</string>
+    <string name="attr_start_invert">Start invert</string>
+    <string name="attr_end_invert">End invert</string>
+    <string name="attr_slope">Slope</string>
+    <string name="attr_file_slope">Slope in file</string>
+    <string name="attr_curved">Curved</string>
+    <string name="attr_network">Network</string>
+    <string name="attr_network_type">Network type</string>
+    <string name="attr_point_ref">Point</string>
+    <string name="attr_condition">Condition</string>
+    <string name="attr_category">Category</string>
+    <string name="attr_beacon">Beacon</string>
+    <string name="attr_beacon_protection">Beacon protection</string>
+    <string name="attr_reference">Reference</string>
+    <string name="attr_origin_survey">Origin survey</string>
+    <string name="attr_roadway">Roadway</string>
+    <string name="attr_end_station">End station</string>
+    <string name="attr_side_of_road">Side of road</string>
+    <string name="attr_range">Range</string>
+    <string name="attr_sign_code">MUTCD code</string>
+    <string name="attr_offset">Offset</string>
+    <string name="attr_speed">Speed</string>
+    <string name="attr_speed_limit">Speed limit</string>
+    <string name="attr_traffic">Daily traffic (ADT)</string>
+    <string name="attr_speed_stations">Speed by station</string>
+    <string name="attr_id">ID</string>
+    <string name="attr_station_name">Station name</string>
+    <string name="attr_instrument_height">Instrument height</string>
+    <string name="attr_pvi_count">Profile PVIs</string>
+    <string name="attr_x_east">X (easting)</string>
+    <string name="attr_x_north">X (northing)</string>
+    <string name="attr_y_north">Y (northing)</string>
+    <string name="attr_y_east">Y (easting)</string>
+
+    <!-- значения свойств -->
+    <string name="value_yes">yes</string>
+    <string name="value_unspecified">not specified</string>
+
+    <!-- журнал -->
+    <string name="log_loaded">KoTIN: opened “%1$s”: reading %2$s ms, preparing %3$s ms, triangles %4$s, segments %5$s, labels %6$s, points %7$s</string>
+    <string name="log_loaded_truncated">KoTIN: opened “%1$s”: reading %2$s ms, preparing %3$s ms, triangles %4$s, segments %5$s, labels %6$s, points %7$s, TRUNCATED</string>
+    <string name="log_failed">KoTIN: could not open “%1$s”: %2$s: %3$s</string>
+    <string name="log_shown">KoTIN: shown “%1$s”: display %2$s ms</string>
+    <string name="log_label_frames">KoTIN: frames with labels: median %1$s ms</string>
+    <string name="log_label_frames_slow">KoTIN: frames with labels: median %1$s ms — labels one step lighter</string>
+    <string name="log_worker_unavailable">KoTIN: Worker unavailable (%1$s), parsing on the main thread</string>
+    <string name="log_landxml">LandXML %1$s: units %2$s, project “%3$s”, application “%4$s”</string>
+    <string name="log_landxml_no_units">LandXML %1$s: units not specified, project “%2$s”, application “%3$s”</string>
+    <string name="log_landxml_decimal_comma">LandXML: %1$s numbers with a decimal comma — read as with a point (the schema requires a point)</string>
+    <string name="log_landxml_crs">LandXML: coordinate system “%1$s” (%2$s)</string>
+    <string name="log_landxml_crs_no_code">LandXML: coordinate system “%1$s”</string>
+    <string name="log_profile_short">LandXML: alignment “%1$s”, profile “%2$s” has fewer than two PVIs on the alignment — alignment drawn in plan</string>
+    <string name="log_profile_skipped">LandXML: alignment “%1$s”, profile PVIs skipped: %2$s of %3$s (station off the alignment or repeated)</string>
+    <string name="log_profile_extra">LandXML: alignment “%1$s” has %2$s more ProfAlign profiles — the first one used, “%3$s”</string>
+    <string name="log_alignments">LandXML: alignments %1$s (with profile %2$s), elements %3$s (spirals %4$s), segments %5$s</string>
+    <string name="log_alignments_unresolved">LandXML: alignments have %1$s references to missing CgPoint points — elements without them skipped</string>
+    <string name="log_cgpoints">LandXML: CgPoint points %1$s</string>
+    <string name="log_cgpoints_limited">LandXML: CgPoint points %1$s, labels and objects only for the first %2$s</string>
+    <string name="log_cgpoints_skipped">LandXML: %1$s CgPoint points have no coordinates — skipped</string>
+    <string name="log_planfeatures">LandXML: plan features %1$s, elements %2$s, segments %3$s, points %4$s</string>
+    <string name="log_planfeatures_labels">LandXML: plan feature labels only for the first %1$s points</string>
+    <string name="log_planfeatures_spirals">LandXML: spirals in plan features %1$s — drawn as straight Start–End for now</string>
+    <string name="log_planfeatures_missing">LandXML: plan features have %1$s references to missing CgPoint points — skipped</string>
+    <string name="log_surface_no_definition">LandXML: surface “%1$s” has no Definition (source data only) — no mesh</string>
+    <string name="log_surface">LandXML: surface “%1$s” (%2$s): points %3$s, faces %4$s, invisible %5$s, triangles %6$s</string>
+    <string name="log_surface_bad">LandXML: “%1$s”: faces with unknown id %2$s, degenerate %3$s — skipped; points without id or coordinates %4$s, repeated ids %5$s</string>
+    <string name="log_grid_cells">LandXML: “%1$s”: cells without data (zeros in F) %2$s, with a placeholder elevation %3$s — skipped; cells with crossed vertices %4$s — vertices reordered</string>
+    <string name="log_surface_flipped">LandXML: “%1$s”: %2$s faces are clockwise — flipped to face up</string>
+    <string name="log_drape_cut">LandXML: draping: segments cut at the piece limit (rest as a chord): %1$s</string>
+    <string name="log_source_data">LandXML: “%1$s”: source data — boundaries %2$s, breaklines %3$s, contours %4$s, data points %5$s</string>
+    <string name="log_source_data_short">LandXML: “%1$s”: lists shorter than two points %2$s, contours without elev %3$s — skipped</string>
+    <string name="log_data_points_limit">LandXML: “%1$s”: data points %2$s — more than %3$s, not shown</string>
+    <string name="log_chains_unresolved">LandXML: source data Chains have %1$s references to missing CgPoint points — skipped</string>
+    <string name="log_chains_short">LandXML: Chains with fewer than two found points %1$s — skipped</string>
+    <string name="log_cross_slope">LandXML: cross sections have %1$s design points in slope–distance form — skipped</string>
+    <string name="log_cross_refs">LandXML: cross sections have %1$s design points referenced by alignRef/planFeatureRef/parcelRef — skipped</string>
+    <string name="log_cross">LandXML: cross sections %1$s</string>
+    <string name="log_cross_outside">LandXML: %1$s cross sections with a station off the alignment — skipped</string>
+    <string name="log_monuments">LandXML: monuments %1$s, shown %2$s</string>
+    <string name="log_monuments_missing">LandXML: %1$s monuments (Monument) have no CgPoint point by pntRef — skipped</string>
+    <string name="log_spiral_untyped">LandXML: spiral without a type or with an unknown spiType is drawn as a clothoid</string>
+    <string name="log_spiral_type">LandXML: spiral spiType="%1$s" is drawn as a clothoid</string>
+    <string name="log_spiral_miss">LandXML: spiral of length %1$s m misses End by %2$s m — end adjusted</string>
+    <string name="log_roadways">LandXML: Roadway %1$s, spans by station %2$s (segments %3$s), RoadSign %4$s</string>
+    <string name="log_roadways_missing">LandXML: %1$s Roadways have no Alignment with that name (alignmentRefs) — skipped</string>
+    <string name="log_survey">LandXML: survey — stations %1$s of %2$s, lines %3$s</string>
+    <string name="log_survey_missing">LandXML: %1$s observations have no target coordinates — skipped</string>
+    <string name="log_survey_orphans">LandXML: %1$s observations without a station (Backsight setupID) — skipped</string>
+    <string name="log_parcels">LandXML: parcels %1$s, elements %2$s, segments %3$s, closed by a segment %4$s</string>
+    <string name="log_parcels_labels">LandXML: parcel labels only for the first %1$s</string>
+    <string name="log_parcels_spirals">LandXML: spirals in parcels %1$s — drawn as straight Start–End for now</string>
+    <string name="log_parcels_missing">LandXML: parcels have %1$s references to missing CgPoint points — skipped</string>
+    <string name="log_networks_missing">LandXML: networks have %1$s pntRef references to missing CgPoint points</string>
+    <string name="log_networks">LandXML: networks %1$s, structures %2$s of %3$s, pipes %4$s of %5$s</string>
+    <string name="log_struct_no_center">LandXML: structure “%1$s” has no center — skipped</string>
+    <string name="log_pipe_no_struct">LandXML: pipe “%1$s” of network “%2$s”: no structure “%3$s” — skipped</string>
+    <string name="log_pipe_struct_no_center">LandXML: pipe “%1$s” of network “%2$s”: structure has no center — skipped</string>
+
+    <!-- ошибки разбора; у ошибок XML последний аргумент — смещение в байтах -->
+    <string name="error_sat_no_header">no SAT header</string>
+    <string name="error_dxfb_short">binary DXF: file shorter than the signature</string>
+    <string name="error_dxfb_signature">binary DXF: invalid signature</string>
+    <string name="error_dxfb_code">binary DXF: truncated group code</string>
+    <string name="error_dxfb_chunk">binary DXF: truncated data chunk (code %1$s)</string>
+    <string name="error_dxfb_string">binary DXF: truncated string (code %1$s)</string>
+    <string name="error_dxfb_value">binary DXF: truncated value (code %1$s)</string>
+    <string name="error_dxfb_not_number">record %1$s: not a number “%2$s” (code %3$s)</string>
+    <string name="error_dxfb_not_int">record %1$s: not an integer “%2$s” (code %3$s)</string>
+    <string name="error_dxf_eof">unexpected end of file after line %1$s</string>
+    <string name="error_dxf_no_value">line %1$s: no value for code %2$s</string>
+    <string name="error_dxf_not_number">line %1$s: not a number “%2$s” (code %3$s)</string>
+    <string name="error_dxf_not_int">line %1$s: not an integer “%2$s” (code %3$s)</string>
+    <string name="error_dxf_no_code">line %1$s: group code expected, got “%2$s”</string>
+    <string name="error_format_zip">This is a ZIP archive, not a drawing. Unpack it and open the DXF or LandXML inside.</string>
+    <string name="error_format_archive">This is an archive, not a drawing. Unpack it and open the DXF or LandXML inside.</string>
+    <string name="error_format_dwg">This is DWG, which can’t be read. Save the drawing as DXF.</string>
+    <string name="error_format_pdf">This is a PDF, not a drawing. Open a DXF or LandXML file.</string>
+    <string name="error_format_image">This is an image, not a drawing. Open a DXF or LandXML file.</string>
+    <string name="xml_unclosed">file truncated: element &lt;%1$s&gt; not closed (byte %2$s)</string>
+    <string name="xml_no_elements">the file has no elements (byte %1$s)</string>
+    <string name="xml_cdata_outside">CDATA outside the root element (byte %1$s)</string>
+    <string name="xml_attr_not_number">attribute %1$s: not a number “%2$s” (byte %3$s)</string>
+    <string name="xml_attr_not_int">attribute %1$s: not an integer “%2$s” (byte %3$s)</string>
+    <string name="xml_attr_no_value">attribute without a value in a tag (byte %1$s)</string>
+    <string name="xml_attr_no_quotes">attribute value without quotes (byte %1$s)</string>
+    <string name="xml_open_quote">unclosed quote in a tag (byte %1$s)</string>
+    <string name="xml_not_number">not a number “%1$s” (byte %2$s)</string>
+    <string name="xml_not_int">not an integer “%1$s” (byte %2$s)</string>
+    <string name="xml_eof_text">file truncated in text (byte %1$s)</string>
+    <string name="xml_open_cdata">unclosed CDATA (byte %1$s)</string>
+    <string name="xml_empty_name">empty element name (byte %1$s)</string>
+    <string name="xml_extra_close">extra closing tag &lt;/%1$s&gt; (byte %2$s)</string>
+    <string name="xml_close_mismatch">closing &lt;/%1$s&gt; does not match &lt;%2$s&gt; (byte %3$s)</string>
+    <string name="xml_too_deep">nesting deeper than %1$s (byte %2$s)</string>
+    <string name="xml_open_decl">truncated declaration &lt;!…&gt; (byte %1$s)</string>
+    <string name="xml_eof_pattern">file truncated: no “%1$s” (byte %2$s)</string>
+    <string name="xml_open_tag">truncated tag (byte %1$s)</string>
+    <string name="xml_eof">file truncated (byte %1$s)</string>
+    <string name="error_skip_element">skipElement must be called on an opening tag</string>
+    <string name="xml_point_one_number">a point has only one number (byte %1$s)</string>
+    <string name="xml_pnts_after_faces">surface “%1$s”: Pnts after Faces — the schema requires Pnts first (byte %2$s)</string>
+    <string name="xml_faces_before_pnts">surface “%1$s”: Faces before Pnts — the schema requires Pnts first (byte %2$s)</string>
+    <string name="xml_not_landxml">root element &lt;%1$s&gt; instead of &lt;LandXML&gt; (byte %2$s)</string>
+    <string name="error_section_unfinished">section %1$s was not read to the end</string>
+    <string name="error_open_uri">could not open %1$s</string>
+    <string name="error_worker">Worker error</string>
+    <string name="error_worker_create">Worker creation</string>
+    <string name="error_no_engine">no Filament Engine</string>
+</resources>

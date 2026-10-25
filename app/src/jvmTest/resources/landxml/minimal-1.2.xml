@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Минимальный LandXML 1.2: корень, Units, Project, Application и пустые разделы — сцена пуста. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.landxml.org/schema/LandXML-1.2 http://www.landxml.org/schema/LandXML-1.2/LandXML-1.2.xsd" date="2026-10-12" time="12:00:00" version="1.2" language="English" readOnly="false">
+  <Units>
+    <Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars" angularUnit="decimal degrees" directionUnit="decimal degrees"/>
+  </Units>
+  <Project name="Минимальный проект"/>
+  <Application name="KoTIN" version="1.0" manufacturer="KoTIN"/>
+  <CgPoints/>
+  <Alignments/>
+  <Surfaces/>
+</LandXML>

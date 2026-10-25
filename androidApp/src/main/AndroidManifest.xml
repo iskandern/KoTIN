@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- только для открытия file:// по VIEW-intent на старых Android; выбор документа работает без него -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:largeHeap="true"
+        android:theme="@android:style/Theme.Material.NoActionBar">
+        <!-- singleTask: файл из файлового менеджера открывается в том же экране (onNewIntent), а не стопкой экранов,
+             у каждого из которых свой движок Filament -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|uiMode|keyboard|keyboardHidden|navigation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- VIEW только для *.dxf и *.xml (LandXML). Путь сверяется лишь при заданном host, поэтому host="*".
+                 PatternMatcher не откатывается назад: «.*\\.dxf» не сработает на пути с точкой раньше
+                 (/Download/v1.2/a.dxf) — отсюда варианты с несколькими точками. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern=".*\\.dxf" />
+                <data android:pathPattern=".*\\..*\\.dxf" />
+                <data android:pathPattern=".*\\..*\\..*\\.dxf" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.dxf" />
+                <data android:pathPattern=".*\\.DXF" />
+                <data android:pathPattern=".*\\..*\\.DXF" />
+                <data android:pathPattern=".*\\..*\\..*\\.DXF" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.DXF" />
+                <data android:pathPattern=".*\\.xml" />
+                <data android:pathPattern=".*\\..*\\.xml" />
+                <data android:pathPattern=".*\\..*\\..*\\.xml" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.xml" />
+                <data android:pathPattern=".*\\.XML" />
+                <data android:pathPattern=".*\\..*\\.XML" />
+                <data android:pathPattern=".*\\..*\\..*\\.XML" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.XML" />
+            </intent-filter>
+            <!-- content:// без расширения в пути (почта, мессенджеры) — только по MIME, который бывает лишь у DXF -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="content" />
+                <data android:mimeType="image/vnd.dxf" />
+                <data android:mimeType="image/x-dxf" />
+                <data android:mimeType="application/dxf" />
+                <data android:mimeType="application/x-dxf" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

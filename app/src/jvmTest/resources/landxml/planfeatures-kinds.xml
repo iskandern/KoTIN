@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-10-14" time="12:00:00">
+  <Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+  <CgPoints>
+    <CgPoint name="P1">10 10 5</CgPoint>
+    <CgPoint name="P2">10 50 7</CgPoint>
+    <CgPoint name="P3">40 90 9</CgPoint>
+    <CgPoint name="Q1">0 0</CgPoint>
+    <CgPoint name="Q2">0 5</CgPoint>
+  </CgPoints>
+  <PlanFeatures>
+    <PlanFeature desc="Curb 1 Edge of Pavement"><CoordGeom><Line><Start>0 0</Start><End>0 100</End></Line></CoordGeom></PlanFeature>
+    <PlanFeature desc="Curb 2 Edge of Pavement"><CoordGeom><Line><Start>5 0</Start><End>5 100</End></Line></CoordGeom></PlanFeature>
+    <PlanFeature desc="Sidewalk 1"><CoordGeom><Line><Start>9 0</Start><End>9 100</End></Line></CoordGeom></PlanFeature>
+    <PlanFeature name="Fence" desc="Забор"><CoordGeom><Line><Start>20 0</Start><End>20 100</End></Line></CoordGeom></PlanFeature>
+    <PlanFeature><CoordGeom><Line><Start>30 0</Start><End>30 100</End></Line></CoordGeom></PlanFeature>
+    <PlanFeature name="Run"><CoordGeom><Chain>P1 P2 P3</Chain></CoordGeom></PlanFeature>
+    <PlanFeature name="Plan"><CoordGeom><Chain>Q1 Q2</Chain></CoordGeom></PlanFeature>
+  </PlanFeatures>
+</LandXML>

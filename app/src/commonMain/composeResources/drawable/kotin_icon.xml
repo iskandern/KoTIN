@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Знак KoTIN «Рельеф»: грани TIN на синей плитке, жёлтый узел — для окна и крупных размеров -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+    <path android:fillColor="#1F5EFF" android:pathData="M230,0 L794,0 A230,230 0 0,1 1024,230 L1024,794 A230,230 0 0,1 794,1024 L230,1024 A230,230 0 0,1 0,794 L0,230 A230,230 0 0,1 230,0 Z" />
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.9" android:pathData="M226.4,714.7 L371.2,508.9 L477.9,600.3 Z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M386.5,493 L568.7,348.7 L492.8,584.1 Z" />
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.6" android:pathData="M593.1,344.9 L804.5,718.9 L511.8,597 Z" />
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.8" android:pathData="M244.9,730.4 L492.2,618 L537.2,730.4 Z" />
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.4" android:pathData="M518.1,623.4 L774.9,730.4 L560.9,730.4 Z" />
+    <path android:fillColor="#F5C400" android:pathData="M555.3,317.6 a35,35 0 1,0 70,0 a35,35 0 1,0 -70,0 Z" />
+</vector>

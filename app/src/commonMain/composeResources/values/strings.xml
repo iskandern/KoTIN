@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Строки интерфейса. Язык по умолчанию — русский; перевод — в values-<язык>/strings.xml с теми же именами. -->
+<resources>
+    <string name="open_hint">Откройте DXF или LandXML с поверхностью</string>
+    <string name="open_file">Открыть файл</string>
+    <string name="open_hint_web">В web файл можно открыть и по ссылке: ?file=путь/к/файлу.dxf</string>
+    <string name="open_hint_android">Или откройте файл из файлового менеджера: «Открыть с помощью» → KoTIN</string>
+    <string name="open_hint_desktop">Или передайте путь к файлу аргументом запуска</string>
+    <string name="open_other_file">Открыть другой файл</string>
+    <string name="menu">Меню</string>
+    <string name="no_file">Файл не открыт</string>
+    <string name="loading_meta">Чтение… %1$s</string>
+    <!-- размер файла меньше мегабайта -->
+    <string name="kilobytes">%1$d КБ</string>
+    <!-- строка под именем файла: формат · размер · треугольники -->
+    <plurals name="triangles">
+        <item quantity="one">%1$s треугольник</item>
+        <item quantity="few">%1$s треугольника</item>
+        <item quantity="many">%1$s треугольников</item>
+        <item quantity="other">%1$s треугольника</item>
+    </plurals>
+
+    <!-- камера -->
+    <string name="camera_orbit">Орбита</string>
+    <string name="camera_map">Карта</string>
+    <string name="saved_view">Вид чертежа</string>
+    <string name="home_view">Исходный вид</string>
+    <string name="drawing_pointer">Чертёж</string>
+    <string name="to_drawing">К чертежу</string>
+    <string name="more_object">Ещё объект</string>
+    <string name="more_objects">Ещё объекты</string>
+    <string name="to_more_objects">К объектам за кадром</string>
+    <string name="distance_m">%1$s м</string>
+    <string name="zoom_in">Приблизить</string>
+    <string name="zoom_out">Отдалить</string>
+    <string name="camera_orbit_hint">Схема управления: орбита. Нажмите — карта</string>
+    <string name="camera_map_hint">Схема управления: карта. Нажмите — орбита</string>
+    <string name="close_menu">Закрыть меню</string>
+    <string name="selection_hint_touch">Удерживайте палец на объекте, чтобы выбрать его</string>
+
+    <!-- выбор объекта -->
+    <string name="selection_hint">Удерживайте нажатие на объекте, чтобы выбрать его</string>
+    <string name="selection_layer">Слой: %1$s</string>
+    <string name="selection_partial">Подсвечена только часть</string>
+    <string name="clear_selection">Снять выбор</string>
+    <string name="selection_nearby">Рядом ещё объекты</string>
+    <string name="selection_prev">Предыдущий объект рядом</string>
+    <string name="selection_next">Следующий объект рядом</string>
+    <string name="selection_list">Список объектов рядом</string>
+    <string name="selection_expand">Развернуть карточку</string>
+    <string name="selection_collapse">Свернуть карточку</string>
+    <string name="hide_hint">Скрыть подсказку</string>
+
+    <!-- загрузка -->
+    <string name="load_failed">Не открылся</string>
+    <string name="crs_system">Система</string>
+    <string name="crs_code">Код</string>
+    <string name="crs_datum">Датум</string>
+    <string name="crs_heights">Высоты</string>
+    <string name="crs_ellipsoid">Эллипсоид</string>
+    <string name="crs_description">Описание</string>
+    <string name="crs_file_units">Единицы файла</string>
+    <string name="crs_note">Координаты показаны как в файле, без пересчёта.</string>
+    <string name="crs_expand">Система координат из файла</string>
+    <string name="load_failed_reason">Это не DXF и не LandXML, или файл повреждён.</string>
+    <string name="load_failed_kept">На экране прежний файл: %1$s</string>
+    <string name="load_failed_dismiss">Скрыть</string>
+    <!-- размер файла в мегабайтах: целая часть и десятые -->
+    <string name="megabytes">%1$d,%2$d МБ</string>
+
+    <!-- сведения о сцене -->
+    <string name="timing">чтение %1$d мс, подготовка %2$d мс</string>
+    <string name="timing_show">, показ %1$d мс</string>
+    <string name="scene_stats">Поверхностей %1$d: вершин %2$d, треугольников %3$d; чертёж: отрезков %4$d, заливок %5$d, подписей %6$d, точек %7$d</string>
+    <string name="scene_truncated">Блоков слишком много — показана не вся графика</string>
+    <string name="hidden_body_faces">Граней тел не показано: %1$d (не плоские)</string>
+    <string name="unread_bodies">Тел не показано: %1$d (SAB из R2013+ или нечитаемый SAT)</string>
+    <string name="scene_empty">В файле нет поддерживаемых объектов</string>
+    <string name="sheet_model">Модель</string>
+
+    <!-- разделы меню -->
+    <string name="section_display">Показывать</string>
+    <string name="section_settings">Настройки</string>
+    <string name="sheets">Листы</string>
+
+    <!-- настройки показа -->
+    <string name="show_surface">Поверхность</string>
+    <string name="show_wire">Каркас</string>
+    <string name="show_drawing">Чертёж (линии, дуги, блоки)</string>
+    <string name="show_labels">Подписи</string>
+    <string name="thin_labels">Прореживать подписи по масштабу</string>
+    <string name="labels_auto_off">Подписи скрыты: %1$s</string>
+    <string name="labels_auto_thin">Показана часть подписей</string>
+    <string name="labels_show">Показать</string>
+    <string name="labels_show_all">Показать все</string>
+    <string name="labels_auto_off_menu">Скрыты автоматически: %1$s</string>
+    <string name="labels_auto_thin_menu">Прореживание включено автоматически</string>
+    <string name="show_structures">Трубы</string>
+    <string name="show_stationing">Пикетаж</string>
+    <string name="show_all_stations">Все пикеты</string>
+    <string name="show_outlier_pointers">Указатели на далёкие объекты</string>
+    <string name="show_points">Точки</string>
+    <string name="show_point_thickness">Толщина точек</string>
+    <string name="show_line_weights">Толщина линий</string>
+    <string name="hide_occluded">Скрывать за поверхностью</string>
+    <string name="flatten_drawing">Чертёж в плоскость (без отметок)</string>
+    <string name="axes">Оси X и Y</string>
+    <string name="axes_east_north">X — восток, Y — север</string>
+    <string name="axes_north_east">X — север, Y — восток</string>
+    <string name="vertical_scale">Масштаб по высоте</string>
+
+    <!-- список слоёв -->
+    <string name="layers_title">Слои (%1$d)</string>
+    <string name="elements_title">Элементы (%1$d)</string>
+    <string name="layers_all">Все</string>
+    <string name="layers_none">Ни одного</string>
+
+    <!-- язык интерфейса -->
+    <string name="language">Язык</string>
+
+    <!-- Слои, группы и свойства объектов: ключи UiText, которые пишут читатели (имя ресурса = ключ без «@») -->
+    <!-- листы DXF без имени -->
+    <string name="sheet">Лист</string>
+    <string name="sheet_n">Лист %1$s</string>
+
+    <!-- группы списка «Элементы» LandXML -->
+    <string name="group_surfaces">Поверхности</string>
+    <string name="group_source_data">Исходные данные поверхностей</string>
+    <string name="group_alignments">Трассы</string>
+    <string name="group_cross_sections">Поперечники</string>
+    <string name="group_networks">Сети</string>
+    <string name="group_planimetry">Ситуация и участки</string>
+    <string name="group_points">Точки</string>
+
+    <!-- слои LandXML -->
+    <string name="layer_surface">Поверхность</string>
+    <string name="layer_boundaries">%1$s: границы</string>
+    <string name="layer_breaklines">%1$s: структурные линии</string>
+    <string name="layer_contours">%1$s: горизонтали</string>
+    <string name="layer_data_points">%1$s: точки данных</string>
+    <string name="layer_alignments">Трассы</string>
+    <string name="layer_alignment_speed">Трассы: скорость по пикетам</string>
+    <string name="layer_alignment_pi">Трассы: вершины углов</string>
+    <string name="layer_alignment_ground">Трассы: земля</string>
+    <string name="layer_road_signs">Трассы: дорожные знаки</string>
+    <string name="layer_design_speed">Трассы: расчётная скорость</string>
+    <string name="layer_design_speed_85">Трассы: скорость 85%</string>
+    <string name="layer_posted_speed">Трассы: разрешённая скорость</string>
+    <string name="layer_traffic">Трассы: интенсивность движения</string>
+    <string name="layer_stationing">Пикетаж</string>
+    <string name="layer_stationing_mid">Пикетаж: промежуточные пикеты</string>
+    <string name="layer_cross_ground">Поперечники: земля</string>
+    <string name="layer_cross_design">Поперечники: проект</string>
+    <string name="layer_structs_storm">Колодцы: ливнёвка</string>
+    <string name="layer_structs_sanitary">Колодцы: канализация</string>
+    <string name="layer_structs_water">Колодцы: водопровод</string>
+    <string name="layer_structs_other">Колодцы: прочие</string>
+    <string name="layer_pipes">Трубы</string>
+    <string name="layer_tubes_storm">Трубы: ливнёвка</string>
+    <string name="layer_tubes_sanitary">Трубы: канализация</string>
+    <string name="layer_tubes_water">Трубы: водопровод</string>
+    <string name="layer_tubes_other">Трубы: прочие</string>
+    <string name="layer_planimetry">Ситуация</string>
+    <string name="layer_planimetry_kind">Ситуация: %1$s</string>
+    <string name="layer_parcels">Участки</string>
+    <string name="layer_points">Точки</string>
+    <string name="layer_monuments">Точки: пункты сети</string>
+    <string name="layer_survey">Точки: съёмка</string>
+
+    <!-- имя поперечника: трасса и пикет -->
+    <string name="cross_section_name">%1$s ПК %2$s</string>
+    <!-- подпись пикета в сцене: номер «12+34» и знак дробной части -->
+    <string name="station_label">ПК%1$s</string>
+    <string name="station_decimal">,</string>
+
+    <!-- свойства объектов -->
+    <string name="attr_name">Имя</string>
+    <string name="attr_code">Код</string>
+    <string name="attr_description">Описание</string>
+    <string name="attr_type">Тип</string>
+    <string name="attr_class">Класс</string>
+    <string name="attr_state">Состояние</string>
+    <string name="attr_shape">Форма</string>
+    <string name="attr_points">Точек</string>
+    <string name="attr_faces">Граней</string>
+    <string name="attr_invisible_faces">Невидимых граней</string>
+    <string name="attr_visible_faces">Видимых граней</string>
+    <string name="attr_elements">Элементов</string>
+    <string name="attr_observations">Замеров</string>
+    <string name="attr_area">Площадь</string>
+    <string name="attr_area_2d">Площадь 2D</string>
+    <string name="attr_area_3d">Площадь 3D</string>
+    <string name="attr_elev_min">Отметка мин.</string>
+    <string name="attr_elev_max">Отметка макс.</string>
+    <string name="attr_file_area_2d">Площадь 2D в файле</string>
+    <string name="attr_file_area_3d">Площадь 3D в файле</string>
+    <string name="attr_file_elev_min">Отметка мин. в файле</string>
+    <string name="attr_file_elev_max">Отметка макс. в файле</string>
+    <string name="value_m2">%1$s м²</string>
+    <string name="attr_edge_trim">Обрезка рёбер (edgeTrim)</string>
+    <string name="attr_alignment">Трасса</string>
+    <string name="attr_station">Пикет</string>
+    <string name="attr_start_station">Начальный пикет</string>
+    <string name="attr_profile">Профиль</string>
+    <string name="attr_ground_points">Профиль земли, точек</string>
+    <string name="attr_drawn_points">Точек на экране</string>
+    <string name="attr_length">Длина</string>
+    <string name="attr_length_m">Длина, м</string>
+    <string name="attr_plan_length_m">Длина в плане, м</string>
+    <string name="attr_file_length">Длина в файле</string>
+    <string name="attr_file_length_m">Длина в файле, м</string>
+    <string name="attr_width">Ширина</string>
+    <string name="attr_top_width">Ширина поверху</string>
+    <string name="attr_bottom_width">Ширина понизу</string>
+    <string name="attr_height">Высота</string>
+    <string name="attr_span">Пролёт</string>
+    <string name="attr_diameter">Диаметр</string>
+    <string name="attr_length_direction">Направление длины</string>
+    <string name="attr_rim_elev">Отметка верха</string>
+    <string name="attr_sump_elev">Отметка дна</string>
+    <string name="attr_invert">Лоток %1$s</string>
+    <string name="attr_start">Начало</string>
+    <string name="attr_end">Конец</string>
+    <string name="attr_start_invert">Лоток в начале</string>
+    <string name="attr_end_invert">Лоток в конце</string>
+    <string name="attr_slope">Уклон</string>
+    <string name="attr_file_slope">Уклон в файле</string>
+    <string name="attr_curved">Кривая</string>
+    <string name="attr_network">Сеть</string>
+    <string name="attr_network_type">Тип сети</string>
+    <string name="attr_point_ref">Точка</string>
+    <string name="attr_condition">Сохранность</string>
+    <string name="attr_category">Категория</string>
+    <string name="attr_beacon">Знак</string>
+    <string name="attr_beacon_protection">Защита знака</string>
+    <string name="attr_reference">Привязка</string>
+    <string name="attr_origin_survey">Исходная съёмка</string>
+    <string name="attr_roadway">Дорога</string>
+    <string name="attr_end_station">Конечный пикет</string>
+    <string name="attr_side_of_road">Сторона дороги</string>
+    <string name="attr_range">Диапазон</string>
+    <string name="attr_sign_code">Код знака MUTCD</string>
+    <string name="attr_offset">Смещение</string>
+    <string name="attr_speed">Скорость</string>
+    <string name="attr_speed_limit">Ограничение скорости</string>
+    <string name="attr_traffic">Интенсивность (ADT)</string>
+    <string name="attr_speed_stations">Скорость по пикетам</string>
+    <string name="attr_id">Номер</string>
+    <string name="attr_station_name">Станция</string>
+    <string name="attr_instrument_height">Высота прибора</string>
+    <string name="attr_pvi_count">Вершин профиля</string>
+    <!-- координаты в осях файла; какая из них север — по переключателю осей -->
+    <string name="attr_x_east">X (восток)</string>
+    <string name="attr_x_north">X (север)</string>
+    <string name="attr_y_north">Y (север)</string>
+    <string name="attr_y_east">Y (восток)</string>
+
+    <!-- значения свойств -->
+    <string name="value_yes">да</string>
+    <string name="value_unspecified">не указана</string>
+
+    <!-- журнал: ключи UiText, которые пишут читатели и приложение в Journal -->
+    <string name="log_loaded">KoTIN: открыт «%1$s»: чтение %2$s мс, подготовка %3$s мс, треугольников %4$s, отрезков %5$s, подписей %6$s, точек %7$s</string>
+    <string name="log_loaded_truncated">KoTIN: открыт «%1$s»: чтение %2$s мс, подготовка %3$s мс, треугольников %4$s, отрезков %5$s, подписей %6$s, точек %7$s, ОБРЕЗАНО</string>
+    <string name="log_failed">KoTIN: не удалось открыть «%1$s»: %2$s: %3$s</string>
+    <string name="log_shown">KoTIN: показан «%1$s»: показ %2$s мс</string>
+    <string name="log_label_frames">KoTIN: кадры с подписями: медиана %1$s мс</string>
+    <string name="log_label_frames_slow">KoTIN: кадры с подписями: медиана %1$s мс — подписи на ступень легче</string>
+    <string name="log_worker_unavailable">KoTIN: Worker недоступен (%1$s), разбор в главном потоке</string>
+    <string name="log_landxml">LandXML %1$s: единицы %2$s, проект «%3$s», программа «%4$s»</string>
+    <string name="log_landxml_no_units">LandXML %1$s: единицы не указаны, проект «%2$s», программа «%3$s»</string>
+    <string name="log_landxml_decimal_comma">LandXML: чисел с десятичной запятой %1$s — прочитаны как с точкой (схема требует точку)</string>
+    <string name="log_landxml_crs">LandXML: система координат «%1$s» (%2$s)</string>
+    <string name="log_landxml_crs_no_code">LandXML: система координат «%1$s»</string>
+    <string name="log_profile_short">LandXML: у трассы «%1$s» в профиле «%2$s» меньше двух PVI на трассе — трасса в плане</string>
+    <string name="log_profile_skipped">LandXML: у трассы «%1$s» в профиле пропущено PVI: %2$s из %3$s (пикет не на трассе или повтор)</string>
+    <string name="log_profile_extra">LandXML: у трассы «%1$s» ещё профилей ProfAlign: %2$s — взят первый, «%3$s»</string>
+    <string name="log_alignments">LandXML: трасс %1$s (с профилем %2$s), элементов %3$s (переходных кривых %4$s), отрезков %5$s</string>
+    <string name="log_alignments_unresolved">LandXML: в трассах %1$s ссылок на несуществующие точки CgPoint — элементы без них пропущены</string>
+    <string name="log_cgpoints">LandXML: точек CgPoint %1$s</string>
+    <string name="log_cgpoints_limited">LandXML: точек CgPoint %1$s, подписи и объекты — только у первых %2$s</string>
+    <string name="log_cgpoints_skipped">LandXML: у %1$s CgPoint нет координат — пропущены</string>
+    <string name="log_planfeatures">LandXML: объектов ситуации %1$s, элементов %2$s, отрезков %3$s, точек %4$s</string>
+    <string name="log_planfeatures_labels">LandXML: подписи ситуации — только у первых %1$s точек</string>
+    <string name="log_planfeatures_spirals">LandXML: переходных кривых в ситуации %1$s — пока прямыми Start–End</string>
+    <string name="log_planfeatures_missing">LandXML: в ситуации %1$s ссылок на несуществующие точки CgPoint — пропущены</string>
+    <string name="log_surface_no_definition">LandXML: у поверхности «%1$s» нет Definition (только исходные данные) — сетки нет</string>
+    <string name="log_surface">LandXML: поверхность «%1$s» (%2$s): точек %3$s, граней %4$s, невидимых %5$s, треугольников %6$s</string>
+    <string name="log_surface_bad">LandXML: «%1$s»: граней с неизвестным id %2$s, вырожденных %3$s — пропущены; точек без id или координат %4$s, повторов id %5$s</string>
+    <string name="log_grid_cells">LandXML: «%1$s»: ячеек без данных (нули в F) %2$s, с заглушкой вместо отметки %3$s — пропущены; ячеек с вершинами крест-накрест %4$s — вершины переставлены</string>
+    <string name="log_surface_flipped">LandXML: «%1$s»: %2$s граней записаны по часовой стрелке — развёрнуты нормалью вверх</string>
+    <string name="log_drape_cut">LandXML: посадка: отрезков, оборванных по пределу кусков (остаток — хордой): %1$s</string>
+    <string name="log_source_data">LandXML: «%1$s»: исходные данные — границ %2$s, структурных линий %3$s, горизонталей %4$s, точек данных %5$s</string>
+    <string name="log_source_data_short">LandXML: «%1$s»: списков меньше двух точек %2$s, горизонталей без elev %3$s — пропущены</string>
+    <string name="log_data_points_limit">LandXML: «%1$s»: точек данных %2$s — больше %3$s, не показываются</string>
+    <string name="log_chains_unresolved">LandXML: в цепочках Chain исходных данных %1$s ссылок на несуществующие точки CgPoint — пропущены</string>
+    <string name="log_chains_short">LandXML: цепочек Chain меньше чем из двух найденных точек %1$s — пропущены</string>
+    <string name="log_cross_slope">LandXML: в поперечниках %1$s точек проекта в формате «уклон–расстояние» — пропущены</string>
+    <string name="log_cross_refs">LandXML: в поперечниках %1$s точек проекта по ссылкам alignRef/planFeatureRef/parcelRef — пропущены</string>
+    <string name="log_cross">LandXML: поперечников %1$s</string>
+    <string name="log_cross_outside">LandXML: %1$s поперечников с пикетом вне трассы — пропущены</string>
+    <string name="log_monuments">LandXML: пунктов сети %1$s, показано %2$s</string>
+    <string name="log_monuments_missing">LandXML: у %1$s пунктов (Monument) нет точки CgPoint по pntRef — пропущены</string>
+    <string name="log_spiral_untyped">LandXML: переходная кривая без типа или с неизвестным spiType рисуется клотоидой</string>
+    <string name="log_spiral_type">LandXML: переходная кривая spiType="%1$s" рисуется клотоидой</string>
+    <string name="log_spiral_miss">LandXML: переходная кривая длиной %1$s м не попадает в End на %2$s м — конец подтянут</string>
+    <string name="log_roadways">LandXML: Roadway %1$s, участков по пикетам %2$s (отрезков %3$s), RoadSign %4$s</string>
+    <string name="log_roadways_missing">LandXML: у %1$s Roadway нет Alignment с таким именем (alignmentRefs) — пропущены</string>
+    <string name="log_survey">LandXML: съёмка — станций %1$s из %2$s, линий %3$s</string>
+    <string name="log_survey_missing">LandXML: у %1$s замеров нет координат цели — пропущены</string>
+    <string name="log_survey_orphans">LandXML: %1$s замеров без станции (Backsight setupID) — пропущены</string>
+    <string name="log_parcels">LandXML: участков %1$s, элементов %2$s, отрезков %3$s, замкнуто отрезком %4$s</string>
+    <string name="log_parcels_labels">LandXML: подписи участков — только у первых %1$s</string>
+    <string name="log_parcels_spirals">LandXML: переходных кривых в участках %1$s — пока прямыми Start–End</string>
+    <string name="log_parcels_missing">LandXML: в участках %1$s ссылок на несуществующие точки CgPoint — пропущены</string>
+    <string name="log_networks_missing">LandXML: в сетях %1$s ссылок pntRef на несуществующие точки CgPoint</string>
+    <string name="log_networks">LandXML: сетей %1$s, колодцев %2$s из %3$s, труб %4$s из %5$s</string>
+    <string name="log_struct_no_center">LandXML: колодец «%1$s» без центра — пропущен</string>
+    <string name="log_pipe_no_struct">LandXML: труба «%1$s» сети «%2$s»: нет колодца «%3$s» — пропущена</string>
+    <string name="log_pipe_struct_no_center">LandXML: труба «%1$s» сети «%2$s»: у колодца нет центра — пропущена</string>
+
+    <!-- ошибки разбора; у ошибок XML последний аргумент — смещение в байтах -->
+    <string name="error_sat_no_header">нет заголовка SAT</string>
+    <string name="error_dxfb_short">бинарный DXF: файл короче сигнатуры</string>
+    <string name="error_dxfb_signature">бинарный DXF: неверная сигнатура</string>
+    <string name="error_dxfb_code">бинарный DXF: оборван код группы</string>
+    <string name="error_dxfb_chunk">бинарный DXF: оборван блок данных (код %1$s)</string>
+    <string name="error_dxfb_string">бинарный DXF: оборвана строка (код %1$s)</string>
+    <string name="error_dxfb_value">бинарный DXF: оборвано значение (код %1$s)</string>
+    <string name="error_dxfb_not_number">запись %1$s: не число «%2$s» (код %3$s)</string>
+    <string name="error_dxfb_not_int">запись %1$s: не целое «%2$s» (код %3$s)</string>
+    <string name="error_dxf_eof">неожиданный конец файла после строки %1$s</string>
+    <string name="error_dxf_no_value">строка %1$s: нет значения для кода %2$s</string>
+    <string name="error_dxf_not_number">строка %1$s: не число «%2$s» (код %3$s)</string>
+    <string name="error_dxf_not_int">строка %1$s: не целое «%2$s» (код %3$s)</string>
+    <string name="error_dxf_no_code">строка %1$s: ожидался код группы, получено «%2$s»</string>
+    <string name="error_format_zip">Это ZIP-архив, а не чертёж. Распакуйте его и откройте DXF или LandXML изнутри.</string>
+    <string name="error_format_archive">Это архив, а не чертёж. Распакуйте его и откройте DXF или LandXML изнутри.</string>
+    <string name="error_format_dwg">Это DWG — его формат не читается. Сохраните чертёж как DXF.</string>
+    <string name="error_format_pdf">Это PDF, а не чертёж. Нужен DXF или LandXML.</string>
+    <string name="error_format_image">Это картинка, а не чертёж. Нужен DXF или LandXML.</string>
+    <string name="xml_unclosed">файл оборван: не закрыт элемент &lt;%1$s&gt; (байт %2$s)</string>
+    <string name="xml_no_elements">в файле нет ни одного элемента (байт %1$s)</string>
+    <string name="xml_cdata_outside">CDATA вне корневого элемента (байт %1$s)</string>
+    <string name="xml_attr_not_number">атрибут %1$s: не число «%2$s» (байт %3$s)</string>
+    <string name="xml_attr_not_int">атрибут %1$s: не целое «%2$s» (байт %3$s)</string>
+    <string name="xml_attr_no_value">атрибут без значения в теге (байт %1$s)</string>
+    <string name="xml_attr_no_quotes">значение атрибута без кавычек (байт %1$s)</string>
+    <string name="xml_open_quote">незакрытая кавычка в теге (байт %1$s)</string>
+    <string name="xml_not_number">не число «%1$s» (байт %2$s)</string>
+    <string name="xml_not_int">не целое «%1$s» (байт %2$s)</string>
+    <string name="xml_eof_text">файл оборван в тексте (байт %1$s)</string>
+    <string name="xml_open_cdata">незакрытый CDATA (байт %1$s)</string>
+    <string name="xml_empty_name">пустое имя элемента (байт %1$s)</string>
+    <string name="xml_extra_close">лишний закрывающий тег &lt;/%1$s&gt; (байт %2$s)</string>
+    <string name="xml_close_mismatch">закрывающий &lt;/%1$s&gt; не совпадает с &lt;%2$s&gt; (байт %3$s)</string>
+    <string name="xml_too_deep">вложенность больше %1$s (байт %2$s)</string>
+    <string name="xml_open_decl">оборванное объявление &lt;!…&gt; (байт %1$s)</string>
+    <string name="xml_eof_pattern">файл оборван: нет «%1$s» (байт %2$s)</string>
+    <string name="xml_open_tag">оборванный тег (байт %1$s)</string>
+    <string name="xml_eof">файл оборван (байт %1$s)</string>
+    <string name="error_skip_element">skipElement вызывается на открывающем теге</string>
+    <string name="xml_point_one_number">у точки одно число (байт %1$s)</string>
+    <string name="xml_pnts_after_faces">поверхность «%1$s»: Pnts после Faces — по схеме сначала Pnts (байт %2$s)</string>
+    <string name="xml_faces_before_pnts">поверхность «%1$s»: Faces раньше Pnts — по схеме сначала Pnts (байт %2$s)</string>
+    <string name="xml_not_landxml">корневой элемент &lt;%1$s&gt;, а не &lt;LandXML&gt; (байт %2$s)</string>
+    <string name="error_section_unfinished">раздел %1$s прочитан не до конца</string>
+    <string name="error_open_uri">не удалось открыть %1$s</string>
+    <string name="error_worker">ошибка Worker</string>
+    <string name="error_worker_create">создание Worker</string>
+    <string name="error_no_engine">нет Filament Engine</string>
+</resources>

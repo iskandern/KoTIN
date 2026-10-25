@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TIN (KoTIN-60): две поверхности, большие координаты (МСК).
+  «Площадка»: квадрат 10 × 10 (восток 400000…400010, север 6000000…6000010) в плоскости z = 100 + (север − 6000000) / 2:
+    площадь 2D 100, 3D 100·√1,25, отметки 100…105. id с 2 и с пропусками; грань без атрибутов, грань с n и b;
+    невидимая грань i="1" (точка 15 — только в ней, в сетку не идёт); грань со ссылкой на несуществующий id 77.
+  «Откос»: один треугольник (восток, север, z) = (400020, 6000000, 100), (400024, 6000000, 100), (400020, 6000003, 106),
+    записан по часовой стрелке — читатель разворачивает его нормалью вверх; площадь 2D 6, 3D 6·√5.
+-->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-13" time="12:00:00" version="1.2">
+  <Units>
+    <Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/>
+  </Units>
+  <Project name="TIN"/>
+  <Application name="KoTIN" version="1.0"/>
+  <Surfaces>
+    <Surface name="Площадка" desc="Рельеф площадки" state="existing">
+      <Definition surfType="TIN" area2DSurf="100" area3DSurf="111.80339887498948" elevMin="100" elevMax="105">
+        <Pnts>
+          <P id="2">6000000 400000 100</P>
+          <P id="5">6000000 400010 100</P>
+          <P id="9">6000010.000000000000 400010.000000000000 105.000000000000</P>
+          <P id="12">6000010 400000 105</P>
+          <P id="15">6000020 400020 110</P>
+        </Pnts>
+        <Faces>
+          <F>2 5 9</F>
+          <F n="2 0 0" b="1">2 9 12</F>
+          <F i="1">5 15 9</F>
+          <F>2 12 77</F>
+        </Faces>
+      </Definition>
+    </Surface>
+    <Surface name="Откос">
+      <Definition surfType="TIN" area2DSurf="6" area3DSurf="13.416407864998739" elevMin="100" elevMax="106">
+        <Pnts>
+          <P id="3">6000000 400020 100</P>
+          <P id="4">6000000 400024 100</P>
+          <P id="7">6000003 400020 106</P>
+        </Pnts>
+        <Faces>
+          <F>3 7 4</F>
+        </Faces>
+      </Definition>
+    </Surface>
+  </Surfaces>
+</LandXML>

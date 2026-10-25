@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Эталон (KoTIN-75): контрольные числа в Definition неверны (площадь 2D 7 вместо 6) — сверка с ними должна упасть. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-12" time="12:00:00" version="1.2">
+  <Units>
+    <Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/>
+  </Units>
+  <Surfaces>
+    <Surface name="Скат">
+      <Definition surfType="TIN" area2DSurf="7" area3DSurf="13.416407864998739" elevMin="0" elevMax="6">
+        <Pnts>
+          <P id="3">0 0 0</P>
+          <P id="20">0 4 0</P>
+          <P id="21">3 0 6</P>
+        </Pnts>
+        <Faces>
+          <F>3 20 21</F>
+        </Faces>
+      </Definition>
+    </Surface>
+  </Surfaces>
+</LandXML>

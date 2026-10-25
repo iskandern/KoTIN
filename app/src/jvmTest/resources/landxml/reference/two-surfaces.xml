@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Эталон (KoTIN-75): две поверхности, числа посчитаны руками.
+  «Квадрат»: квадрат 10 × 10 (восток 1000…1010, север 2000…2010) в наклонной плоскости z = север − 2000.
+    Две видимые грани: площадь 2D 100, 3D 100·√2. id не с 1 и с пропусками; грань с i="1" (точка 12 только в ней)
+    и грань со ссылкой на несуществующую точку 99 — в площади не входят.
+  «Скат»: один треугольник (восток, север, z) = (0, 0, 0), (4, 0, 0), (0, 3, 6): 2D 6, 3D 6·√5; контрольных чисел в Definition нет.
+  Точки SourceData и CgPoints к поверхности не относятся.
+-->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.landxml.org/schema/LandXML-1.2 http://www.landxml.org/schema/LandXML-1.2/LandXML-1.2.xsd" date="2026-10-12" time="12:00:00" version="1.2" language="English" readOnly="false">
+  <Units>
+    <Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars" angularUnit="decimal degrees" directionUnit="decimal degrees"/>
+  </Units>
+  <Project name="Эталон"/>
+  <Application name="KoTIN" version="1.0" manufacturer="KoTIN"/>
+  <CgPoints>
+    <CgPoint name="1">5000 5000 500</CgPoint>
+  </CgPoints>
+  <Surfaces>
+    <Surface name="Квадрат">
+      <SourceData>
+        <DataPoints>
+          <PntList3D>9000 9000 900 9001 9001 901</PntList3D>
+        </DataPoints>
+      </SourceData>
+      <Definition surfType="TIN" area2DSurf="100" area3DSurf="141.4213562373095" elevMin="0" elevMax="10">
+        <Pnts>
+          <P id="5">2000 1000 0</P>
+          <P id="7">2000 1010 0</P>
+          <P id="10">2010 1010 10</P>
+          <P id="11">
+            2010   1000
+            10
+          </P>
+          <P id="12">2100 1100 100</P>
+        </Pnts>
+        <Faces>
+          <F>5 7 10</F>
+          <F i="1">7 12 10</F>
+        </Faces>
+        <Faces>
+          <F i="0">5 10 11</F>
+          <F>5 11 99</F>
+        </Faces>
+      </Definition>
+    </Surface>
+    <Surface name="Скат">
+      <Definition surfType="TIN">
+        <Pnts>
+          <P id="3">0 0 0</P>
+          <P id="20">0 4 0</P>
+          <P id="21">3 0 6</P>
+        </Pnts>
+        <Faces>
+          <F>3 20 21</F>
+        </Faces>
+      </Definition>
+    </Surface>
+  </Surfaces>
+</LandXML>

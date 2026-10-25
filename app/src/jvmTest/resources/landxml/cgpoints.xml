@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Точки CgPoints: три с отметкой (одна с описанием), одна без, две с кодом, одна во вложенной группе; Survey пропускается. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-12" time="12:00:00" version="1.2">
+	<Units><Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+	<Project name="Точки"/>
+	<Application name="KoTIN" version="1.0"/>
+	<CgPoints>
+		<CgPoint name="1" oID="101" code="EP" desc="угол здания">1000 2000 50</CgPoint>
+		<CgPoint name="2" oID="102">1010 2000 51.5</CgPoint>
+		<CgPoint name="Дерево" oID="103" code="TREE">1010 2010 52</CgPoint>
+		<CgPoint name="4" oID="104">1000 2010</CgPoint>
+		<CgPoints name="Съёмка 2">
+			<CgPoint name="5" oID="105">1005 2005 60</CgPoint>
+		</CgPoints>
+		<Survey>
+			<SurveyHeader name="не читаем"/>
+		</Survey>
+	</CgPoints>
+</LandXML>

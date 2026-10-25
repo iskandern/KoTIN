@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Предельные карточки: колодец К0 на 6 труб, лоток Т1 со всеми полями, опора с 20 свойствами Feature.
+     Точка ПП1 стоит на колодце К0 — набор соседей «точка + колодец». -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-20" time="12:00:00" version="1.2">
+	<Units><Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars" diameterUnit="millimeter"/></Units>
+	<Project name="Предельные карточки"/>
+	<Application name="KoTIN" version="1.0"/>
+	<CgPoints name="Съёмка">
+		<CgPoint name="ПП1" code="KOL" desc="Крышка колодца К0">1000 2000 105.02</CgPoint>
+		<CgPoint name="ПП2" code="OP" desc="Опора">1030 2000 105.4</CgPoint>
+	</CgPoints>
+	<PlanFeatures name="Ситуация">
+		<PlanFeature name="Опора 17" desc="Опора ЛЭП 10 кВ">
+			<CoordGeom><Line><Start>1030 2000</Start><End>1030.5 2000.5</End></Line></CoordGeom>
+			<Feature name="Паспорт" code="OP-10" source="Съёмка 2024">
+				<Property label="Материал" value="железобетон"/>
+				<Property label="Тип" value="СВ 105-5"/>
+				<Property label="Высота, м" value="10.5"/>
+				<Property label="Год установки" value="2011"/>
+				<Property label="Напряжение, кВ" value="10"/>
+				<Property label="Число проводов" value="3"/>
+				<Property label="Марка провода" value="АС-70"/>
+				<Property label="Владелец" value="Россети Центр"/>
+				<Property label="Состояние" value="удовлетворительное"/>
+				<Property label="Заземление" value="есть"/>
+				<Property label="Номер по схеме" value="17"/>
+				<Property label="Фидер" value="Ф-12"/>
+				<Property label="Подстанция" value="ПС 110/10 Северная"/>
+				<Property label="Охранная зона, м" value="10"/>
+				<Property label="Фундамент" value="свайный"/>
+				<Property label="Крен, град" value="0.5"/>
+				<Property label="Дата осмотра" value="2024-06-12"/>
+				<Property label="Осмотрел" value="Иванов"/>
+				<Property label="Примечание" value="Требует покраски траверсы, трещин нет"/>
+				<Property label="Фото" value="IMG_4471.jpg"/>
+			</Feature>
+		</PlanFeature>
+	</PlanFeatures>
+	<PipeNetworks>
+		<PipeNetwork name="Канализация К1" pipeNetType="sanitary">
+			<Structs>
+				<Struct name="К0" elevRim="105.02" elevSump="99.5"><Center>1000 2000</Center><RectStruct length="2000" width="1500" lengthDir="45"/>
+					<Invert elev="100.2" flowDir="in" refPipe="Т1"/>
+					<Invert elev="100.1" flowDir="in" refPipe="Т2"/>
+					<Invert elev="100.3" flowDir="in" refPipe="Т3"/>
+					<Invert elev="100.15" flowDir="in" refPipe="Т4"/>
+					<Invert elev="100.25" flowDir="in" refPipe="Т5"/>
+					<Invert elev="99.6" flowDir="out" refPipe="Т6"/></Struct>
+				<Struct name="К1" elevRim="105.4" elevSump="100.8"><Center>1030 2030</Center><CircStruct diameter="1000"/>
+					<Invert elev="100.9" flowDir="out" refPipe="Т1"/></Struct>
+				<Struct name="К2" elevRim="105.3" elevSump="100.6"><Center>960 2030</Center><CircStruct diameter="1000"/>
+					<Invert elev="100.7" flowDir="out" refPipe="Т2"/></Struct>
+				<Struct name="К3" elevRim="105.5" elevSump="100.9"><Center>1040 1980</Center><CircStruct diameter="1000"/>
+					<Invert elev="101.0" flowDir="out" refPipe="Т3"/></Struct>
+				<Struct name="К4" elevRim="105.2" elevSump="100.7"><Center>965 1965</Center><CircStruct diameter="1000"/>
+					<Invert elev="100.8" flowDir="out" refPipe="Т4"/></Struct>
+				<Struct name="К5" elevRim="105.6" elevSump="101.0"><Center>1000 2045</Center><CircStruct diameter="1000"/>
+					<Invert elev="101.1" flowDir="out" refPipe="Т5"/></Struct>
+				<Struct name="К6" elevRim="104.5" elevSump="98.9"><Center>1000 1940</Center><CircStruct diameter="1500"/>
+					<Invert elev="99.0" flowDir="in" refPipe="Т6"/></Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Т1" refStart="К1" refEnd="К0" length="43.5" slope="0.0161"><Channel height="0.5" widthTop="1.2" widthBottom="0.6"/>
+					<Center>1022 2008</Center></Pipe>
+				<Pipe name="Т2" refStart="К2" refEnd="К0"><CircPipe diameter="300"/></Pipe>
+				<Pipe name="Т3" refStart="К3" refEnd="К0"><CircPipe diameter="300"/></Pipe>
+				<Pipe name="Т4" refStart="К4" refEnd="К0"><CircPipe diameter="250"/></Pipe>
+				<Pipe name="Т5" refStart="К5" refEnd="К0"><CircPipe diameter="200"/></Pipe>
+				<Pipe name="Т6" refStart="К0" refEnd="К6"><CircPipe diameter="500"/></Pipe>
+			</Pipes>
+		</PipeNetwork>
+	</PipeNetworks>
+</LandXML>

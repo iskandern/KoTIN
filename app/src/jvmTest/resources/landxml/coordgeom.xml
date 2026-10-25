@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Фикстура CoordGeom (KoTIN-63): координаты «север восток», в сцене x — восток, y — север. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-12" time="12:00:00" version="1.2">
+	<Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+	<Project name="CoordGeom"/>
+	<Application name="KoTIN" version="1.0"/>
+	<CgPoints>
+		<CgPoint name="A">0 900</CgPoint>
+		<CgPoint name="B">10 910</CgPoint>
+		<CgPoint name="C">0 920 5</CgPoint>
+	</CgPoints>
+	<Alignments name="Фикстура">
+		<!-- прямая: x 0 → 100, y 0 -->
+		<Alignment name="Прямая" length="100" staStart="100" desc="только Line">
+			<CoordGeom>
+				<Line><Start>0 0</Start><End>0 100</End></Line>
+			</CoordGeom>
+		</Alignment>
+		<!-- четверть окружности R 50 против часовой: центр (300, 0), от (350, 0) к (300, 50) -->
+		<Alignment name="Дуга ccw" length="78.539816" staStart="0">
+			<CoordGeom>
+				<Curve rot="ccw" crvType="arc" radius="50" length="78.539816" delta="90">
+					<Start>0 350</Start><Center>0 300</Center><End>50 300</End><PI>50 350</PI>
+				</Curve>
+			</CoordGeom>
+		</Alignment>
+		<!-- четверть по часовой: центр (500, 0), от (500, 50) к (550, 0) -->
+		<Alignment name="Дуга cw" length="78.539816" staStart="0">
+			<CoordGeom>
+				<Curve rot="cw" crvType="arc" radius="50">
+					<Start>50 500</Start><Center>0 500</Center><End>0 550</End>
+				</Curve>
+			</CoordGeom>
+		</Alignment>
+		<!-- дуги без Center: по радиусу (центр (600, 0)) и по PI без радиуса (центр (700, 0)); хорда -->
+		<Alignment name="Без центра" length="207.079633" staStart="0">
+			<CoordGeom>
+				<Curve rot="ccw" crvType="arc" radius="50" delta="90">
+					<Start>0 650</Start><End>50 600</End>
+				</Curve>
+				<Curve rot="ccw" crvType="arc">
+					<Start>0 750</Start><End>50 700</End><PI>50 750</PI>
+				</Curve>
+				<Curve rot="ccw" crvType="chord" radius="50">
+					<Start>50 700</Start><Center>0 700</Center><End>0 750</End>
+				</Curve>
+			</CoordGeom>
+		</Alignment>
+		<!-- IrregularLine: список уже включает начало и конец — 2 отрезка; Chain и pntRef — по CgPoint -->
+		<Alignment name="Ломаные" length="68.284271" staStart="0">
+			<Start>0 800 12.5</Start>
+			<CoordGeom>
+				<IrregularLine><Start>0 800</Start><End>0 820</End><PntList2D>0 800 10 810 0 820</PntList2D></IrregularLine>
+				<Chain>A B C</Chain>
+				<Line><Start pntRef="C"/><End pntRef="A"/></Line>
+			</CoordGeom>
+		</Alignment>
+		<!-- уравнения пикетажа: до 100 м пикет = расстояние, с 100 м пикеты от 1000 вверх, с 150 м — от 2000 вниз -->
+		<Alignment name="Уравнения" length="200" staStart="0">
+			<CoordGeom>
+				<Line><Start>-100 0</Start><End>-100 200</End></Line>
+			</CoordGeom>
+			<StaEquation staInternal="150" staAhead="2000" staBack="1050" staIncrement="decreasing"/>
+			<StaEquation staInternal="100" staAhead="1000" staBack="100"/>
+		</Alignment>
+		<!-- переходная кривая (End не согласован с длиной — конец подтягивается) -->
+		<Alignment name="Спираль" length="50" staStart="0">
+			<CoordGeom>
+				<Spiral length="50" radiusStart="INF" radiusEnd="100" rot="ccw" spiType="clothoid">
+					<Start>-200 0</Start><PI>-200 30</PI><End>-190 49</End>
+				</Spiral>
+			</CoordGeom>
+		</Alignment>
+	</Alignments>
+</LandXML>

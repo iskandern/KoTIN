@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-10-14" time="12:00:00">
+  <Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+  <CgPoints>
+    <CgPoint name="A">1000 2000 50</CgPoint>
+  </CgPoints>
+  <Survey>
+    <SurveyHeader name="тест"></SurveyHeader>
+    <CgPoints>
+      <CgPoint pntRef="1">100 200 10.</CgPoint>
+    </CgPoints>
+    <InstrumentSetup id="s1" stationName="1" instrumentHeight="1.5">
+      <InstrumentPoint pntRef="1"></InstrumentPoint>
+    </InstrumentSetup>
+    <InstrumentSetup id="s2" stationName="2" instrumentHeight="1.6">
+      <InstrumentPoint pntRef="2"></InstrumentPoint>
+    </InstrumentSetup>
+    <InstrumentSetup id="s3" stationName="3" instrumentHeight="1.7">
+      <InstrumentPoint pntRef="3"></InstrumentPoint>
+    </InstrumentSetup>
+    <ObservationGroup id="g1">
+      <Backsight circle="0." setupID="s1">
+        <BacksightPoint name="BS">100 150 10</BacksightPoint>
+      </Backsight>
+      <RawObservation horizAngle="0." directFace="true">
+        <TargetPoint desc="STA" pntRef="2">100 300 20</TargetPoint>
+      </RawObservation>
+      <RawObservation horizAngle="180." directFace="false">
+        <TargetPoint desc="STA" pntRef="2">100.01 300.01 20</TargetPoint>
+      </RawObservation>
+      <RawObservation horizAngle="10.">
+        <TargetPoint pntRef="T">-100000000000000000000. -100000000000000000000.</TargetPoint>
+      </RawObservation>
+      <RawObservation horizAngle="20.">
+        <TargetPoint pntRef="A"></TargetPoint>
+      </RawObservation>
+    </ObservationGroup>
+    <ObservationGroup id="g2">
+      <Backsight circle="0." setupID="s2">
+        <BacksightPoint pntRef="1"></BacksightPoint>
+      </Backsight>
+      <RawObservation horizAngle="30.">
+        <TargetPoint pntRef="X">500 600</TargetPoint>
+      </RawObservation>
+    </ObservationGroup>
+  </Survey>
+</LandXML>

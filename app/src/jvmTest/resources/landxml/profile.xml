@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- профили трасс (KoTIN-66): прямые трассы 500 м на востоке, по одной на 100 м к северу; уклоны крупные, чтобы кривые были видны сбоку -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-10-14" time="12:00:00">
+	<Units><Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+	<Alignments>
+		<!-- уклон +0,2, парабола L 200 у PVI 250, уклон −0,1 -->
+		<Alignment name="Парабола" length="500" staStart="0">
+			<CoordGeom>
+				<Line><Start>0 0</Start><End>0 500</End></Line>
+			</CoordGeom>
+			<Profile>
+				<ProfAlign name="Парабола_V">
+					<PVI>0 100</PVI>
+					<ParaCurve length="200">250 150</ParaCurve>
+					<PVI>500 125</PVI>
+				</ProfAlign>
+			</Profile>
+		</Alignment>
+		<!-- уклон −0,1, несимметричная кривая 80 + 160 у PVI 200, уклон +0,15 -->
+		<Alignment name="Несимметричная" length="500" staStart="0">
+			<CoordGeom>
+				<Line><Start>100 0</Start><End>100 500</End></Line>
+			</CoordGeom>
+			<Profile>
+				<ProfAlign name="Несимметричная_V">
+					<PVI>0 100</PVI>
+					<UnsymParaCurve lengthIn="80" lengthOut="160">200 80</UnsymParaCurve>
+					<PVI>500 125</PVI>
+				</ProfAlign>
+			</Profile>
+		</Alignment>
+		<!-- уклон +0,2, круговая кривая R 1000 у PVI 250, уклон −0,1 -->
+		<Alignment name="Круговая" length="500" staStart="0">
+			<CoordGeom>
+				<Line><Start>200 0</Start><End>200 500</End></Line>
+			</CoordGeom>
+			<Profile>
+				<ProfAlign name="Круговая_V">
+					<PVI>0 100</PVI>
+					<CircCurve length="297.1" radius="1000">250 150</CircCurve>
+					<PVI>500 125</PVI>
+				</ProfAlign>
+			</Profile>
+		</Alignment>
+		<!-- пикетаж с 1000, на расстоянии 200 уравнение 1200 → 2000: PVI на пикетах 1000, 1100, 2100, 2300 — расстояния 0, 100, 300, 500 -->
+		<Alignment name="Уравнение" length="500" staStart="1000">
+			<CoordGeom>
+				<Line><Start>300 0</Start><End>300 500</End></Line>
+			</CoordGeom>
+			<StaEquation staInternal="1200" staAhead="2000"/>
+			<Profile>
+				<ProfAlign name="Уравнение_V">
+					<PVI>1000 100</PVI>
+					<ParaCurve length="100">1100 120</ParaCurve>
+					<ParaCurve length="100">2100 100</ParaCurve>
+					<PVI>2300 110</PVI>
+				</ProfAlign>
+			</Profile>
+		</Alignment>
+		<!-- профиль с 100 по 400 — за концами трасса не строится; земля ProfSurf — своей линией (KoTIN-87), второй профиль не читается -->
+		<Alignment name="Частичный" length="500" staStart="0">
+			<CoordGeom>
+				<Line><Start>400 0</Start><End>400 500</End></Line>
+			</CoordGeom>
+			<Profile>
+				<ProfSurf name="Земля">
+					<PntList2D>0 90 500 90</PntList2D>
+				</ProfSurf>
+				<ProfAlign name="Частичный_V">
+					<PVI>100 100</PVI>
+					<PVI>400 130</PVI>
+				</ProfAlign>
+				<ProfAlign name="Частичный_V2">
+					<PVI>0 0</PVI>
+					<PVI>500 0</PVI>
+				</ProfAlign>
+			</Profile>
+		</Alignment>
+		<!-- прямая 200 и четверть окружности R 100 в плане, парабола L 100 у PVI 200 -->
+		<Alignment name="Поворот" length="357.0796" staStart="0">
+			<CoordGeom>
+				<Line><Start>600 0</Start><End>600 200</End></Line>
+				<Curve rot="ccw" radius="100" length="157.0796"><Start>600 200</Start><Center>700 200</Center><End>700 300</End></Curve>
+			</CoordGeom>
+			<Profile>
+				<ProfAlign name="Поворот_V">
+					<PVI>0 100</PVI>
+					<ParaCurve length="100">200 120</ParaCurve>
+					<PVI>357.0796 110</PVI>
+				</ProfAlign>
+			</Profile>
+		</Alignment>
+		<!-- без профиля — в плане, как раньше -->
+		<Alignment name="Без профиля" length="500" staStart="0">
+			<CoordGeom>
+				<Line><Start>500 0</Start><End>500 500</End></Line>
+			</CoordGeom>
+		</Alignment>
+	</Alignments>
+</LandXML>

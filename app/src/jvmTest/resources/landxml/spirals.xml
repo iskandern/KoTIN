@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- переходные кривые (KoTIN-64): концы и PI рассчитаны эталоном SpiralReference -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-10-13" time="12:00:00">
+	<Units><Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+	<Alignments>
+		<Alignment name="S-клотоида" length="550" staStart="0">
+			<CoordGeom>
+				<Line><Start>0.000000 0.000000</Start><End>0.000000 100.000000</End></Line>
+				<Spiral length="100" radiusStart="INF" radiusEnd="300" rot="ccw" spiType="clothoid"><Start>0.000000 100.000000</Start><PI>0.000000 166.763927</PI><End>5.544542 199.722579</End></Spiral>
+				<Curve rot="ccw" radius="300" length="150"><Start>5.544542 199.722579</Start><Center>301.387512 149.953739</Center><End>65.621334 335.464680</End></Curve>
+				<Spiral length="100" radiusStart="300" radiusEnd="INF" rot="ccw" spiType="clothoid"><Start>65.621334 335.464680</Start><PI>86.288347 361.730423</PI><End>135.705460 406.623306</End></Spiral>
+				<Line><Start>135.705460 406.623306</Start><End>209.723146 473.864530</End></Line>
+			</CoordGeom>
+		</Alignment>
+		<Alignment name="Блосс cw" length="120" staStart="0">
+			<CoordGeom>
+				<Spiral length="120" radiusStart="INF" radiusEnd="250" rot="cw" spiType="bloss"><Start>-300.000000 0.000000</Start><PI>-275.113127 80.452494</PI><End>-272.942760 116.581858</End></Spiral>
+			</CoordGeom>
+		</Alignment>
+		<Alignment name="Косинусоида" length="80" staStart="0">
+			<CoordGeom>
+				<Spiral length="80" radiusStart="200" radiusEnd="INF" rot="ccw" spiType="cosine"><Start>-500.000000 0.000000</Start><PI>-492.943741 22.810967</PI><End>-465.947801 72.226703</End></Spiral>
+			</CoordGeom>
+		</Alignment>
+		<Alignment name="Синусоида" length="90" staStart="0">
+			<CoordGeom>
+				<Spiral length="90" radiusStart="400" radiusEnd="150" rot="ccw" spiType="sinusoid"><Start>-700.000000 0.000000</Start><PI>-683.889346 52.081364</PI><End>-659.906299 79.843216</End></Spiral>
+			</CoordGeom>
+		</Alignment>
+		<Alignment name="Кубическая парабола" length="60" staStart="0">
+			<CoordGeom>
+				<Spiral length="60" radiusStart="INF" radiusEnd="200" rot="cw" spiType="cubicParabola"><Start>-900.000000 0.000000</Start><PI>-888.165230 38.258594</PI><End>-885.170048 58.076490</End></Spiral>
+			</CoordGeom>
+		</Alignment>
+	</Alignments>
+</LandXML>

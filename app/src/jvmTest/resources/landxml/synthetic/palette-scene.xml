@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Палитра сцены (KoTIN-91): три поверхности полосами с запада на восток («Рельеф», «Проект», «Насыпь»,
+  по 100 × 150 м); поверх них — четыре сети с запада на восток (север 30, 60, 90, 120: ливнёвка, канализация,
+  водопровод, прочее), в каждой два колодца и труба 600 мм над землёй (цвет виден сверху);
+  трасса «Ось» с проектным профилем по северу 140;
+  к югу — восемь видов ситуации по desc (север −10…−40), участок и пять точек.
+  Сгенерирован scripts/gen_test_landxml.py.
+-->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-01-01" time="00:00:00">
+	<Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter" diameterUnit="millimeter"/></Units>
+	<CgPoints>
+		<CgPoint name="Т1">-60.0 160.0 100.0</CgPoint>
+		<CgPoint name="Т2">-60.0 185.0 100.0</CgPoint>
+		<CgPoint name="Т3">-60.0 210.0 100.0</CgPoint>
+		<CgPoint name="Т4">-60.0 235.0 100.0</CgPoint>
+		<CgPoint name="Т5">-60.0 260.0 100.0</CgPoint>
+	</CgPoints>
+	<Surfaces>
+		<Surface name="Рельеф">
+			<Definition surfType="TIN">
+				<Pnts>
+					<P id="1">0.0 0.0 100.0</P>
+					<P id="2">0.0 50.0 101.5</P>
+					<P id="3">0.0 100.0 100.0</P>
+					<P id="4">50.0 0.0 100.5</P>
+					<P id="5">50.0 50.0 102.0</P>
+					<P id="6">50.0 100.0 100.5</P>
+					<P id="7">100.0 0.0 101.0</P>
+					<P id="8">100.0 50.0 102.5</P>
+					<P id="9">100.0 100.0 101.0</P>
+					<P id="10">150.0 0.0 100.0</P>
+					<P id="11">150.0 50.0 101.5</P>
+					<P id="12">150.0 100.0 100.0</P>
+				</Pnts>
+				<Faces>
+					<F>1 2 5</F>
+					<F>1 5 4</F>
+					<F>2 3 6</F>
+					<F>2 6 5</F>
+					<F>4 5 8</F>
+					<F>4 8 7</F>
+					<F>5 6 9</F>
+					<F>5 9 8</F>
+					<F>7 8 11</F>
+					<F>7 11 10</F>
+					<F>8 9 12</F>
+					<F>8 12 11</F>
+				</Faces>
+			</Definition>
+		</Surface>
+		<Surface name="Проект">
+			<Definition surfType="TIN">
+				<Pnts>
+					<P id="1">0.0 100.0 100.5</P>
+					<P id="2">0.0 150.0 102.0</P>
+					<P id="3">0.0 200.0 100.5</P>
+					<P id="4">50.0 100.0 101.0</P>
+					<P id="5">50.0 150.0 102.5</P>
+					<P id="6">50.0 200.0 101.0</P>
+					<P id="7">100.0 100.0 101.5</P>
+					<P id="8">100.0 150.0 103.0</P>
+					<P id="9">100.0 200.0 101.5</P>
+					<P id="10">150.0 100.0 100.5</P>
+					<P id="11">150.0 150.0 102.0</P>
+					<P id="12">150.0 200.0 100.5</P>
+				</Pnts>
+				<Faces>
+					<F>1 2 5</F>
+					<F>1 5 4</F>
+					<F>2 3 6</F>
+					<F>2 6 5</F>
+					<F>4 5 8</F>
+					<F>4 8 7</F>
+					<F>5 6 9</F>
+					<F>5 9 8</F>
+					<F>7 8 11</F>
+					<F>7 11 10</F>
+					<F>8 9 12</F>
+					<F>8 12 11</F>
+				</Faces>
+			</Definition>
+		</Surface>
+		<Surface name="Насыпь">
+			<Definition surfType="TIN">
+				<Pnts>
+					<P id="1">0.0 200.0 101.0</P>
+					<P id="2">0.0 250.0 102.5</P>
+					<P id="3">0.0 300.0 101.0</P>
+					<P id="4">50.0 200.0 101.5</P>
+					<P id="5">50.0 250.0 103.0</P>
+					<P id="6">50.0 300.0 101.5</P>
+					<P id="7">100.0 200.0 102.0</P>
+					<P id="8">100.0 250.0 103.5</P>
+					<P id="9">100.0 300.0 102.0</P>
+					<P id="10">150.0 200.0 101.0</P>
+					<P id="11">150.0 250.0 102.5</P>
+					<P id="12">150.0 300.0 101.0</P>
+				</Pnts>
+				<Faces>
+					<F>1 2 5</F>
+					<F>1 5 4</F>
+					<F>2 3 6</F>
+					<F>2 6 5</F>
+					<F>4 5 8</F>
+					<F>4 8 7</F>
+					<F>5 6 9</F>
+					<F>5 9 8</F>
+					<F>7 8 11</F>
+					<F>7 11 10</F>
+					<F>8 9 12</F>
+					<F>8 12 11</F>
+				</Faces>
+			</Definition>
+		</Surface>
+	</Surfaces>
+	<PipeNetworks>
+		<PipeNetwork name="Ливнёвка" pipeNetType="storm">
+			<Structs>
+				<Struct name="Ливнёвка-К1" elevRim="105" elevSump="102">
+					<Center>30.0 20.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="103" flowDir="out" refPipe="Ливнёвка-Т1"/>
+				</Struct>
+				<Struct name="Ливнёвка-К2" elevRim="105" elevSump="102">
+					<Center>30.0 280.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="102.5" flowDir="in" refPipe="Ливнёвка-Т1"/>
+				</Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Ливнёвка-Т1" refStart="Ливнёвка-К1" refEnd="Ливнёвка-К2">
+					<CircPipe diameter="600"/>
+				</Pipe>
+			</Pipes>
+		</PipeNetwork>
+		<PipeNetwork name="Канализация" pipeNetType="sanitary">
+			<Structs>
+				<Struct name="Канализация-К1" elevRim="105" elevSump="102">
+					<Center>60.0 20.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="103" flowDir="out" refPipe="Канализация-Т1"/>
+				</Struct>
+				<Struct name="Канализация-К2" elevRim="105" elevSump="102">
+					<Center>60.0 280.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="102.5" flowDir="in" refPipe="Канализация-Т1"/>
+				</Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Канализация-Т1" refStart="Канализация-К1" refEnd="Канализация-К2">
+					<CircPipe diameter="600"/>
+				</Pipe>
+			</Pipes>
+		</PipeNetwork>
+		<PipeNetwork name="Водопровод" pipeNetType="water">
+			<Structs>
+				<Struct name="Водопровод-К1" elevRim="105" elevSump="102">
+					<Center>90.0 20.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="103" flowDir="out" refPipe="Водопровод-Т1"/>
+				</Struct>
+				<Struct name="Водопровод-К2" elevRim="105" elevSump="102">
+					<Center>90.0 280.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="102.5" flowDir="in" refPipe="Водопровод-Т1"/>
+				</Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Водопровод-Т1" refStart="Водопровод-К1" refEnd="Водопровод-К2">
+					<CircPipe diameter="600"/>
+				</Pipe>
+			</Pipes>
+		</PipeNetwork>
+		<PipeNetwork name="Прочее" pipeNetType="other">
+			<Structs>
+				<Struct name="Прочее-К1" elevRim="105" elevSump="102">
+					<Center>120.0 20.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="103" flowDir="out" refPipe="Прочее-Т1"/>
+				</Struct>
+				<Struct name="Прочее-К2" elevRim="105" elevSump="102">
+					<Center>120.0 280.0</Center>
+					<CircStruct diameter="2000"/>
+					<Invert elev="102.5" flowDir="in" refPipe="Прочее-Т1"/>
+				</Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Прочее-Т1" refStart="Прочее-К1" refEnd="Прочее-К2">
+					<CircPipe diameter="600"/>
+				</Pipe>
+			</Pipes>
+		</PipeNetwork>
+	</PipeNetworks>
+	<Alignments>
+		<Alignment name="Ось" length="300" staStart="0">
+			<CoordGeom><Line><Start>140 0</Start><End>140 300</End></Line></CoordGeom>
+			<Profile><ProfAlign name="Ось_V"><PVI>0 103</PVI><PVI>150 105</PVI><PVI>300 102</PVI></ProfAlign></Profile>
+		</Alignment>
+	</Alignments>
+	<PlanFeatures>
+		<PlanFeature desc="Бордюр 1"><CoordGeom><Line><Start>-10.0 10.0</Start><End>-10.0 40.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Тротуар 2"><CoordGeom><Line><Start>-10.0 45.0</Start><End>-10.0 75.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Кромка 3"><CoordGeom><Line><Start>-10.0 80.0</Start><End>-10.0 110.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Забор 4"><CoordGeom><Line><Start>-10.0 115.0</Start><End>-10.0 145.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Газон 5"><CoordGeom><Line><Start>-40.0 10.0</Start><End>-40.0 40.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Разметка 6"><CoordGeom><Line><Start>-40.0 45.0</Start><End>-40.0 75.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Обочина 7"><CoordGeom><Line><Start>-40.0 80.0</Start><End>-40.0 110.0</End></Line></CoordGeom></PlanFeature>
+		<PlanFeature desc="Ограждение 8"><CoordGeom><Line><Start>-40.0 115.0</Start><End>-40.0 145.0</End></Line></CoordGeom></PlanFeature>
+	</PlanFeatures>
+	<Parcels name="Квартал">
+		<Parcel name="Участок 1">
+			<CoordGeom>
+				<Line><Start>-5 150</Start><End>-5 290</End></Line>
+				<Line><Start>-5 290</Start><End>-45 290</End></Line>
+				<Line><Start>-45 290</Start><End>-45 150</End></Line>
+				<Line><Start>-45 150</Start><End>-5 150</End></Line>
+			</CoordGeom>
+		</Parcel>
+	</Parcels>
+</LandXML>

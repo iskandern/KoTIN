@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Исходные данные поверхности SourceData (KoTIN-61). Восток 400000…400020, север 6000000…6000020.
+  «Площадка» — квадрат TIN 20 × 20, отметки 100 (юг) … 104 (север), и исходные данные:
+    границы: внешняя PntList3D по углам TIN без повтора первой точки (4 отрезка с замыкающим, длина 40 + 2·√416),
+      полость PntList2D 5 × 5 с повтором первой точки (4 отрезка, длина 20, плоская);
+    структурные линии: standard PntList3D из 3 точек (2 отрезка, длина 2·√104), wall PntList2D (1 отрезок 16, плоская),
+      без brkType PntList3D (1 отрезок 16);
+    горизонтали: elev 101 из 3 точек (2 отрезка, 20), elev 102 из 2 точек (1 отрезок, 20);
+    точки данных: две группы PntList3D, 3 + 2 точки;
+    цепочка Chain «c1 c2 c3» — точки CgPoint стоят в файле после поверхности (2 отрезка).
+  «Только данные» — поверхность без Definition: одна структурная линия PntList3D (1 отрезок 10).
+-->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-14" time="12:00:00" version="1.2">
+  <Units>
+    <Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/>
+  </Units>
+  <Project name="SourceData"/>
+  <Application name="KoTIN" version="1.0"/>
+  <Surfaces>
+    <Surface name="Площадка">
+      <SourceData>
+        <Boundaries>
+          <Boundary bndType="outer" edgeTrim="true" name="Внешняя" area="400">
+            <PntList3D>6000000 400000 100 6000000 400020 100 6000020 400020 104 6000020 400000 104</PntList3D>
+          </Boundary>
+          <Boundary bndType="void" edgeTrim="false" name="Колодец">
+            <PntList2D>6000005 400005 6000005 400010 6000010 400010 6000010 400005 6000005 400005</PntList2D>
+          </Boundary>
+        </Boundaries>
+        <Breaklines>
+          <Breakline brkType="standard" name="Бровка">
+            <PntList3D>6000000 400010 100 6000010 400010 102 6000020 400010 104</PntList3D>
+          </Breakline>
+          <Breakline brkType="wall" name="Стена">
+            <PntList2D>6000002 400002 6000002 400018</PntList2D>
+          </Breakline>
+          <Breakline>
+            <PntList3D>6000018 400002 103.6 6000018 400018 103.6</PntList3D>
+          </Breakline>
+        </Breaklines>
+        <Contours>
+          <Contour elev="101">
+            <PntList2D>6000005 400000 6000005 400010 6000005 400020</PntList2D>
+          </Contour>
+          <Contour elev="102">
+            <PntList2D>6000010 400000 6000010 400020</PntList2D>
+          </Contour>
+        </Contours>
+        <DataPoints>
+          <PntList3D>6000000 400000 100 6000000 400020 100 6000020 400020 104</PntList3D>
+          <PntList3D>6000020 400000 104 6000010 400010 102</PntList3D>
+        </DataPoints>
+        <Chain name="Цепочка">c1 c2 c3</Chain>
+      </SourceData>
+      <Definition surfType="TIN">
+        <Pnts>
+          <P id="1">6000000 400000 100</P>
+          <P id="2">6000000 400020 100</P>
+          <P id="3">6000020 400020 104</P>
+          <P id="4">6000020 400000 104</P>
+        </Pnts>
+        <Faces>
+          <F>1 2 3</F>
+          <F>1 3 4</F>
+        </Faces>
+      </Definition>
+    </Surface>
+    <Surface name="Только данные">
+      <SourceData>
+        <Breaklines>
+          <Breakline brkType="proximity">
+            <PntList3D>6000030 400000 90 6000030 400010 90</PntList3D>
+          </Breakline>
+        </Breaklines>
+      </SourceData>
+    </Surface>
+  </Surfaces>
+  <CgPoints>
+    <CgPoint name="c1">6000001 400001 100.1</CgPoint>
+    <CgPoint name="c2">6000001 400019 100.1</CgPoint>
+    <CgPoint name="c3">6000019 400019 103.9</CgPoint>
+  </CgPoints>
+</LandXML>

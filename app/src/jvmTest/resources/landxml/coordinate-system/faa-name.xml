@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Выдержка FAA (landxml.org, LandXML-1.1): только имя и датумы, эллипсоид WGS84 при датуме NAD83, вложенный Feature. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.1" version="1.1">
+  <Units>
+    <Imperial areaUnit="squareFoot" linearUnit="USSurveyFoot" volumeUnit="cubicFeet" temperatureUnit="fahrenheit" pressureUnit="inHG" angularUnit="decimal degrees" directionUnit="decimal degrees"/>
+  </Units>
+  <CoordinateSystem name="NAD83 Alaska Zone 6 State Plane, US Survey Foot" ellipsoidName="WGS84" horizontalDatum="NAD83" verticalDatum="NGVD9003" geocentricCoordinateSystemName="LL">
+    <Feature code="Datum Tie" source="A050">
+      <Property label="Horizontal Datum Tie Code" value="B"/>
+      <Property label="Date of Horizontal Datum Tie" value="28-JAN-2003"/>
+    </Feature>
+  </CoordinateSystem>
+  <Surfaces>
+    <Surface name="Рельеф">
+      <Definition surfType="TIN">
+        <Pnts>
+          <P id="1">6170000.00 6420000.00 133.20</P>
+          <P id="2">6170000.00 6420040.00 133.80</P>
+          <P id="3">6170050.00 6420040.00 134.10</P>
+          <P id="4">6170050.00 6420000.00 133.50</P>
+        </Pnts>
+        <Faces>
+          <F>1 2 3</F>
+          <F>1 3 4</F>
+        </Faces>
+      </Definition>
+    </Surface>
+  </Surfaces>
+</LandXML>

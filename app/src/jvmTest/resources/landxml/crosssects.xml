@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Фикстура поперечников (KoTIN-69): смещение влево −, вправо +; координаты трасс «север восток». -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-14" time="12:00:00" version="1.2">
+	<Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars"/></Units>
+	<Project name="CrossSects"/>
+	<Application name="KoTIN" version="1.0"/>
+	<Alignments name="Фикстура">
+		<!-- прямая на восток (0, 0) → (100, 0), затем четверть окружности R 50 против часовой: центр (100, 50), конец (150, 50);
+		     с расстояния 150 пикетаж идёт от 2000 -->
+		<Alignment name="Ось" length="178.539816" staStart="1000">
+			<CoordGeom>
+				<Line><Start>0 0</Start><End>0 100</End></Line>
+				<Curve rot="ccw" crvType="arc" radius="50"><Start>0 100</Start><Center>50 100</Center><End>50 150</End></Curve>
+			</CoordGeom>
+			<StaEquation staInternal="1150" staAhead="2000"/>
+			<CrossSects>
+				<!-- на прямой: земля с разрывом (два списка), проект из пяти точек и одной «уклон–расстояние» -->
+				<CrossSect sta="1050">
+					<CrossSectSurf name="Земля">
+						<PntList2D>-20 10.5 -5 10.2</PntList2D>
+						<PntList2D>5 10.1 12 10.3 20 10.6</PntList2D>
+					</CrossSectSurf>
+					<DesignCrossSectSurf name="Проект" side="both">
+						<CrossSectPnt>-10 11</CrossSectPnt>
+						<CrossSectPnt>-3.5 11.2</CrossSectPnt>
+						<CrossSectPnt>0 11.25</CrossSectPnt>
+						<CrossSectPnt dataFormat="Slope Distance">0.02 3.5</CrossSectPnt>
+						<CrossSectPnt>3.5 11.2</CrossSectPnt>
+						<CrossSectPnt>10 11</CrossSectPnt>
+					</DesignCrossSectSurf>
+				</CrossSect>
+				<!-- на дуге, до уравнения пикетажа -->
+				<CrossSect sta="1130">
+					<CrossSectSurf name="Земля">
+						<PntList2D>-15 12 0 12.4 15 12.1</PntList2D>
+					</CrossSectSurf>
+				</CrossSect>
+				<!-- на дуге, после уравнения: расстояние 160 -->
+				<CrossSect sta="2010">
+					<CrossSectSurf name="Земля">
+						<PntList2D>-15 13 15 13.2</PntList2D>
+					</CrossSectSurf>
+					<DesignCrossSectSurf name="Проект" side="right">
+						<CrossSectPnt>0 13.5</CrossSectPnt>
+						<CrossSectPnt>8 13.4</CrossSectPnt>
+					</DesignCrossSectSurf>
+				</CrossSect>
+				<!-- между 1150 и 2000 пикета нет — пропущен -->
+				<CrossSect sta="1500">
+					<CrossSectSurf name="Земля">
+						<PntList2D>-15 13 15 13.2</PntList2D>
+					</CrossSectSurf>
+				</CrossSect>
+			</CrossSects>
+		</Alignment>
+		<!-- прямая на север (300, 0) → (300, 100) -->
+		<Alignment name="Север" length="100" staStart="0">
+			<CoordGeom>
+				<Line><Start>0 300</Start><End>100 300</End></Line>
+			</CoordGeom>
+			<CrossSects>
+				<!-- только проект; точка по ссылке на трассу пропускается -->
+				<CrossSect sta="40">
+					<DesignCrossSectSurf name="Проект" side="both">
+						<CrossSectPnt>-6 5</CrossSectPnt>
+						<CrossSectPnt alignRef="Ось" alignRefStation="1050">0 0</CrossSectPnt>
+						<CrossSectPnt>0 5.3</CrossSectPnt>
+						<CrossSectPnt>6 5</CrossSectPnt>
+					</DesignCrossSectSurf>
+				</CrossSect>
+				<!-- за концом трассы — пропущен -->
+				<CrossSect sta="500">
+					<CrossSectSurf name="Земля">
+						<PntList2D>-5 1 5 1</PntList2D>
+					</CrossSectSurf>
+				</CrossSect>
+			</CrossSects>
+		</Alignment>
+	</Alignments>
+</LandXML>

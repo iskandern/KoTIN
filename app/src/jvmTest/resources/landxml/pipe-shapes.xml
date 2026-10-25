@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Трубы объёмом (KoTIN-71): ливнёвка из пяти колодцев Ø1,5 м в ряд через 12 м по востоку и трубы всех сечений:
+     Т1 — CircPipe Ø800 мм, Т2 — RectPipe 0,6 × 1,0, Т3 — ElliPipe 0,6 × 0,9, Т4 — Channel 0,5 × (1,2 поверху, 0,6 понизу),
+     Т5 — кривая CircPipe Ø600 мм через Center к колодцу К6 севернее К5. Лотки — по Invert, уклон к К6. -->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" date="2026-10-14" time="12:00:00" version="1.2">
+	<Units><Metric areaUnit="squareMeter" linearUnit="meter" volumeUnit="cubicMeter" temperatureUnit="celsius" pressureUnit="milliBars" diameterUnit="millimeter"/></Units>
+	<Project name="Сечения труб"/>
+	<Application name="KoTIN" version="1.0"/>
+	<PipeNetworks>
+		<PipeNetwork name="Ливнёвка" pipeNetType="storm">
+			<Structs>
+				<Struct name="К1" elevRim="105" elevSump="100.8"><Center>1000 2000</Center><CircStruct diameter="1500"/>
+					<Invert elev="101" flowDir="out" refPipe="Т1"/></Struct>
+				<Struct name="К2" elevRim="105" elevSump="100.4"><Center>1000 2012</Center><CircStruct diameter="1500"/>
+					<Invert elev="100.8" flowDir="in" refPipe="Т1"/><Invert elev="100.6" flowDir="out" refPipe="Т2"/></Struct>
+				<Struct name="К3" elevRim="105" elevSump="100"><Center>1000 2024</Center><CircStruct diameter="1500"/>
+					<Invert elev="100.4" flowDir="in" refPipe="Т2"/><Invert elev="100.2" flowDir="out" refPipe="Т3"/></Struct>
+				<Struct name="К4" elevRim="105" elevSump="99.6"><Center>1000 2036</Center><CircStruct diameter="1500"/>
+					<Invert elev="100" flowDir="in" refPipe="Т3"/><Invert elev="99.8" flowDir="out" refPipe="Т4"/></Struct>
+				<Struct name="К5" elevRim="105" elevSump="99.2"><Center>1000 2048</Center><CircStruct diameter="1500"/>
+					<Invert elev="99.6" flowDir="in" refPipe="Т4"/><Invert elev="99.4" flowDir="out" refPipe="Т5"/></Struct>
+				<Struct name="К6" elevRim="105" elevSump="98.6"><Center>1016 2064</Center><CircStruct diameter="1500"/>
+					<Invert elev="98.8" flowDir="in" refPipe="Т5"/></Struct>
+			</Structs>
+			<Pipes>
+				<Pipe name="Т1" refStart="К1" refEnd="К2"><CircPipe diameter="800"/></Pipe>
+				<Pipe name="Т2" refStart="К2" refEnd="К3"><RectPipe height="0.6" width="1.0"/></Pipe>
+				<Pipe name="Т3" refStart="К3" refEnd="К4"><ElliPipe height="0.6" span="0.9"/></Pipe>
+				<Pipe name="Т4" refStart="К4" refEnd="К5"><Channel height="0.5" widthTop="1.2" widthBottom="0.6"/></Pipe>
+				<Pipe name="Т5" refStart="К5" refEnd="К6"><CircPipe diameter="600"/>
+					<Center>1004.686291501015 2059.313708498985</Center></Pipe>
+			</Pipes>
+		</PipeNetwork>
+	</PipeNetworks>
+</LandXML>
