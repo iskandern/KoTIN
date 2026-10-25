@@ -10,13 +10,160 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#E3E7EB">
+    <!-- шрифты и значки стартового экрана — сразу, вместе со Skia: иначе каждое ждёт предыдущего; движок 3D
+         так же, но им — fetch ниже, чтобы его байты шли в полосу загрузки -->
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_regular.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_medium.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_semibold.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_regular.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_medium.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_bold.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_semibold_italic.ttf" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/drawable/kotin_mark.xml" as="fetch" crossorigin>
+    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/drawable/kotin_icon_small.xml" as="fetch" crossorigin>
+    <script>
+        // язык — как выберет AppLanguage.of: сохранённый в панели, иначе браузера, иначе английский.
+        // По нему — строки заранее и снимок заставки
+        window.kotinLang = (() => {
+            let tag = null;
+            try { tag = localStorage.getItem('kotin.language'); } catch (e) {}
+            if (tag === 'ru' || tag === 'en') return tag;
+            return (navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en';
+        })();
+        document.documentElement.lang = kotinLang;
+        const strings = document.createElement('link');
+        strings.rel = 'preload';
+        strings.as = 'fetch';
+        strings.crossOrigin = 'anonymous';
+        strings.href = `composeResources/dev.iskandern.kotin.resources/values${kotinLang === 'ru' ? '' : '-en'}/strings.commonMain.cvr`;
+        document.head.appendChild(strings);
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         /* фон сцены (KotinColors.Scene): пока грузится wasm, экран не мигает тёмным */
         html, body { width: 100%; height: 100%; overflow: hidden; background: #E3E7EB; }
+        /* заставка — размытый снимок стартового экрана (scripts/web-preview.mjs): панель слева сверху и карточка
+           по центру отдельно, как раскладывает их приложение. Убирает её приложение, когда дорисовало интерфейс */
+        #preview { position: fixed; inset: 0; z-index: 1; background: #E3E7EB; transition: opacity .25s; pointer-events: none; }
+        #preview.done { opacity: 0; }
+        #preview .piece { position: absolute; display: none; }
+        #preview .piece img { display: block; width: 100%; }
+        #preview .top { left: 0; top: 0; }
+        #preview .card { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+        /* шиммер: блик идёт по экрану одной полосой (фон привязан к окну), виден только на панели и карточке —
+           маска по прозрачности снимка */
+        #preview .piece::after {
+            content: ''; position: absolute; inset: 0;
+            -webkit-mask: var(--shot) center / 100% 100% no-repeat; mask: var(--shot) center / 100% 100% no-repeat;
+            background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .7) 50%, transparent 60%) fixed;
+            background-size: 300% 100%;
+            animation: shimmer 1.6s ease-in-out infinite;
+        }
+        @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+        /* полоса загрузки: доля скачанного wasm (KotinColors.Accent) */
+        #progress { position: absolute; left: 0; top: 0; height: 3px; width: 0; background: #1F5EFF;
+            border-radius: 0 2px 2px 0; transition: width .3s ease-out; }
+        @media (prefers-reduced-motion: reduce) { #preview .piece::after { animation: none; display: none; } }
+        /* телефон (ширина < 600 dp, как isPhone): карточка во всю ширину с полями 24 dp; в снимке 340 px белого
+           и по 16 px тени */
+        @media (max-width: 599px) {
+            #preview .phone { display: block; }
+            #preview .phone.top { width: 80px; }
+            #preview .phone.card { width: calc((100vw - 48px) * 372 / 340); }
+        }
+        @media (min-width: 600px) {
+            #preview .tablet { display: block; }
+            #preview .tablet.top { width: 372px; }
+            #preview .tablet.card { width: 450px; }
+        }
     </style>
 </head>
 <body>
+    <div id="preview" aria-hidden="true">
+        <div class="piece phone top" data-shot="phone-top"><img alt=""></div>
+        <div class="piece phone card" data-shot="phone-card"><img alt=""></div>
+        <div class="piece tablet top" data-shot="tablet-top"><img alt=""></div>
+        <div class="piece tablet card" data-shot="tablet-card"><img alt=""></div>
+        <div id="progress"></div>
+    </div>
+    <script>
+        (() => {
+            for (const piece of document.querySelectorAll('#preview .piece')) {
+                const src = `preview/${kotinLang}/${piece.dataset.shot}.webp`;
+                piece.querySelector('img').src = src;
+                piece.style.setProperty('--shot', `url(${src})`);
+            }
+
+            // ход загрузки — по байтам wasm (Skia, код приложения, Filament): fetch подменён, пока видна заставка.
+            // Content-Length у сжатого ответа — сжатый размер, а поток отдаёт распакованное: размер распакованного
+            // оценён по сжатию wasm (≈ ×2,8), и до конца файла его доля не доходит до 100 %. Файл, который ещё
+            // не запрошен (Skia и код приложения — после app.js), считается в GUESS байт
+            const WASM_FILES = 3;
+            const GUESS = 6e6;
+            const files = [];
+            const bar = document.getElementById('progress');
+            let shown = 0;
+            const update = () => {
+                const known = files.reduce((s, f) => s + f.total, 0);
+                const total = known + Math.max(0, WASM_FILES - files.length) * GUESS;
+                const read = files.reduce((s, f) => s + (f.done ? f.total : Math.min(f.read, f.total * .97)), 0);
+                // последние 10 % — шрифты, строки и первый кадр после wasm
+                shown = Math.max(shown, .9 * read / total);
+                bar.style.width = `${shown * 100}%`;
+            };
+            const fetch = window.fetch;
+            const track = response => response.then(res => {
+                if (!res.ok || !res.body) return res;
+                const length = Number(res.headers.get('content-length')) || 0;
+                const file = { total: length ? length * (res.headers.get('content-encoding') ? 2.8 : 1) : GUESS, read: 0, done: false };
+                files.push(file);
+                update();
+                // читаем сразу, не дожидаясь потребителя: иначе ранний ответ Filament стоит, пока его не запросят
+                const reader = res.body.getReader();
+                const body = new ReadableStream({
+                    async start(controller) {
+                        try {
+                            for (;;) {
+                                const { done, value } = await reader.read();
+                                if (done) break;
+                                file.read += value.byteLength;
+                                update();
+                                controller.enqueue(value);
+                            }
+                            file.done = true;
+                            update();
+                            controller.close();
+                        } catch (e) {
+                            controller.error(e);
+                        }
+                    },
+                    cancel: reason => reader.cancel(reason),
+                });
+                return new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers });
+            });
+            // Filament качается с начала; запрос filament-kmp.js получает уже идущий ответ
+            let filament = track(fetch('filament-kmp.wasm', { credentials: 'same-origin' }));
+            window.fetch = function (input, init) {
+                const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+                if (filament && /filament-kmp\.wasm$/.test(url)) {
+                    const early = filament;
+                    filament = null;
+                    return early;
+                }
+                const response = fetch.call(this, input, init);
+                return /\.wasm(\?|$)/.test(url) ? track(response) : response;
+            };
+
+            window.kotinHidePreview = () => {
+                const preview = document.getElementById('preview');
+                if (!preview) return;
+                window.fetch = fetch;
+                bar.style.width = '100%';
+                preview.classList.add('done');
+                setTimeout(() => preview.remove(), 300);
+            };
+        })();
+    </script>
     <script src="filament-kmp.js"></script>
     <script src="app.js"></script>
 </body>
