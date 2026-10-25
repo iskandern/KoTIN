@@ -55,6 +55,9 @@ jobs:
           java-version: 24
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew :app:packageDistributionForCurrentOS
+      - name: Лог jpackage
+        if: failure()
+        run: cat app/build/compose/logs/*/*.txt || true
       - name: Переименовать
         run: |
           mkdir out
