@@ -364,7 +364,8 @@ fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean, injected
           } else {
             property("left", start.px)
             property("bottom", EDGE.px)
-            property("max-width", "380px")
+            // текст плашки забирает всё место до кнопки (weight в app): плашка во всю ширину до 380 px, а не по тексту
+            property("width", "min(380px, calc(100% - ${start}px))")
             property("transition", "opacity 200ms var(--fos), left 200ms var(--fos)")
           }
         }
