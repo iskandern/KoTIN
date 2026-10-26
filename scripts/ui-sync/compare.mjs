@@ -31,6 +31,31 @@ const STORIES = [
   ['sheet', 'phone'], ['sheet-expanded', 'phone'], ['hint'], ['labels-notice'], ['load-error'],
 ]
 const IDLE_TIMEOUT_MS = 90_000
+// известные расхождения, где эталон спорный: в отчёте — отдельным разделом, рамки при этом не прячутся
+const DISPUTED = [
+  {
+    title: 'Ширина текста',
+    elements: 'mode-orbit, mode-map, camera-*, empty-open, hint-action, hint-text, selection-name, selection-layer, section-elements (меню)',
+    text: 'Skia в Compose-версии ставит буквы шире браузера: обычный текст — на 0,2–0,3 px на букву, полужирный 13–14 px — ' +
+      'на 0,6–0,9 px («Открыть файл» 109 против 100 px, «Карта» 47 против 42,5). Отсюда ширина кнопок по тексту и перенос ' +
+      '«Прореживать подписи по масштабу» в меню (раздел «Элементы» ниже на 12 px). Похоже на целые шаги букв без субпиксельного ' +
+      'положения (FontRasterizationSettings Skia), но не проверено. DOM не подгонялся: letter-spacing под каждый шрифт был бы ' +
+      'подделкой. Варианты: включить субпиксельное положение текста в app (меняет вид app) или принять.',
+  },
+  {
+    title: 'Высота строк в ячейках свойств карточки',
+    elements: 'attr-row-*, attr-scroll, selection-card, sheet и всё, что под ними',
+    text: 'В app у текста ячейки lineHeight = 17,5 sp (CELL_LINE, «та же сумма, что была у двух текстов»), но Skia рисует ' +
+      'каждую строку по 19 px: строка из двух — 54 px вместо 51, из трёх — 73 вместо 68,5. DOM держит 17,5 px, как задумано ' +
+      'в коде. Что эталон — нарисованное (тогда в DOM line-height 19 px) или задуманное (тогда править app), — решает владелец.',
+  },
+  {
+    title: 'Тень бокового меню телефона',
+    elements: 'drawer (только картинка)',
+    text: 'В DOM тень меню — копии со сдвигом вправо, в app — кольца со сдвигом вниз; так сделано намеренно раньше (у краёв ' +
+      'экрана кольца торчали углом в Safari). Рамки совпадают, отличается полоса тени у правого края.',
+  },
+]
 
 const args = process.argv.slice(2)
 const flag = (name) => args.includes(name)
@@ -189,6 +214,8 @@ writeFileSync(join(OUT, 'index.html'), `<!doctype html>
 </style></head><body>
 <h1>Сверка Compose ↔ DOM</h1>
 <p>Историй: ${results.length}; не открылось: ${failedCount}; расходящихся рамок (допуск ±${TOLERANCE} px): ${total}. Снято ${new Date().toISOString()}.</p>
+<h2>Спорное — ждёт решения владельца</h2>
+${DISPUTED.map((d) => `<section><h2>${esc(d.title)} <small>${esc(d.elements)}</small></h2><p>${esc(d.text)}</p></section>`).join('\n')}
 <nav>${results.map((r) => `<a href="#${r.id}" style="color:${r.failed || r.bad ? 'var(--bad)' : 'var(--ok)'}">${r.id}</a>`).join(' ')}</nav>
 ${sections}
 </body></html>
