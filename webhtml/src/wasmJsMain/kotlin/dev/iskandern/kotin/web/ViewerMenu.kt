@@ -165,6 +165,9 @@ fun ViewerMenu(
     Div({
       classes("menu-scroll")
       if (onClose != null) classes("in-drawer")
+      // края прокрутки гаснут маской самой прокрутки, а не белыми накладками: те в Safari вылезали за скругление меню
+      classIf(fadeTop, "fade-top")
+      classIf(fadeBottom, "fade-bottom")
       on("scroll") {
         sections.scroll = scroller[0]?.scrollTop ?: 0.0
         updateFades()
@@ -261,8 +264,6 @@ fun ViewerMenu(
 
       FpsText()
     }
-    Div({ classes("fade-edge", "top"); classIf(fadeTop, "on") })
-    Div({ classes("fade-edge", "bottom"); classIf(fadeBottom, "on") })
   }
   // разметка изменилась (разделы, тексты): края прокрутки — заново
   SideEffect { updateFades() }
