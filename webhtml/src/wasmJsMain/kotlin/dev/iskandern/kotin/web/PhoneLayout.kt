@@ -69,7 +69,7 @@ fun BottomSheet(
     val element = sheet.element ?: return 0.0
     val scroll = element.querySelector(".attr-scroll") as? HTMLElement
     val grid = scroll?.firstElementChild as? HTMLElement
-    val hidden = if (scroll != null && grid != null) (grid.offsetHeight - scroll.clientHeight).coerceAtLeast(0) else 0
+    val hidden = if (scroll != null && grid != null) grid.offsetHeight - scroll.clientHeight else 0
     // по детям, а не scrollHeight: в него входит и подложка ::before под шторкой
     var children = 0
     var child = element.firstElementChild as? HTMLElement

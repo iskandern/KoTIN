@@ -217,10 +217,10 @@ body {
 .pointer .distance { color: var(--muted); font-family: var(--mono); }
 
 /* ---------- карточка выбранного ---------- */
-/* содержимое прижато к низу: высота меняется плавно от нижнего края, и переключатель под пальцем не прыгает, пока
-   карточка догоняет новое содержимое — лишнее место на время перехода остаётся сверху */
-.selection-card { border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 100%; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
-.selection-body { display: flex; flex-direction: column; padding: 14px 16px; min-height: 0; flex: 0 1 auto; }
+/* пока высота догоняет новое содержимое, шапка едет с верхним краем, переключатель стоит у нижнего, а разницу
+   забирает область свойств между ними (пустая или под прокруткой) — ничего не перескакивает */
+.selection-card { border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 100%; display: flex; flex-direction: column; overflow: hidden; }
+.selection-body { display: flex; flex-direction: column; padding: 14px 16px; min-height: 0; flex: 1 1 auto; }
 .selection-card.plain { border: none; border-radius: 0; background: none; flex: 0 1 auto; min-height: 0; }
 .selection-head { display: flex; gap: 8px; flex: none; }
 .selection-title-box { flex: 1; min-width: 0; overflow: hidden; }
@@ -237,7 +237,7 @@ body {
 .card-button:active::after { opacity: 1; transition-duration: 75ms; }
 .card-button.subtle { background: var(--subtle); }
 .card-button.card { background: var(--card); }
-.attr-scroll { overflow-y: auto; min-height: 0; flex: 0 1 auto; scrollbar-width: none; }
+.attr-scroll { overflow-y: auto; min-height: 0; flex: 1 1 auto; scrollbar-width: none; }
 .attr-scroll::-webkit-scrollbar { display: none; }
 .attr-grid { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
 .attr-row { display: flex; gap: 8px; }

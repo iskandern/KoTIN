@@ -82,8 +82,9 @@ fun SelectionCard(
     val body = parts[1] ?: return
     val scroll = parts[2]
     val grid = parts[3]
-    // естественная высота: тело без ограничения свойств — его высота плюс то, что свойства прячут под прокруткой
-    val hidden = if (scroll != null && grid != null) (grid.offsetHeight - scroll.clientHeight).coerceAtLeast(0) else 0
+    // естественная высота: тело, где вместо области свойств — сами свойства: под прокруткой они выше неё, а пока
+    // карточка выше нового содержимого — ниже (область растягивается и забирает разницу)
+    val hidden = if (scroll != null && grid != null) grid.offsetHeight - scroll.clientHeight else 0
     val border = card.offsetHeight - card.clientHeight
     val natural = (body.scrollHeight + hidden + border).toDouble()
     val limit = limitNow.value?.toDouble()
