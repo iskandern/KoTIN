@@ -137,7 +137,8 @@ body {
 .m3-button.ripple:active::after { opacity: 0.10; }
 
 /* ---------- меню ---------- */
-.menu-panel { position: absolute; left: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 0; display: flex; flex-direction: column; }
+.menu-panel { position: absolute; left: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 0; display: flex; flex-direction: column; overflow: hidden; }
+/* содержимое меню обрезано по скруглению: плотное затемнение края прокрутки иначе торчало прямым углом */
 .menu-panel > .menu, .drawer > .menu { flex: 1 1 auto; min-height: 0; }
 .menu { position: relative; display: flex; flex-direction: column; padding: 6px 0; min-height: 0; }
 .menu-scroll { overflow-y: auto; overflow-x: hidden; flex: 1 1 auto; min-height: 0; padding: 10px 16px 8px 16px; scrollbar-width: none; }
@@ -282,7 +283,7 @@ body {
 .sheet .handle-area { height: 24px; flex: none; display: flex; align-items: center; justify-content: center; touch-action: none; }
 .sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: var(--handle); }
 .drawer-scrim { position: absolute; inset: 0; background: var(--scrim); }
-.drawer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card); border-radius: 0 20px 20px 0; transform: translateX(-100%); transition: transform 200ms var(--fos); display: flex; flex-direction: column; }
+.drawer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card); border-radius: 0 20px 20px 0; transform: translateX(-100%); transition: transform 200ms var(--fos); display: flex; flex-direction: column; overflow: hidden; }
 /*
  * Тень меню — та же 0,16 в 8 слоёв на 24 px, но копиями со сдвигом вправо, а не кольцами со сдвигом вниз: у краёв
  * экрана кольца заливали вырез скругления и торчали углом, а копии скруглены как само меню
