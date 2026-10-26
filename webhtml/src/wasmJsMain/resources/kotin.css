@@ -46,8 +46,11 @@ body {
 @media (hover: hover) { .ripple:hover::after { opacity: 0.08; } }
 .ripple:active::after { opacity: 0.10; }
 
-/* Белая плавающая карточка поверх сцены: мягкая тень, рамка */
-.floating { background: var(--card); border: 1px solid var(--outline); box-shadow: var(--float-shadow); }
+/*
+ * Белая плавающая карточка поверх сцены: мягкая тень, рамка. Рамки здесь — outline внутрь: как Modifier.border Compose,
+ * она рисуется по краю поверх содержимого и места не занимает (border прибавлял по 1 px с каждой стороны)
+ */
+.floating { background: var(--card); outline: 1px solid var(--outline); outline-offset: -1px; box-shadow: var(--float-shadow); }
 
 .icon-box { display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); }
 
@@ -107,7 +110,7 @@ body {
 .m3-button.ripple:active::after { opacity: 0.10; }
 
 /* ---------- меню ---------- */
-.menu-panel { position: absolute; left: 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 0; display: flex; flex-direction: column; overflow: hidden; }
+.menu-panel { position: absolute; left: 16px; border-radius: 16px; background: var(--card); outline: 1px solid var(--outline); outline-offset: -1px; transform-origin: 0 0; display: flex; flex-direction: column; overflow: hidden; }
 /* содержимое меню обрезано по скруглению: плотное затемнение края прокрутки иначе торчало прямым углом */
 .menu-panel > .menu, .drawer > .menu { flex: 1 1 auto; min-height: 0; }
 .menu { position: relative; display: flex; flex-direction: column; padding: 6px 0; min-height: 0; }
@@ -138,10 +141,10 @@ body {
 .checkbox.on { background: var(--accent); border: none; }
 .swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
 .chip {
-  height: 40px; border-radius: 10px; background: var(--card); border: 1px solid var(--outline); padding: 0 10px;
+  height: 40px; border-radius: 10px; background: var(--card); outline: 1px solid var(--outline); outline-offset: -1px; padding: 0 10px;
   display: flex; align-items: center; justify-content: center; color: var(--ink); min-width: 0; white-space: nowrap; flex: none;
 }
-.chip.on { background: var(--accent-soft); border: 2px solid var(--accent); color: var(--accent-ink); font-weight: 600; }
+.chip.on { background: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: -2px; color: var(--accent-ink); font-weight: 600; }
 .chips { display: flex; gap: 6px; }
 .chips > .chip.weighted { flex: 1 1 0; }
 .chips.column { flex-direction: column; }
@@ -150,10 +153,10 @@ body {
 .action { height: 44px; border-radius: 12px; padding: 0 12px; display: flex; align-items: center; justify-content: center; white-space: nowrap; min-width: 0; }
 .action.primary { background: var(--accent); color: var(--white); font-weight: 600; }
 .action.primary.ripple::after { background: var(--white); }
-.action.secondary { background: var(--card); border: 1px solid var(--outline); color: var(--ink); }
+.action.secondary { background: var(--card); outline: 1px solid var(--outline); outline-offset: -1px; color: var(--ink); }
 .actions { display: flex; gap: 8px; }
 .actions > .action { flex: 1 1 0; }
-.small-button { height: 32px; border-radius: 8px; border: 1px solid var(--outline); padding: 0 12px; display: flex; align-items: center; color: var(--ink); font-size: 13px; }
+.small-button { height: 32px; border-radius: 8px; outline: 1px solid var(--outline); outline-offset: -1px; padding: 0 12px; display: flex; align-items: center; color: var(--ink); font-size: 13px; }
 .small-label { color: var(--muted); font-size: 13px; }
 .group-row { height: 36px; display: flex; align-items: center; gap: 6px; border-radius: 8px; padding: 0 8px; color: var(--muted); font-size: 13px; }
 
@@ -180,8 +183,8 @@ body {
 .rail-mode { border-radius: 50%; }
 
 /* ---------- индикатор осей ---------- */
-.axis-indicator { position: absolute; right: 16px; top: 16px; width: 72px; height: 72px; border-radius: 50%; background: var(--card); border: 1px solid var(--outline); }
-.axis-indicator svg { position: absolute; left: -1px; top: -1px; overflow: visible; }
+.axis-indicator { position: absolute; right: 16px; top: 16px; width: 72px; height: 72px; border-radius: 50%; background: var(--card); outline: 1px solid var(--outline); outline-offset: -1px; }
+.axis-indicator svg { position: absolute; left: 0; top: 0; overflow: visible; }
 .axis-label { font-family: var(--golos); font-size: 11px; font-weight: 700; letter-spacing: 0; }
 
 /* ---------- указатель на чертёж ---------- */
@@ -193,9 +196,9 @@ body {
 /* ---------- карточка выбранного ---------- */
 /* пока высота догоняет новое содержимое, шапка едет с верхним краем, переключатель стоит у нижнего, а разницу
    забирает область свойств между ними (пустая или под прокруткой) — ничего не перескакивает */
-.selection-card { border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 100%; display: flex; flex-direction: column; overflow: hidden; }
+.selection-card { border-radius: 16px; background: var(--card); outline: 1px solid var(--outline); outline-offset: -1px; transform-origin: 0 100%; display: flex; flex-direction: column; overflow: hidden; }
 .selection-body { display: flex; flex-direction: column; padding: 14px 16px; min-height: 0; flex: 1 1 auto; }
-.selection-card.plain { border: none; border-radius: 0; background: none; flex: 0 1 auto; min-height: 0; }
+.selection-card.plain { outline: none; border-radius: 0; background: none; flex: 0 1 auto; min-height: 0; }
 .selection-head { display: flex; gap: 8px; flex: none; }
 .selection-title-box { flex: 1; min-width: 0; overflow: hidden; }
 .selection-title { display: flex; gap: 10px; }
