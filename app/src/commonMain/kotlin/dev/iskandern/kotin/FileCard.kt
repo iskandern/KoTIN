@@ -112,7 +112,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
         // имя и строку под ним можно выделить и скопировать; у ошибки нажатие раскрывает подробности — выделение
         // забирало бы его, сообщение разбора выделяется в подробностях
         val texts = @Composable {
-          Column(Modifier.uiTag("file-texts").padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)) {
+          Column(Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)) {
             if (title == null) KotinWordmark(Modifier.padding(bottom = 2.dp)) else Text(
               title, color = KotinColors.Ink, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold,
               maxLines = 1, overflow = TextOverflow.Ellipsis,
@@ -128,7 +128,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
             }
           }
         }
-        if (failed != null) Box(Modifier.weight(1f)) { texts() } else SelectionContainer(Modifier.weight(1f)) { texts() }
+        if (failed != null) Box(Modifier.weight(1f).uiTag("file-texts")) { texts() } else SelectionContainer(Modifier.weight(1f).uiTag("file-texts")) { texts() }
         if (shown != null || failed != null) {
           Box(Modifier.padding(end = 2.dp).uiTag("file-open-other").size(height - 4.dp).clip(RoundedCornerShape(10.dp)).background(KotinColors.Subtle)) {
             IconBox(KotinIcons.Folder, stringResource(Res.string.open_other_file), height - 4.dp, onOpen, iconSize = 18.dp)
