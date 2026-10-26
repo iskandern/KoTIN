@@ -217,7 +217,9 @@ body {
 .pointer .distance { color: var(--muted); font-family: var(--mono); }
 
 /* ---------- карточка выбранного ---------- */
-.selection-card { border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 100%; display: flex; flex-direction: column; overflow: hidden; }
+/* содержимое прижато к низу: высота меняется плавно от нижнего края, и переключатель под пальцем не прыгает, пока
+   карточка догоняет новое содержимое — лишнее место на время перехода остаётся сверху */
+.selection-card { border-radius: 16px; background: var(--card); border: 1px solid var(--outline); transform-origin: 0 100%; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
 .selection-body { display: flex; flex-direction: column; padding: 14px 16px; min-height: 0; flex: 0 1 auto; }
 .selection-card.plain { border: none; border-radius: 0; background: none; flex: 0 1 auto; min-height: 0; }
 .selection-head { display: flex; gap: 8px; flex: none; }
