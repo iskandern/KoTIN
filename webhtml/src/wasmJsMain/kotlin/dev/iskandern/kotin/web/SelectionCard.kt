@@ -188,7 +188,7 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: String?, onShowLa
     Div({ classes("texts") }) {
       Div({ classes("name", "selectable"); ui("selection-name") }) { Text(info.kind + if (info.name.isNotEmpty()) " · ${localized(info.name)}" else "") }
       if (info.layer.isNotEmpty()) {
-        Div {
+        Div({ classes("layer-row") }) {
           Span({
             classes("layer", "ripple")
             ui("selection-layer")

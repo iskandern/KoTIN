@@ -205,7 +205,9 @@ body {
 .selection-title .swatch { width: 14px; height: 14px; border-radius: 4px; margin-top: 4px; }
 .selection-title .texts { flex: 1; min-width: 0; }
 .selection-title .name { color: var(--ink); font-size: 16px; line-height: 21px; font-weight: 600; overflow-wrap: anywhere; width: fit-content; max-width: 100%; }
-/* выделяемый текст — по ширине текста: правее него шапку тянут, а выделение не тянется до края */
+/* выделяемый текст — по ширине текста: правее него шапку тянут, а выделение не тянется до края. Строка ссылки — по
+   её высоте: в обычной строке текста она стояла бы на базовой линии с полями строки 24 px и шапка была бы выше */
+.selection-title .layer-row { display: flex; }
 .selection-title .layer { display: inline-block; color: var(--accent); font-size: 13px; line-height: 18px; margin-left: -4px; padding: 2px 4px; border-radius: 6px; overflow-wrap: anywhere; }
 .selection-title .partial { color: var(--muted); font-size: 12px; }
 .card-button { border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); transition: transform var(--motion) var(--los); }
