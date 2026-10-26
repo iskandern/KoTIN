@@ -29,12 +29,12 @@ object Stories {
     Story("empty", file = null, hintHidden = false),
     Story("loaded"),
     Story("menu") { viewModel, _ -> viewModel.setMenuOpen(true) },
-    Story("card", phone = false) { viewModel, scene -> viewModel.selectNamed(scene, "Ось 1") },
-    Story("card-expanded", expanded = true, phone = false) { viewModel, scene -> viewModel.selectNamed(scene, "Ось 1") },
+    Story("card", phone = false) { viewModel, scene -> viewModel.selectNamed(scene, "Ограждение") },
+    Story("card-expanded", expanded = true, phone = false) { viewModel, scene -> viewModel.selectNamed(scene, "Ограждение") },
     Story("candidates") { viewModel, scene -> viewModel.selectNamed(scene, "Т1", "Т2", "Т3", "Ось 1") },
     Story("candidates-list", candidatesOpen = true) { viewModel, scene -> viewModel.selectNamed(scene, "Т1", "Т2", "Т3", "Ось 1") },
-    Story("sheet", phone = true) { viewModel, scene -> viewModel.selectNamed(scene, "Ось 1") },
-    Story("sheet-expanded", expanded = true, phone = true) { viewModel, scene -> viewModel.selectNamed(scene, "Ось 1") },
+    Story("sheet", phone = true) { viewModel, scene -> viewModel.selectNamed(scene, "Ограждение") },
+    Story("sheet-expanded", expanded = true, phone = true) { viewModel, scene -> viewModel.selectNamed(scene, "Ограждение") },
     Story("hint", hintHidden = false),
     // замер кадров вышел медленным — подписи на ступень легче, и сцена «нарисована»: плашка о подписях
     Story("labels-notice") { viewModel, scene ->
