@@ -10,17 +10,6 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#E3E7EB">
-    <!-- шрифты и значки стартового экрана — сразу, вместе со Skia: иначе каждое ждёт предыдущего; движок 3D
-         так же, но им — fetch ниже, чтобы его байты шли в полосу загрузки -->
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_regular.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_medium.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/golos_text_semibold.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_regular.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_medium.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_bold.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/font/jetbrains_mono_semibold_italic.ttf" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/drawable/kotin_mark.xml" as="fetch" crossorigin>
-    <link rel="preload" href="composeResources/dev.iskandern.kotin.resources/drawable/kotin_icon_small.xml" as="fetch" crossorigin>
     <script>
         // язык — как выберет AppLanguage.of: сохранённый в панели, иначе браузера, иначе английский.
         // По нему — строки заранее и снимок заставки
@@ -31,12 +20,6 @@
             return (navigator.language || '').toLowerCase().startsWith('ru') ? 'ru' : 'en';
         })();
         document.documentElement.lang = kotinLang;
-        const strings = document.createElement('link');
-        strings.rel = 'preload';
-        strings.as = 'fetch';
-        strings.crossOrigin = 'anonymous';
-        strings.href = `composeResources/dev.iskandern.kotin.resources/values${kotinLang === 'ru' ? '' : '-en'}/strings.commonMain.cvr`;
-        document.head.appendChild(strings);
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,18 +47,13 @@
         #progress { position: absolute; left: 0; top: 0; height: 3px; width: 0; background: #1F5EFF;
             border-radius: 0 2px 2px 0; transition: width .3s ease-out; }
         @media (prefers-reduced-motion: reduce) { #preview .piece::after { animation: none; display: none; } }
-        /* телефон (ширина < 600 dp, как isPhone): карточка во всю ширину с полями 24 dp; в снимке 340 px белого
-           и по 16 px тени */
-        @media (max-width: 599px) {
-            #preview .phone { display: block; }
-            #preview .phone.top { width: 80px; }
-            #preview .phone.card { width: calc((100vw - 48px) * 372 / 340); }
-        }
-        @media (min-width: 600px) {
-            #preview .tablet { display: block; }
-            #preview .tablet.top { width: 372px; }
-            #preview .tablet.card { width: 450px; }
-        }
+        /* панель: телефонная при ширине < 600 dp, как isPhone */
+        @media (max-width: 599px) { #preview .phone.top { display: block; width: 80px; } }
+        @media (min-width: 600px) { #preview .tablet.top { display: block; width: 372px; } }
+        /* карточка: во всю ширину с полями 24 dp, но не шире 420 dp (FileCard) — с 468 px она как на планшете;
+           в снимках 340 и 418 px белого и по 16 px тени */
+        @media (max-width: 467px) { #preview .phone.card { display: block; width: calc((100vw - 48px) * 372 / 340); } }
+        @media (min-width: 468px) { #preview .tablet.card { display: block; width: 450px; } }
     </style>
 </head>
 <body>
@@ -88,13 +66,16 @@
     </div>
     <script>
         (() => {
+            // снимки — прямо здесь, а не файлами: файл картинки ждёт в очереди за скриптами и полосу за wasm,
+            // и шиммер появлялся через 3 с. Строку пишет scripts/web-preview.mjs
+            const SHOTS = {"ru":{"phone-top":"data:image/webp;base64,UklGRv4BAABXRUJQVlA4WAoAAAAQAAAAJwAAJwAAQUxQSHcBAAANl0AmbUO/+hfcnbMQESntJgwmbZtkNGu7RfQ/pJpV/YAN3GGPQMmNJEmSJGK9//+5jTA5pEdGds9yjogJ+MVfH9B7Aj5Liqcq+IQtlrpTBpV8I6J2N/AGdV6GN6X22quKW9Uvo2M3Em1XFd6hOjMm9pJiAhpnAdGBgQAEWsrxzDFKZhQRGIJxHAcQILKCr6AIGDImI8PZiZcRzZVUxgkw8UCQwQBko+DwZTOBTk4GjkEIjMPESiQeCBMHMQAZ1CXlbRNBwZMORPFUUpGVoyDxwQaR5LYB+gAiIfcSYM+O8v9ZAuxDkidLoXxkQk4HY4iQnjCgNb3gQEXgW0IO0PqiDFS8diPgDFMRoM7UHkJPyahCRZh+Gbk2EOskgg61NITzRQsQwBPEALWsAA7zBUK16SDAwkVBgDAjFcMovgASv2E3bkchSEFeE5ary3rDQFpM7ovdMu5MsqW1u9xqRx5GsPGGl5V8wGXJu2QBnyRrxMOQD0r45H0AVlA4IGAAAADwBQCdASooACgAPp1Gmkolo6IhpyyQsBOJaQDNDA9EArKwpztAwO+G6MLn5IkZZ6J2C5mXyC9SgAD+9gGQH0Lc5Nc8c6bPK2d1vIHryL1ZtaF+Ioe879405iYGOUcSAAA=","phone-card":"data:image/webp;base64,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","tablet-top":"data:image/webp;base64,UklGRgwEAABXRUJQVlA4WAoAAAAQAAAAuQAAJwAAQUxQSM4CAAANlyAkSDL/B1udEBGpkVDQtg2jKd3lz7mDENH/CQAp5VctVK53F1Dg7ebAzT6oKg5XAfAk27YsSZIk7X0/SjX/6Sre3cBHiKTFR+1GxAT8w/+DfeY7+S34G4F9YuBLMn0JBn5Er/SGwgiguUC3J+KAvhOwW2U/SF4jIwtPIW8PdBTzDdvluVt5MubSuRCfFMndC87MxfvZ7j6L+FmZGZVliRFvjkbnUugkQD0hckUgEDhQOsMk3lmCMANLAjHFqyoBSAQyDYgPZ5SbtwocBwEMUbxG9ABEiybj4+E1aDcX7bIwSZLT6CWMpj9Yrtj4cC415uao2gUFUBxUBhE66FoJ4Dw0Brs3gyXWVQR0BgnB9JAQkHmBHOfeCqBICcEZJxcg4iiC7BAISdy+QAKCZA4DFcjbzYpIEOD9QSaKkYiDFMinNquBId9io0ACJAnE56a0C/QtmERwOJf9AhgU32MimPyck3zeAGH4NaAQ8u8XIIyvUvkv9KX7++9MyG/D+hVTIOwgR7s76R3A7CMYBMLIYDBS6KZMgOkgCAX4gQkiyQACqLx6U4BIdppQiF8cEQQ0MDlL3pGoRgLCxdAC9lYCXlIgISQICE03ZI4SBCRcTBQonYQExqAQEDndtOCgw4aA6iXFax5KgOG1DDAMMfDgzYTjjEEtx5mZONpBMEBCjaOoMfzYvejIDNCWYOjMJSLJMVayiuuSQRKl4Sh37DVhFUFIM+OlKAQYxVbPveYxl6BoSAe6G1Fpe26ggOYIm6IiIALPnjDX43E5BGDp6YYFn4G7xWsOEoGKQEK0T9CZa2auAUHi7W5CoFnmX6xFnOU1ioyjrM8iLy50HIf4WG+igGzZdfg0i3XxED5ZGsYsVPSzuEsB1i3Gj3aWJdiDBSu+LhFKn93tEv1CEFEegsVEgQhI7y2MHfk0Ayh+FEKOBgRx+yGfAQL406cCyLcJVlA4IBgBAADwDACdASq6ACgAPp1In0wlpCKlJXqpELATiWcA0/WAAG/tZdAgXb/Yr2+SXY9u0Y5Kr2N9o5bsy81ugf5bJRnXdhgKXozL4NSuenzfkxj4QQdhJZacrD0yXb7aq4oEzKuz5ugiDfOIl+8OO9bg5lNAAP73BwTsN49KXgfJmPl3BDgz3sKmK/r/1dNvvn5IG3NrkVyisKFTjQ6zl1zIPNQ8TmzSaeYRehz2PxgmjpmOoWAeWc5UJQJPYHfWtagPTHCoGpLj0YI78NfM7xWQOy9P0ZDLXeooUCXVBwhpZdzFL4sA0tyFt3P90xENExvSLEOpbZ/GysQ7AtfnQRG2Cqwe+KembERxeMk2iWdgT2Qo5mlKLRvYAAAA","tablet-card":"data:image/webp;base64,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"},"en":{"phone-top":"data:image/webp;base64,UklGRv4BAABXRUJQVlA4WAoAAAAQAAAAJwAAJwAAQUxQSHcBAAANl0AmbUO/+hfcnbMQESntJgwmbZtkNGu7RfQ/pJpV/YAN3GGPQMmNJEmSJGK9//+5jTA5pEdGds9yjogJ+MVfH9B7Aj5Liqcq+IQtlrpTBpV8I6J2N/AGdV6GN6X22quKW9Uvo2M3Em1XFd6hOjMm9pJiAhpnAdGBgQAEWsrxzDFKZhQRGIJxHAcQILKCr6AIGDImI8PZiZcRzZVUxgkw8UCQwQBko+DwZTOBTk4GjkEIjMPESiQeCBMHMQAZ1CXlbRNBwZMORPFUUpGVoyDxwQaR5LYB+gAiIfcSYM+O8v9ZAuxDkidLoXxkQk4HY4iQnjCgNb3gQEXgW0IO0PqiDFS8diPgDFMRoM7UHkJPyahCRZh+Gbk2EOskgg61NITzRQsQwBPEALWsAA7zBUK16SDAwkVBgDAjFcMovgASv2E3bkchSEFeE5ary3rDQFpM7ovdMu5MsqW1u9xqRx5GsPGGl5V8wGXJu2QBnyRrxMOQD0r45H0AVlA4IGAAAADwBQCdASooACgAPp1Gmkolo6IhpyyQsBOJaQDNDA9EArKwpztAwO+G6MLn5IkZZ6J2C5mXyC9SgAD+9gGQH0Lc5Nc8c6bPK2d1vIHryL1ZtaF+Ioe879405iYGOUcSAAA=","phone-card":"data:image/webp;base64,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","tablet-top":"data:image/webp;base64,UklGRhgEAABXRUJQVlA4WAoAAAAQAAAAuQAAJwAAQUxQSNcCAAANlyAkSDL/B1udEBGpkVDQSIoTsnAU/475YiGi/xMA7uH/UoOi/2YMxPGtOwpmiVfvdskO7wagJMm27Lapuh/u9r9d49YAHw0j8GkPI2IC/uG/YO/5Sv4W/ERg7xj4kEy/BAPfokd6QWEE0FygyxNxQF8J2K2yJ5LHyMjCXcjLAx3FfMF2ue9Wnhlz6ById4rk6gVn5uD1bHfvRTxXZkZlWWLEi6PRORQ6E6DuELkiEAicUDrDJF5ZgjADSwIxxaMqAUgEMg2IN2eUi7cKHAcBDFE8RvQEiBZNxtvNY9AuLtplYZIkp9FDGE2fWK7YeHMONebiqNoFBVAcVAYROtG1EsC5aQx2bQZLrKsI6AwSgulJQkDmAXI611YARUoIzji5ABGnIsgOgZDE5QskIEjmMFCBvNysiAQBXh9kohiJOEiBvGuzGhjyW2wUSIAkgXjflHaBfgsmEZycl30ADIrfYyKYPM9J3m+AMPw1oBDy8wKE8atU/ve3PmIKhD0I/YwPXYH0CmD2FgwCIUEo/UAg+OVMgOlEEArwDRNEEgEp+UGbkO8vkp1NKMQHRwR5DLSfAJEvL6qRgHAwtIC9lICHFMhp8uP51cxRgoCEg4kCpTMhgTEoDAKwj5kNYF9LcNBhQ0D1kOIxT0qA4bGMAgj9WAiYfq1wnDGo5XRmJk7tRDBAQo2HMOLzAkJ8ax2ZAdoSDJ05RCQ5jZWs4jhkYCPk2j0mrCIIaWY8FIUAo9jqvsfc5pAM6sJEpe2+gQKaI2yKioAI3LvDHLfb4RCA1xUI3gN3i8ccJAIVgYRo76Azx8wcA3LeJ3ytryPQLPMvaxHn8hhFxqms9yIPDnQch870A/WSfpsCyZZdh3ezWBdPwjtLw5iFip7FB+Xl+LZyum4xvrWzLMGeWLDi4xKhdHbdS/SBIKI8CRYTBSIgvbYwduTdDKB4KoScGhDE5Ye8Bwjgs3cFkN8mAFZQOCAaAQAAUAwAnQEqugAoAD6dSqBMJaQjIiV6qNCwE4lnANTlgAB6qtODnx6FcTWxR84oHTkgdC1mPDwv6kdF//5kZdn1XOBUdCHf3I2PNd55NA3cGWeY2sVtm904CS7QeLrrbf4VzzJ5wqBp709kqQAA/vSBdGNvvxojVNrXFVaMZffdwkKGtnmW8EDvzxIT3g6G5/6wxXR9C2YPtkEh9BjdTrmQeaGvx2TPg10VMa7mCFE75wvQxSOdQ43+gggkDFgkeOE7wYhOyFrOcU83ClpjNtt0/RkJf7vTz1sHebvkZRLcxfg6fnlebeQn5jizati0+qshq7ugXHSALWJ/7sJv/NbNm0hZaOnqumIiZDUtoxgAGurfUTylFo3sAAAA","tablet-card":"data:image/webp;base64,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"}};
             for (const piece of document.querySelectorAll('#preview .piece')) {
-                const src = `preview/${kotinLang}/${piece.dataset.shot}.webp`;
+                const src = SHOTS[kotinLang][piece.dataset.shot];
                 piece.querySelector('img').src = src;
                 piece.style.setProperty('--shot', `url(${src})`);
             }
 
-            // ход загрузки — по байтам wasm (Skia, код приложения, Filament): fetch подменён, пока видна заставка.
+            // ход загрузки — по байтам wasm (Skia, код приложения, Filament), пока видна заставка.
             // Content-Length у сжатого ответа — сжатый размер, а поток отдаёт распакованное: размер распакованного
             // оценён по сжатию wasm (≈ ×2,8), и до конца файла его доля не доходит до 100 %. Файл, который ещё
             // не запрошен (Skia и код приложения — после app.js), считается в GUESS байт
@@ -141,23 +122,38 @@
                 });
                 return new Response(body, { status: res.status, statusText: res.statusText, headers: res.headers });
             });
-            // Filament качается с начала; запрос filament-kmp.js получает уже идущий ответ
-            let filament = track(fetch('filament-kmp.wasm', { credentials: 'same-origin' }));
+            // запрошенное заранее: абсолютный адрес → ответ. Своим fetch, а не <link rel="preload">: Safari не отдаёт
+            // ответ preload запросу Compose и качает шрифты второй раз, уже после wasm
+            const early = new Map();
+            const ahead = (url, response) => early.set(new URL(url, location.href).href, response);
+            const RES = 'composeResources/dev.iskandern.kotin.resources/';
+            for (const file of ['font/golos_text_regular.ttf', 'font/golos_text_medium.ttf', 'font/golos_text_semibold.ttf',
+                'font/jetbrains_mono_regular.ttf', 'font/jetbrains_mono_medium.ttf', 'font/jetbrains_mono_bold.ttf',
+                'font/jetbrains_mono_semibold_italic.ttf', 'drawable/kotin_mark.xml', 'drawable/kotin_icon_small.xml',
+                `values${kotinLang === 'ru' ? '' : '-en'}/strings.commonMain.cvr`]) {
+                ahead(RES + file, fetch(RES + file));
+            }
+            // Filament — тоже с начала, до Skia и кода приложения (их запрашивает app.js): полоса всё равно одна, а
+            // последним должен докачиваться Skia — его компиляция идёт по ходу загрузки, и после последнего байта
+            // ждать почти нечего. Если Filament пустить после них, готово позже на 0,4 с (замер 3×, 6 Мбит/с)
+            ahead('filament-kmp.wasm', track(fetch('filament-kmp.wasm', { credentials: 'same-origin' })));
+            // подмена остаётся и после заставки: значки Compose запрашивает уже после первого кадра
+            let tracking = true;
             window.fetch = function (input, init) {
-                const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
-                if (filament && /filament-kmp\.wasm$/.test(url)) {
-                    const early = filament;
-                    filament = null;
-                    return early;
+                const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url, location.href).href;
+                const response = early.get(url);
+                if (response) {
+                    early.delete(url);
+                    return response;
                 }
-                const response = fetch.call(this, input, init);
-                return /\.wasm(\?|$)/.test(url) ? track(response) : response;
+                const fresh = fetch.call(this, input, init);
+                return tracking && /\.wasm(\?|$)/.test(url) ? track(fresh) : fresh;
             };
 
             window.kotinHidePreview = () => {
                 const preview = document.getElementById('preview');
                 if (!preview) return;
-                window.fetch = fetch;
+                tracking = false;
                 bar.style.width = '100%';
                 preview.classList.add('done');
                 setTimeout(() => preview.remove(), 300);
