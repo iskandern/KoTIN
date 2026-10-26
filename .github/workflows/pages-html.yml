@@ -1,0 +1,44 @@
+name: Web DOM → GitHub Pages
+
+# DOM-сборка (:webhtml) на https://iskandern.github.io/KoTIN/ — при push в web/compose-html.
+# Следующий «Выпуск» из main выложит поверх Compose-web.
+on:
+  push:
+    branches: [web/compose-html]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  web:
+    name: Web DOM → GitHub Pages
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 24
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew :webhtml:wasmJsBrowserDistribution
+      - name: Собрать сайт
+        run: |
+          mkdir site
+          cp -r webhtml/build/dist/wasmJs/productionExecutable/. site/
+          find site -name '*.map' -delete
+          touch site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
