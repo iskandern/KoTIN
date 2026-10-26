@@ -97,11 +97,14 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Int, onOpen
         }
       }
       if (shown != null || failed != null) {
-        Div({ classes("open-other"); ui("file-open-other"); style { property("width", (height - 4).px); property("height", (height - 4).px) } }) {
-          IconBox(Icon.Folder, stringResource(Res.string.open_other_file), height - 4, onOpen, iconSize = 18) {
-            // нажатие на значок не раскрывает ошибку
-            on("click") { it.stopPropagation() }
-          }
+        // нажатие на значок не раскрывает ошибку: всплытие гасит обёртка — свой click на самом значке заменил бы
+        // его onClick (обработчик один на тип) и кнопка перестала бы открывать файл
+        Div({
+          classes("open-other"); ui("file-open-other")
+          style { property("width", (height - 4).px); property("height", (height - 4).px) }
+          on("click") { it.stopPropagation() }
+        }) {
+          IconBox(Icon.Folder, stringResource(Res.string.open_other_file), height - 4, onOpen, iconSize = 18)
         }
       }
     }
