@@ -129,20 +129,20 @@ fun SelectionCard(
   val scroll = remember(selection.objectId) { ScrollState(0) }
   // низ карточки на месте: она растёт и уменьшается вверх
   val size = if (animateSize) Modifier.animateContentSize(tween(MOTION_MS, easing = LinearOutSlowInEasing), Alignment.BottomStart) else Modifier
-  SelectionContainer(modifier.then(size)) {
-    Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-      Row(header, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+  SelectionContainer(modifier.uiTag("selection-card").then(size)) {
+    Column(Modifier.uiTag("selection-body").padding(horizontal = 16.dp, vertical = 14.dp)) {
+      Row(Modifier.uiTag("selection-head").then(header), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Box(Modifier.weight(1f).clipToBounds()) {
           SelectionTitle(selection, swatch(selection.objectInfo), onShowLayer, Modifier.slideIn(enter, from, fade = true))
         }
         DisableSelection {
           if (onExpand != null) ExpandButton(scroll, selection.candidates, expanded, onExpand)
-          CardIconButton(KotinIcons.Close, stringResource(Res.string.clear_selection), onClose, Modifier.size(HEADER_BUTTON), KotinColors.Subtle)
+          CardIconButton(KotinIcons.Close, stringResource(Res.string.clear_selection), onClose, Modifier.uiTag("selection-close").size(HEADER_BUTTON), KotinColors.Subtle)
         }
       }
       // свойства забирают остаток высоты: упёрлись в лимит — прокручиваются, переключатель под ними виден
       val attributes = selection.objectInfo.attributes
-      if (attributes.isNotEmpty()) Box(Modifier.weight(1f, fill = false).clipToBounds()) {
+      if (attributes.isNotEmpty()) Box(Modifier.weight(1f, fill = false).uiTag("attr-scroll").clipToBounds()) {
         AttributeGrid(attributes, swapXY, scroll, Modifier.slideIn(enter, from, fade = false).padding(top = 12.dp))
       }
       if (count > 1) DisableSelection {
@@ -183,7 +183,7 @@ private fun ExpandButton(scroll: ScrollState, candidates: List<PickCandidate>, e
     CardIconButton(
       if (expanded) KotinIcons.ChevronDown else KotinIcons.ChevronUp,
       stringResource(if (expanded) Res.string.selection_collapse else Res.string.selection_expand),
-      { onExpand(!expanded) }, Modifier.size(HEADER_BUTTON), KotinColors.Subtle,
+      { onExpand(!expanded) }, Modifier.uiTag("selection-expand").size(HEADER_BUTTON), KotinColors.Subtle,
     )
   }
 }
@@ -213,7 +213,7 @@ private fun AttributeGrid(attributes: List<SceneAttribute>, swapXY: Boolean, scr
     }
   }
   Column(modifier.verticalScroll(scroll), verticalArrangement = Arrangement.spacedBy(CELL_GAP)) {
-    for (row in 0 until rows) AttributeRow(attributes[2 * row], attributes.getOrNull(2 * row + 1), swapXY)
+    for (row in 0 until rows) AttributeRow(attributes[2 * row], attributes.getOrNull(2 * row + 1), swapXY, Modifier.uiTag("attr-row-$row"))
   }
 }
 
@@ -237,14 +237,14 @@ private fun attributeText(attribute: SceneAttribute, swapXY: Boolean): Annotated
 
 /** Строка сетки свойств: две ячейки пополам ширины, подложки во всю высоту строки (по более высокой ячейке). */
 @Composable
-private fun AttributeRow(left: SceneAttribute, right: SceneAttribute?, swapXY: Boolean) {
+private fun AttributeRow(left: SceneAttribute, right: SceneAttribute?, swapXY: Boolean, modifier: Modifier) {
   Layout(
     {
       // общая высота строк — та же сумма, что была у двух текстов (16 + 19 sp); своя у каждой — вдвое дороже раскладка
       Text(attributeText(left, swapXY), lineHeight = CELL_LINE)
       if (right != null) Text(attributeText(right, swapXY), lineHeight = CELL_LINE)
     },
-    Modifier.drawBehind {
+    modifier.drawBehind {
       val gap = CELL_GAP.toPx()
       val width = (size.width - gap) / 2
       val radius = CornerRadius(CELL_RADIUS.toPx())
@@ -277,7 +277,7 @@ private const val SLIDE_PART = 10
 @Composable
 private fun SelectionTitle(selection: ObjectSelection, swatch: Color?, onShowLayer: () -> Unit, modifier: Modifier) {
   val info = selection.objectInfo
-  Row(modifier, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+  Row(modifier.uiTag("selection-title"), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
     if (info.color != SceneObject.NO_COLOR) {
       Box(
         Modifier.padding(top = 4.dp).size(14.dp)
@@ -287,14 +287,14 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: Color?, onShowLay
     Column(Modifier.weight(1f)) {
       Text(
         info.kind + if (info.name.isNotEmpty()) " · ${localized(info.name)}" else "",
-        color = KotinColors.Ink, fontSize = 16.sp, lineHeight = 21.sp, fontWeight = FontWeight.SemiBold,
+        color = KotinColors.Ink, fontSize = 16.sp, lineHeight = 21.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.uiTag("selection-name"),
       )
       if (info.layer.isNotEmpty()) DisableSelection {
         // подсветка нажатия — скруглённая и чуть шире текста, сам текст на месте
         Text(
           stringResource(Res.string.selection_layer, localized(info.layer)),
           color = KotinColors.Accent, fontSize = 13.sp, lineHeight = 18.sp,
-          modifier = Modifier.offset(x = (-4).dp).clip(RoundedCornerShape(6.dp))
+          modifier = Modifier.offset(x = (-4).dp).uiTag("selection-layer").clip(RoundedCornerShape(6.dp))
             .clickable(role = Role.Button, onClick = onShowLayer).padding(horizontal = 4.dp, vertical = 2.dp),
         )
       }
@@ -315,7 +315,7 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: Color?, onShowLay
 private fun CandidateSwitch(selection: ObjectSelection, height: Dp, onPick: (Int) -> Unit, onStep: (Int) -> Unit) {
   val count = selection.candidates.size
   var expanded by remember(selection.candidates) { mutableStateOf(Stories.current?.candidatesOpen == true) }
-  Column(Modifier.padding(top = 10.dp).background(KotinColors.Subtle, RoundedCornerShape(14.dp)).padding(4.dp)) {
+  Column(Modifier.padding(top = 10.dp).uiTag("candidate-switch").background(KotinColors.Subtle, RoundedCornerShape(14.dp)).padding(4.dp)) {
     AnimatedVisibility(
       expanded, Modifier.weight(1f, fill = false),
       enter = expandVertically(tween(MOTION_MS, easing = LinearOutSlowInEasing), Alignment.Bottom) + fadeIn(tween(MOTION_MS)),
@@ -325,11 +325,11 @@ private fun CandidateSwitch(selection: ObjectSelection, height: Dp, onPick: (Int
       // открытый список — с выбранным в поле зрения
       val rowPx = with(LocalDensity.current) { LIST_ROW.roundToPx() }
       LaunchedEffect(Unit) { list.scrollTo(rowPx * (selection.index - LIST_ROWS.toInt() + 1).coerceAtLeast(0)) }
-      Column(Modifier.padding(bottom = 4.dp).heightIn(max = LIST_ROW * LIST_ROWS).verticalScroll(list)) {
+      Column(Modifier.uiTag("candidate-list").padding(bottom = 4.dp).heightIn(max = LIST_ROW * LIST_ROWS).verticalScroll(list)) {
         selection.candidates.forEachIndexed { i, candidate ->
           val on = i == selection.index
           Row(
-            Modifier.fillMaxWidth().height(LIST_ROW).clip(RoundedCornerShape(8.dp)).background(if (on) KotinColors.Selection else Color.Transparent)
+            Modifier.uiTag("candidate-item-$i").fillMaxWidth().height(LIST_ROW).clip(RoundedCornerShape(8.dp)).background(if (on) KotinColors.Selection else Color.Transparent)
               .clickable(role = Role.Button) { onPick(i) }.padding(horizontal = 6.dp),
             verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
           ) {
@@ -342,9 +342,9 @@ private fun CandidateSwitch(selection: ObjectSelection, height: Dp, onPick: (Int
         }
       }
     }
-    Row(Modifier.height(height), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
-      CardIconButton(KotinIcons.ChevronLeft, stringResource(Res.string.selection_prev), { onStep(-1) }, Modifier.size(height), KotinColors.Card)
-      CardButton(stringResource(Res.string.selection_list), { expanded = !expanded }, Modifier.weight(1f).fillMaxHeight()) {
+    Row(Modifier.uiTag("switch-row").height(height), horizontalArrangement = Arrangement.spacedBy(4.dp), verticalAlignment = Alignment.CenterVertically) {
+      CardIconButton(KotinIcons.ChevronLeft, stringResource(Res.string.selection_prev), { onStep(-1) }, Modifier.uiTag("candidate-prev").size(height), KotinColors.Card)
+      CardButton(stringResource(Res.string.selection_list), { expanded = !expanded }, Modifier.weight(1f).uiTag("candidate-middle").fillMaxHeight()) {
         Row(Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
           Text(
             stringResource(Res.string.selection_nearby) + " · ", color = KotinColors.Muted, fontSize = 12.sp, lineHeight = 16.sp,
@@ -353,7 +353,7 @@ private fun CandidateSwitch(selection: ObjectSelection, height: Dp, onPick: (Int
           Text("${selection.index + 1} / $count", color = KotinColors.Ink, fontSize = 12.sp, lineHeight = 16.sp, fontFamily = MonoFamily)
         }
       }
-      CardIconButton(KotinIcons.ChevronRight, stringResource(Res.string.selection_next), { onStep(1) }, Modifier.size(height), KotinColors.Card)
+      CardIconButton(KotinIcons.ChevronRight, stringResource(Res.string.selection_next), { onStep(1) }, Modifier.uiTag("candidate-next").size(height), KotinColors.Card)
     }
   }
 }
@@ -417,17 +417,17 @@ val CANDIDATE_MARK = 22.dp
 
 /** Тёмная плашка-подсказка «Удерживайте нажатие…» с крестиком: скрытая не возвращается (запоминается). */
 @Composable
-fun SelectionHint(text: String, onHide: () -> Unit, modifier: Modifier = Modifier) = HintPlate(text, modifier) {
-  Box(Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = DesignTokens.ON_HINT_ALPHA))) {
+fun SelectionHint(text: String, onHide: () -> Unit, modifier: Modifier = Modifier) = HintPlate("selection-hint", text, modifier) {
+  Box(Modifier.uiTag("hint-hide").size(36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = DesignTokens.ON_HINT_ALPHA))) {
     IconBox(KotinIcons.Close, stringResource(Res.string.hide_hint), 36.dp, onHide, tint = Color.White, iconSize = 14.dp)
   }
 }
 
 /** Та же плашка, что [SelectionHint], с кнопкой действия [action] вместо крестика. */
 @Composable
-fun ActionHint(text: String, action: String, onAction: () -> Unit, modifier: Modifier = Modifier) = HintPlate(text, modifier) {
+fun ActionHint(text: String, action: String, onAction: () -> Unit, modifier: Modifier = Modifier) = HintPlate("labels-notice", text, modifier) {
   Box(
-    Modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = DesignTokens.ON_HINT_ALPHA))
+    Modifier.uiTag("hint-action").heightIn(min = 36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = DesignTokens.ON_HINT_ALPHA))
       .clickable(role = Role.Button, onClick = onAction).padding(horizontal = 12.dp),
     contentAlignment = Alignment.Center,
   ) {
@@ -436,15 +436,15 @@ fun ActionHint(text: String, action: String, onAction: () -> Unit, modifier: Mod
 }
 
 @Composable
-private fun HintPlate(text: String, modifier: Modifier, trailing: @Composable () -> Unit) {
+private fun HintPlate(tag: String, text: String, modifier: Modifier, trailing: @Composable () -> Unit) {
   val shape = RoundedCornerShape(14.dp)
   Row(
-    modifier.clip(shape).background(KotinColors.Hint).blockSceneGestures().padding(start = 14.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
+    modifier.uiTag(tag).clip(shape).background(KotinColors.Hint).blockSceneGestures().padding(start = 14.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(10.dp),
   ) {
     // текст занимает всё место до кнопки: кнопка у правого края при любой длине строки
-    Text(text, color = Color.White, fontSize = 13.sp, lineHeight = 18.sp, modifier = Modifier.weight(1f))
+    Text(text, color = Color.White, fontSize = 13.sp, lineHeight = 18.sp, modifier = Modifier.weight(1f).uiTag("hint-text"))
     trailing()
   }
 }

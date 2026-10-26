@@ -64,6 +64,7 @@ fun AxisIndicator(controller: SceneCameraController, swapXY: Boolean, onHome: ()
   val axes = remember(controller) { ScreenAxes() }
   Box(
     modifier
+      .uiTag("axis-indicator")
       .size(AXIS_INDICATOR_SIZE)
       .background(KotinColors.Card, CircleShape)
       .border(1.dp, KotinColors.Outline, CircleShape)

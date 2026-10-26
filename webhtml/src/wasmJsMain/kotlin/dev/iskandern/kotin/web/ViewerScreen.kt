@@ -397,6 +397,7 @@ fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean, injected
     // читается или не открылся, до индикатора осей
     Div({
       classes("top-row")
+      ui("top-row")
       style { if (phone) property("right", (EDGE + AXIS_SIZE + 8).px) else property("width", sizes.panelWidth.px) }
     }) {
       MenuButton(ui.menuOpen && !phone, sizes.barHeight, viewModel::toggleMenu)

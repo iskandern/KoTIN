@@ -149,12 +149,12 @@ fun IconBox(icon: ImageVector, description: String, size: Dp, onClick: () -> Uni
 @Composable
 fun CameraButtons(mode: CameraMode, onMode: (CameraMode) -> Unit, onZoom: (Float) -> Unit, buttonSize: Dp, modifier: Modifier = Modifier) {
   val cardShape = RoundedCornerShape(14.dp)
-  Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-    Row(Modifier.floatingCard(cardShape).padding(4.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-      ModeSegment(stringResource(Res.string.camera_orbit), mode == CameraMode.ORBIT, buttonSize) { onMode(CameraMode.ORBIT) }
-      ModeSegment(stringResource(Res.string.camera_map), mode == CameraMode.MAP, buttonSize) { onMode(CameraMode.MAP) }
+  Row(modifier.uiTag("camera-buttons"), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(Modifier.uiTag("camera-mode").floatingCard(cardShape).padding(4.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+      ModeSegment("mode-orbit", stringResource(Res.string.camera_orbit), mode == CameraMode.ORBIT, buttonSize) { onMode(CameraMode.ORBIT) }
+      ModeSegment("mode-map", stringResource(Res.string.camera_map), mode == CameraMode.MAP, buttonSize) { onMode(CameraMode.MAP) }
     }
-    Row(Modifier.floatingCard(cardShape).padding(4.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+    Row(Modifier.uiTag("camera-zoom").floatingCard(cardShape).padding(4.dp), horizontalArrangement = Arrangement.spacedBy(2.dp)) {
       IconBox(KotinIcons.Minus, stringResource(Res.string.zoom_out), buttonSize, { onZoom(ZOOM_STEP) })
       IconBox(KotinIcons.Plus, stringResource(Res.string.zoom_in), buttonSize, { onZoom(1 / ZOOM_STEP) })
     }
@@ -162,10 +162,11 @@ fun CameraButtons(mode: CameraMode, onMode: (CameraMode) -> Unit, onZoom: (Float
 }
 
 @Composable
-private fun ModeSegment(label: String, selected: Boolean, height: Dp, onClick: () -> Unit) {
+private fun ModeSegment(tag: String, label: String, selected: Boolean, height: Dp, onClick: () -> Unit) {
   val shape = RoundedCornerShape(10.dp)
   Box(
     Modifier
+      .uiTag(tag)
       .height(height)
       .clip(shape)
       .background(if (selected) KotinColors.Ink else Color.Transparent)

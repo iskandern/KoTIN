@@ -94,6 +94,7 @@ fun SelectionCard(
   }
   Div({
     classes("selection-card")
+    ui("selection-card")
     style {
       if (maxHeight != null) property("max-height", maxHeight.px)
       height?.let { property("height", "${it}px") }
@@ -106,8 +107,8 @@ fun SelectionCard(
     val observer = observeTree(element) { measure() }
     ({ disconnect(observer) })
   }) {
-    Div({ classes("selection-body") }, ref = { parts[1] = it as HTMLElement; {} }) {
-      Div({ classes("selection-head"); header?.invoke(this) }) {
+    Div({ classes("selection-body"); ui("selection-body") }, ref = { parts[1] = it as HTMLElement; {} }) {
+      Div({ classes("selection-head"); ui("selection-head"); header?.invoke(this) }) {
         Div({ classes("selection-title-box") }) {
           // новый объект — новые элементы: въезд CSS-анимацией идёт с первого кадра
           key(selection.objectId) { SelectionTitle(selection, swatch(selection.objectInfo), onShowLayer, from) }
@@ -116,18 +117,18 @@ fun SelectionCard(
           CardIconButton(
             if (expanded) Icon.ChevronDown else Icon.ChevronUp,
             stringResource(if (expanded) Res.string.selection_collapse else Res.string.selection_expand),
-            { onExpand(!expanded) }, HEADER_BUTTON, "subtle",
+            { onExpand(!expanded) }, HEADER_BUTTON, "subtle", "selection-expand",
           )
         }
-        CardIconButton(Icon.Close, stringResource(Res.string.clear_selection), onClose, HEADER_BUTTON, "subtle")
+        CardIconButton(Icon.Close, stringResource(Res.string.clear_selection), onClose, HEADER_BUTTON, "subtle", "selection-close")
       }
       // свойства забирают остаток высоты: упёрлись в лимит — прокручиваются, переключатель под ними виден
       val attributes = selection.objectInfo.attributes
       if (attributes.isNotEmpty()) {
-        Div({ classes("attr-scroll") }, ref = { parts[2] = it as HTMLElement; ({ parts[2] = null }) }) {
+        Div({ classes("attr-scroll"); ui("attr-scroll") }, ref = { parts[2] = it as HTMLElement; ({ parts[2] = null }) }) {
           key(selection.objectId) {
             Div({ classes("attr-grid"); slide(from, fade = false) }, ref = { parts[3] = it as HTMLElement; ({ parts[3] = null }) }) {
-              for (row in 0 until (attributes.size + 1) / 2) AttributeRow(attributes[2 * row], attributes.getOrNull(2 * row + 1), swapXY)
+              for (row in 0 until (attributes.size + 1) / 2) AttributeRow("attr-row-$row", attributes[2 * row], attributes.getOrNull(2 * row + 1), swapXY)
             }
           }
         }
@@ -160,8 +161,8 @@ private fun AttrsScope.slide(from: Int, fade: Boolean) {
 
 /** Строка сетки свойств: две ячейки пополам ширины, подложки во всю высоту строки (по более высокой ячейке). */
 @Composable
-private fun AttributeRow(left: SceneAttribute, right: SceneAttribute?, swapXY: Boolean) {
-  Div({ classes("attr-row") }) {
+private fun AttributeRow(tag: String, left: SceneAttribute, right: SceneAttribute?, swapXY: Boolean) {
+  Div({ classes("attr-row"); ui(tag) }) {
     AttributeCell(left, swapXY)
     if (right != null) AttributeCell(right, swapXY) else Div({ classes("attr-cell", "empty") })
   }
@@ -180,16 +181,17 @@ private fun AttributeCell(attribute: SceneAttribute, swapXY: Boolean) {
 @Composable
 private fun SelectionTitle(selection: ObjectSelection, swatch: String?, onShowLayer: () -> Unit, from: Int) {
   val info = selection.objectInfo
-  Div({ classes("selection-title"); slide(from, fade = true) }) {
+  Div({ classes("selection-title"); ui("selection-title"); slide(from, fade = true) }) {
     if (info.color != SceneObject.NO_COLOR) {
       Div({ classes("swatch"); style { property("background", swatch ?: cssColor(info.color)) } })
     }
     Div({ classes("texts") }) {
-      Div({ classes("name", "selectable") }) { Text(info.kind + if (info.name.isNotEmpty()) " · ${localized(info.name)}" else "") }
+      Div({ classes("name", "selectable"); ui("selection-name") }) { Text(info.kind + if (info.name.isNotEmpty()) " · ${localized(info.name)}" else "") }
       if (info.layer.isNotEmpty()) {
         Div {
           Span({
             classes("layer", "ripple")
+            ui("selection-layer")
             attr("role", "button")
             onClick { onShowLayer() }
           }) { Text(stringResource(Res.string.selection_layer, localized(info.layer))) }
@@ -211,11 +213,11 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: String?, onShowLa
 private fun CandidateSwitch(selection: ObjectSelection, height: Int, onPick: (Int) -> Unit, onStep: (Int) -> Unit) {
   val count = selection.candidates.size
   var expanded by remember(selection.candidates) { mutableStateOf(Stories.current?.candidatesOpen == true) }
-  Div({ classes("candidate-switch") }) {
+  Div({ classes("candidate-switch"); ui("candidate-switch") }) {
     Appear(expanded) { shown ->
       Div({ classes("candidate-list-wrap"); classIf(shown, "in") }) {
         Div {
-          Div({ classes("candidate-list") }, ref = { element ->
+          Div({ classes("candidate-list"); ui("candidate-list") }, ref = { element ->
             // открытый список — с выбранным в поле зрения
             (element as HTMLElement).scrollTop = (LIST_ROW * (selection.index - LIST_ROWS.toInt() + 1).coerceAtLeast(0)).toDouble()
             ({})
@@ -224,6 +226,7 @@ private fun CandidateSwitch(selection: ObjectSelection, height: Int, onPick: (In
               val on = i == selection.index
               Div({
                 classes("candidate-item", "ripple")
+                ui("candidate-item-$i")
                 classIf(on, "on")
                 attr("role", "button")
                 onClick { onPick(i) }
@@ -238,15 +241,15 @@ private fun CandidateSwitch(selection: ObjectSelection, height: Int, onPick: (In
         }
       }
     }
-    Div({ classes("switch-row"); style { property("height", height.px) } }) {
-      CardIconButton(Icon.ChevronLeft, stringResource(Res.string.selection_prev), { onStep(-1) }, height, "card")
-      CardButton(stringResource(Res.string.selection_list), { expanded = !expanded }, { classes("switch-middle") }) {
+    Div({ classes("switch-row"); ui("switch-row"); style { property("height", height.px) } }) {
+      CardIconButton(Icon.ChevronLeft, stringResource(Res.string.selection_prev), { onStep(-1) }, height, "card", "candidate-prev")
+      CardButton(stringResource(Res.string.selection_list), { expanded = !expanded }, { classes("switch-middle"); ui("candidate-middle") }) {
         Div({ classes("inner") }) {
           Span({ classes("nearby", "ellipsis") }) { Text(stringResource(Res.string.selection_nearby) + " · ") }
           Span({ classes("count") }) { Text("${selection.index + 1} / $count") }
         }
       }
-      CardIconButton(Icon.ChevronRight, stringResource(Res.string.selection_next), { onStep(1) }, height, "card")
+      CardIconButton(Icon.ChevronRight, stringResource(Res.string.selection_next), { onStep(1) }, height, "card", "candidate-next")
     }
   }
 }
@@ -268,9 +271,10 @@ private fun CardButton(description: String, onClick: () -> Unit, attrs: AttrsSco
 
 /** Кнопка карточки со значком [size] × [size] на фоне [background] («subtle», «card»). */
 @Composable
-private fun CardIconButton(icon: Icon, description: String, onClick: () -> Unit, size: Int, background: String, iconSize: Int = 16) {
+private fun CardIconButton(icon: Icon, description: String, onClick: () -> Unit, size: Int, background: String, tag: String, iconSize: Int = 16) {
   CardButton(description, onClick, {
     classes(background)
+    ui(tag)
     style { property("width", size.px); property("height", size.px) }
   }) { IconView(icon, iconSize, "var(--ink)") }
 }
@@ -283,23 +287,23 @@ fun CandidateNumber(number: Int, selected: Boolean) {
 
 /** Тёмная плашка-подсказка «Удерживайте нажатие…» с крестиком: скрытая не возвращается (запоминается). */
 @Composable
-fun SelectionHint(text: String, onHide: () -> Unit, attrs: AttrsScope.() -> Unit) = HintPlate(text, attrs) {
-  Div({ classes("hide"); style { property("width", "36px"); property("height", "36px") } }) {
+fun SelectionHint(text: String, onHide: () -> Unit, attrs: AttrsScope.() -> Unit) = HintPlate("selection-hint", text, attrs) {
+  Div({ classes("hide"); ui("hint-hide"); style { property("width", "36px"); property("height", "36px") } }) {
     IconBox(Icon.Close, stringResource(Res.string.hide_hint), 36, onHide, color = "var(--white)", iconSize = 14)
   }
 }
 
 /** Та же плашка, что [SelectionHint], с кнопкой действия [action] вместо крестика. */
 @Composable
-fun ActionHint(text: String, action: String, onAction: () -> Unit, attrs: AttrsScope.() -> Unit) = HintPlate(text, attrs) {
-  Div({ classes("action-hint", "ripple"); attr("role", "button"); onClick { onAction() } }) { Text(action) }
+fun ActionHint(text: String, action: String, onAction: () -> Unit, attrs: AttrsScope.() -> Unit) = HintPlate("labels-notice", text, attrs) {
+  Div({ classes("action-hint", "ripple"); ui("hint-action"); attr("role", "button"); onClick { onAction() } }) { Text(action) }
 }
 
 @Composable
-private fun HintPlate(text: String, attrs: AttrsScope.() -> Unit, trailing: @Composable () -> Unit) {
-  Div({ classes("hint-plate"); attrs() }) {
+private fun HintPlate(tag: String, text: String, attrs: AttrsScope.() -> Unit, trailing: @Composable () -> Unit) {
+  Div({ classes("hint-plate"); ui(tag); attrs() }) {
     // текст занимает всё место до кнопки: кнопка у правого края при любой длине строки
-    Div({ classes("text") }) { Text(text) }
+    Div({ classes("text"); ui("hint-text") }) { Text(text) }
     trailing()
   }
 }

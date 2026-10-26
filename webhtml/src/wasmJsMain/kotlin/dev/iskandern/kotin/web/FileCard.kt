@@ -36,7 +36,7 @@ import org.jetbrains.compose.resources.stringResource
 /** Кнопка меню ≡: квадратная; пока меню открыто — тёмная. */
 @Composable
 fun MenuButton(open: Boolean, size: Int, onClick: () -> Unit) {
-  Div({ classes("menu-button", "floating"); classIf(open, "open") }) {
+  Div({ classes("menu-button", "floating"); classIf(open, "open"); ui("menu-button") }) {
     IconBox(Icon.Menu, stringResource(Res.string.menu), size, onClick, "12px", color = if (open) "var(--card)" else "var(--ink)")
   }
 }
@@ -77,6 +77,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Int, onOpen
   }
   Div({
     classes("file-card", "floating")
+    ui("file-card")
     style { property("min-height", height.px) }
     if (failed != null) {
       classes("ripple")
@@ -86,7 +87,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Int, onOpen
   }) {
     Div({ classes("row"); style { property("min-height", height.px) } }) {
       // имя и строку под ним можно выделить и скопировать; у ошибки нажатие раскрывает подробности
-      Div({ classes("texts"); classIf(failed == null, "selectable") }) {
+      Div({ classes("texts"); classIf(failed == null, "selectable"); ui("file-texts") }) {
         if (title == null) KotinWordmark(bottom = 2) else Div({ classes("title", "body-medium", "ellipsis") }) { Text(title) }
         Div({ classes("meta-row") }) {
           Span({ classes("meta", "ellipsis"); classIf(failed != null, "error") }) { Text(meta) }
@@ -96,7 +97,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Int, onOpen
         }
       }
       if (shown != null || failed != null) {
-        Div({ classes("open-other"); style { property("width", (height - 4).px); property("height", (height - 4).px) } }) {
+        Div({ classes("open-other"); ui("file-open-other"); style { property("width", (height - 4).px); property("height", (height - 4).px) } }) {
           IconBox(Icon.Folder, stringResource(Res.string.open_other_file), height - 4, onOpen, iconSize = 18) {
             // нажатие на значок не раскрывает ошибку
             on("click") { it.stopPropagation() }
@@ -132,7 +133,7 @@ private fun ProgressBar(progress: Float?) {
 @Composable
 private fun LoadErrorDetails(failed: LoadState.Failed, shown: LoadState.Loaded?, onDismiss: () -> Unit) {
   val known = isForeignFormat(failed.message)
-  Div({ classes("details") }) {
+  Div({ classes("details"); ui("load-error-details") }) {
     Div({ style { property("color", "var(--ink)"); property("font-size", "13px"); property("line-height", "17px") } }) {
       Text(if (known) localized(failed.message) else stringResource(Res.string.load_failed_reason))
     }
@@ -175,10 +176,10 @@ fun KotinWordmark(iconSize: Int = 20, bottom: Int = 0) {
 /** Пустой экран: файла ещё нет — по центру приглашение открыть и подсказка платформы. */
 @Composable
 fun EmptyState(onOpen: () -> Unit) {
-  Div({ classes("empty-state", "floating") }) {
-    Img("kotin_mark.svg") { style { property("width", "80px"); property("height", "60px") } }
+  Div({ classes("empty-state", "floating"); ui("empty-state") }) {
+    Img("kotin_mark.svg") { ui("empty-mark"); style { property("width", "80px"); property("height", "60px") } }
     Div({ classes("hint-title") }) { Text(stringResource(Res.string.open_hint)) }
-    Div({ classes("m3-button", "ripple"); attr("role", "button"); onClick { onOpen() } }) { Text(stringResource(Res.string.open_file)) }
+    Div({ classes("m3-button", "ripple"); attr("role", "button"); ui("empty-open"); onClick { onOpen() } }) { Text(stringResource(Res.string.open_file)) }
     Div({ classes("hint") }) { Text(stringResource(openFileHint)) }
   }
 }

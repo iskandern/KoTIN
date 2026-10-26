@@ -80,16 +80,16 @@ private val SHEET_DISMISS_DRAG = 64.dp
  */
 @Composable
 fun CameraRail(mode: CameraMode, onMode: (CameraMode) -> Unit, onZoom: (Float) -> Unit, buttonSize: Dp, modifier: Modifier = Modifier) {
-  Column(modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
+  Column(modifier.uiTag("camera-rail"), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp)) {
     // колонка обрезана по форме карточки: подсветка нажатия «+» и «−» скруглена вместе с ней, а не квадратная
     val pill = RoundedCornerShape(24.dp)
-    Column(Modifier.floatingCard(pill).clip(pill)) {
+    Column(Modifier.uiTag("rail-zoom").floatingCard(pill).clip(pill)) {
       IconBox(KotinIcons.Plus, stringResource(Res.string.zoom_in), buttonSize, { onZoom(1 / ZOOM_STEP) }, RectangleShape, iconSize = 22.dp)
       Box(Modifier.width(buttonSize).height(1.dp).background(KotinColors.Scene))
       IconBox(KotinIcons.Minus, stringResource(Res.string.zoom_out), buttonSize, { onZoom(ZOOM_STEP) }, RectangleShape, iconSize = 22.dp)
     }
     val orbit = mode == CameraMode.ORBIT
-    Box(Modifier.floatingCard(CircleShape)) {
+    Box(Modifier.uiTag("rail-mode").floatingCard(CircleShape)) {
       IconBox(
         if (orbit) KotinIcons.Orbit else KotinIcons.Map,
         stringResource(if (orbit) Res.string.camera_orbit_hint else Res.string.camera_map_hint),
@@ -202,6 +202,7 @@ fun BottomSheet(
   }
   Column(
     modifier
+      .uiTag("sheet")
       .fillMaxWidth()
       // высота — по жесту или по состоянию; ниже свёрнутой — сдвиг вниз, выше предела — вверх (высота та же: содержимое
       // не перемеряется). Читается при раскладке: жест не пересобирает шторку
@@ -241,8 +242,8 @@ fun BottomSheet(
       .blockSceneGestures()
       .windowInsetsPadding(WindowInsets.navigationBars),
   ) {
-    Box(Modifier.fillMaxWidth().height(24.dp).then(drag), contentAlignment = Alignment.Center) {
-      Box(Modifier.size(36.dp, 4.dp).background(KotinColors.Handle, RoundedCornerShape(2.dp)))
+    Box(Modifier.uiTag("sheet-handle-area").fillMaxWidth().height(24.dp).then(drag), contentAlignment = Alignment.Center) {
+      Box(Modifier.uiTag("sheet-handle").size(36.dp, 4.dp).background(KotinColors.Handle, RoundedCornerShape(2.dp)))
     }
     content(drag, dragging)
   }
@@ -318,14 +319,14 @@ private val SHEET_ELEVATION = 16.dp
 fun MenuDrawer(open: Boolean, width: Dp, onClose: () -> Unit, content: @Composable () -> Unit) {
   AnimatedVisibility(open, enter = fadeIn(tween(MOTION_MS)), exit = fadeOut(tween(MOTION_MS))) {
     Box(
-      Modifier.fillMaxSize().background(KotinColors.Scrim)
+      Modifier.uiTag("drawer-scrim").fillMaxSize().background(KotinColors.Scrim)
         .clickable(remember { MutableInteractionSource() }, indication = null, onClickLabel = stringResource(Res.string.close_menu), onClick = onClose),
     )
   }
   AnimatedVisibility(open, enter = slideInHorizontally(tween(MOTION_MS)) { -it }, exit = slideOutHorizontally(tween(MOTION_MS)) { -it }) {
     val shape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
     Box(
-      Modifier.width(width).fillMaxHeight()
+      Modifier.uiTag("drawer").width(width).fillMaxHeight()
         .softShadow(shape, 24.dp)
         .background(KotinColors.Card, shape)
         .blockSceneGestures()

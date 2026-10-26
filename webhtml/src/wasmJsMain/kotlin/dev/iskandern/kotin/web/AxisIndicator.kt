@@ -27,6 +27,7 @@ fun AxisIndicator(controller: SceneCameraController, swapXY: Boolean, onHome: ()
   val labels = remember { arrayOfNulls<Element>(3) }
   Div({
     classes("axis-indicator")
+    ui("axis-indicator")
     attr("role", "button")
     onClick { home() }
   }) {

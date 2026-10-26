@@ -62,7 +62,7 @@ import dev.iskandern.kotin.resources.triangles
 fun MenuButton(open: Boolean, size: Dp, onClick: () -> Unit) {
   val shape = RoundedCornerShape(12.dp)
   Box(
-    Modifier.floatingCard(shape).then(if (open) Modifier.background(KotinColors.Ink, shape) else Modifier),
+    Modifier.uiTag("menu-button").floatingCard(shape).then(if (open) Modifier.background(KotinColors.Ink, shape) else Modifier),
   ) {
     IconBox(KotinIcons.Menu, stringResource(Res.string.menu), size, onClick, shape, tint = if (open) KotinColors.Card else KotinColors.Ink)
   }
@@ -104,7 +104,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
     }
   }
   Box(
-    modifier.heightIn(min = height).floatingCard(shape).clip(shape)
+    modifier.uiTag("file-card").heightIn(min = height).floatingCard(shape).clip(shape)
       .then(if (failed != null) Modifier.clickable(role = Role.Button) { expanded = !expanded } else Modifier),
   ) {
     Column {
@@ -112,7 +112,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
         // имя и строку под ним можно выделить и скопировать; у ошибки нажатие раскрывает подробности — выделение
         // забирало бы его, сообщение разбора выделяется в подробностях
         val texts = @Composable {
-          Column(Modifier.padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)) {
+          Column(Modifier.uiTag("file-texts").padding(start = 12.dp, end = 4.dp, top = 4.dp, bottom = 4.dp)) {
             if (title == null) KotinWordmark(Modifier.padding(bottom = 2.dp)) else Text(
               title, color = KotinColors.Ink, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold,
               maxLines = 1, overflow = TextOverflow.Ellipsis,
@@ -130,7 +130,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
         }
         if (failed != null) Box(Modifier.weight(1f)) { texts() } else SelectionContainer(Modifier.weight(1f)) { texts() }
         if (shown != null || failed != null) {
-          Box(Modifier.padding(end = 2.dp).size(height - 4.dp).clip(RoundedCornerShape(10.dp)).background(KotinColors.Subtle)) {
+          Box(Modifier.padding(end = 2.dp).uiTag("file-open-other").size(height - 4.dp).clip(RoundedCornerShape(10.dp)).background(KotinColors.Subtle)) {
             IconBox(KotinIcons.Folder, stringResource(Res.string.open_other_file), height - 4.dp, onOpen, iconSize = 18.dp)
           }
         }
@@ -152,7 +152,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
 @Composable
 private fun LoadErrorDetails(failed: LoadState.Failed, shown: LoadState.Loaded?, onDismiss: () -> Unit) {
   val known = isForeignFormat(failed.message)
-  Column(Modifier.padding(start = 12.dp, end = 12.dp, bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+  Column(Modifier.uiTag("load-error-details").padding(start = 12.dp, end = 12.dp, bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
     Text(
       if (known) localized(failed.message) else stringResource(Res.string.load_failed_reason),
       color = KotinColors.Ink, fontSize = 13.sp, lineHeight = 17.sp,
@@ -175,16 +175,16 @@ private fun LoadErrorDetails(failed: LoadState.Failed, shown: LoadState.Loaded?,
 @Composable
 fun EmptyState(onOpen: () -> Unit, modifier: Modifier = Modifier) {
   Column(
-    modifier.widthIn(max = 420.dp).floatingCard(RoundedCornerShape(20.dp), elevation = 8.dp).padding(horizontal = 28.dp, vertical = 32.dp),
+    modifier.uiTag("empty-state").widthIn(max = 420.dp).floatingCard(RoundedCornerShape(20.dp), elevation = 8.dp).padding(horizontal = 28.dp, vertical = 32.dp),
     horizontalAlignment = Alignment.CenterHorizontally,
     verticalArrangement = Arrangement.spacedBy(16.dp),
   ) {
-    Image(painterResource(Res.drawable.kotin_mark), null, Modifier.size(80.dp, 60.dp))
+    Image(painterResource(Res.drawable.kotin_mark), null, Modifier.uiTag("empty-mark").size(80.dp, 60.dp))
     Text(
       stringResource(Res.string.open_hint), color = KotinColors.Ink, fontSize = 20.sp, lineHeight = 26.sp,
       fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center,
     )
-    Button(onClick = onOpen, modifier = Modifier.height(48.dp), shape = RoundedCornerShape(12.dp)) {
+    Button(onClick = onOpen, modifier = Modifier.uiTag("empty-open").height(48.dp), shape = RoundedCornerShape(12.dp)) {
       Text(stringResource(Res.string.open_file), fontWeight = FontWeight.SemiBold)
     }
     Text(stringResource(openFileHint), color = KotinColors.Muted, fontSize = 13.sp, lineHeight = 18.sp, textAlign = TextAlign.Center)

@@ -125,6 +125,7 @@ fun BottomSheet(
   val p = position
   Div({
     classes("sheet", "soft-16")
+    ui("sheet")
     classIf(shown, "in")
     style {
       if (p == null) {
@@ -149,7 +150,7 @@ fun BottomSheet(
       }
     }
   }, ref = { sheet.element = it as HTMLElement; ({ sheet.element = null }) }) {
-    Div({ classes("handle-area"); drag() }) { Div({ classes("handle") }) }
+    Div({ classes("handle-area"); ui("sheet-handle-area"); drag() }) { Div({ classes("handle"); ui("sheet-handle") }) }
     content(drag, p != null)
   }
 }
@@ -254,6 +255,7 @@ fun MenuDrawer(open: Boolean, width: Int, onClose: () -> Unit, content: @Composa
   Appear(open, MOTION_MS) { shown ->
     Div({
       classes("drawer-scrim", "fade")
+      ui("drawer-scrim")
       classIf(shown, "in")
       attr("aria-label", closeLabel)
       onClick { onClose() }
@@ -262,6 +264,7 @@ fun MenuDrawer(open: Boolean, width: Int, onClose: () -> Unit, content: @Composa
   Appear(open, MOTION_MS) { shown ->
     Div({
       classes("drawer")
+      ui("drawer")
       classIf(shown, "in")
       style { property("width", width.px) }
     }) { content() }

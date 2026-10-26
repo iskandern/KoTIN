@@ -205,14 +205,14 @@ fun ViewerMenu(
       .padding(start = 16.dp, end = 16.dp, top = if (onClose != null) 6.dp else 10.dp, bottom = 8.dp),
   ) {
     if (onClose != null) {
-      Row(Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+      Row(Modifier.uiTag("menu-head").fillMaxWidth().padding(top = 4.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
         Text("KoTIN", color = KotinColors.Ink, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-        Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)).background(KotinColors.Subtle)) {
+        Box(Modifier.uiTag("menu-close").size(44.dp).clip(RoundedCornerShape(12.dp)).background(KotinColors.Subtle)) {
           IconBox(KotinIcons.Close, stringResource(Res.string.close_menu), 44.dp, onClose, RoundedCornerShape(12.dp), iconSize = 16.dp)
         }
       }
     }
-    Column(Modifier.fillMaxWidth().padding(bottom = 14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    Column(Modifier.uiTag("menu-top").fillMaxWidth().padding(bottom = 14.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
       // система координат — сразу под именем файла; на десктопе и планшете имени в меню нет, строка — первой
       // (без имени и без систем блока нет: пустой добавил бы зазор)
       if (loaded != null && (onClose != null || loaded.geometry.coordinateSystems.isNotEmpty())) Column {
@@ -221,9 +221,9 @@ fun ViewerMenu(
       }
       if (loaded != null) SceneSummary(loaded, ui.showMillis)
       Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        ActionButton(stringResource(Res.string.open_file), primary = true, Modifier.weight(1f), onOpenFile)
+        ActionButton(stringResource(Res.string.open_file), primary = true, Modifier.weight(1f).uiTag("menu-open-file"), onOpenFile)
         if (loaded != null) {
-          ActionButton(stringResource(Res.string.home_view), primary = false, Modifier.weight(1f)) { viewModel.sendCameraCommand(CameraCommand.Home) }
+          ActionButton(stringResource(Res.string.home_view), primary = false, Modifier.weight(1f).uiTag("menu-home")) { viewModel.sendCameraCommand(CameraCommand.Home) }
         }
       }
       // вид, с которым чертёж сохранён в AutoCAD (VPORT *Active); без него кнопки нет
@@ -233,17 +233,17 @@ fun ViewerMenu(
         }
       }
     }
-    Box(Modifier.fillMaxWidth().height(1.dp).background(KotinColors.Scene))
+    Box(Modifier.uiTag("menu-divider").fillMaxWidth().height(1.dp).background(KotinColors.Scene))
 
     val available = loaded?.let { remember(it.scene) { AvailableControls(it.scene) } }
     if (loaded != null && available != null) {
-      MenuSection(stringResource(Res.string.section_display), sections.display, rowHeight, { sections.display = !sections.display }) {
+      MenuSection("section-display", stringResource(Res.string.section_display), sections.display, rowHeight, { sections.display = !sections.display }) {
         DisplayChecks(loaded.scene, available, ui.settings, ui.autoLabels, rowHeight, viewModel::changeSettings, viewModel::setFlattenDrawing)
       }
       ElementsSection(loaded.scene, ui.settings, ui.selection?.layer, ui.selection?.objectId to sections.layerRequest, sections, rowHeight, viewModel::changeSettings)
     }
 
-    MenuSection(stringResource(Res.string.section_settings), sections.settings, rowHeight, { sections.settings = !sections.settings }) {
+    MenuSection("section-settings", stringResource(Res.string.section_settings), sections.settings, rowHeight, { sections.settings = !sections.settings }) {
       Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (loaded != null && available != null) {
           // плоская сцена (план, лист — бумага всегда плоская) — высота ноль, чипы ничего не меняют; значение
@@ -293,10 +293,10 @@ fun ViewerMenu(
 
 /** Раздел меню: заголовок со стрелкой сворачивает и раскрывает [content]. */
 @Composable
-private fun MenuSection(title: String, open: Boolean, rowHeight: Dp, onToggle: () -> Unit, content: @Composable ColumnScope.() -> Unit) {
+private fun MenuSection(tag: String, title: String, open: Boolean, rowHeight: Dp, onToggle: () -> Unit, content: @Composable ColumnScope.() -> Unit) {
   // область нажатия — как у строк раздела: скруглённая, с теми же полями
   Row(
-    Modifier.fillMaxWidth().height(rowHeight + 4.dp).clip(ROW_SHAPE).clickable(role = Role.Button, onClick = onToggle)
+    Modifier.uiTag(tag).fillMaxWidth().height(rowHeight + 4.dp).clip(ROW_SHAPE).clickable(role = Role.Button, onClick = onToggle)
       .padding(horizontal = ROW_PADDING),
     verticalAlignment = Alignment.CenterVertically,
   ) {
@@ -417,7 +417,7 @@ private fun ElementsSection(
   // у LandXML слоёв нет — список собирает просмотрщик: «Элементы» по группам; у DXF групп нет — «Слои» одним списком
   val groups = remember(scene) { layers.groupBy { it.group } }
   val title = if (groups.keys.any { it.isNotEmpty() }) Res.string.elements_title else Res.string.layers_title
-  MenuSection(stringResource(title, layers.size), sections.elements, rowHeight, { sections.elements = !sections.elements }) {
+  MenuSection("section-elements", stringResource(title, layers.size), sections.elements, rowHeight, { sections.elements = !sections.elements }) {
     // отступ сверху — чтобы подсветка заголовка не упиралась в кнопки; слева — вровень с флажками строк
     Row(Modifier.padding(start = ROW_PADDING, top = 6.dp, bottom = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
       SmallButton(stringResource(Res.string.layers_all)) { onChange(settings.copy(hiddenLayers = stationingHidden)) }

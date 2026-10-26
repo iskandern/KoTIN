@@ -8,3 +8,6 @@ local.properties
 node_modules
 
 .venv
+
+# отчёты агентов (scripts/ui-sync/compare.mjs и др.)
+agent-out

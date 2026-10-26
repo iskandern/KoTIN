@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import dev.iskandern.kotin.DesignTokens
+import dev.iskandern.kotin.Stories
 import dev.iskandern.kotin.web.dom.AttrsScope
 import dev.iskandern.kotin.web.dom.Div
 import dev.iskandern.kotin.web.dom.SvgPath
@@ -70,6 +71,11 @@ fun IconBox(
     onClick { onClick() }
     attrs?.invoke(this)
   }) { IconView(icon, iconSize, color) }
+}
+
+/** Имя элемента для сверки с Compose-версией (там — `Modifier.uiTag`): только в историях, см. `Stories`. */
+fun AttrsScope.ui(name: String) {
+  if (Stories.current != null) attr("data-ui", name)
 }
 
 /** Цвет CSS из 0xRRGGBB. */

@@ -415,7 +415,7 @@ fun ViewerScreen(initialSource: DrawingSource? = null, injected: ViewerViewModel
         // слева сверху: ≡ и карточка файла; на телефоне имя файла — в боковом меню, а карточка — только пока файл
         // читается или не открылся, до индикатора осей
         val topRow = if (phone) Modifier.fillMaxWidth().padding(end = AXIS_SIZE + 8.dp) else Modifier.width(sizes.panelWidth)
-        Row(Modifier.align(Alignment.TopStart).then(safe).padding(EDGE).then(topRow), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.align(Alignment.TopStart).then(safe).padding(EDGE).then(topRow).uiTag("top-row"), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
           MenuButton(ui.menuOpen && !phone, sizes.barHeight, viewModel::toggleMenu)
           if (!phone || ui.loadState is LoadState.Loading || ui.loadState is LoadState.Failed) {
             FileCard(ui.loadState, current, sizes.barHeight, pickFile, viewModel::dismissError, Modifier.weight(1f))
@@ -442,7 +442,7 @@ fun ViewerScreen(initialSource: DrawingSource? = null, injected: ViewerViewModel
             // вырастает от ≡
             ViewerMenu(
               ui, viewModel, sections, language, onLanguage, pickFile, sizes.rowHeight,
-              modifier = Modifier.width(sizes.panelWidth).appearingCard(PANEL_SHAPE, 12.dp, appear, TransformOrigin(0f, 0f)),
+              modifier = Modifier.uiTag("menu-panel").width(sizes.panelWidth).appearingCard(PANEL_SHAPE, 12.dp, appear, TransformOrigin(0f, 0f)),
             )
           }
         }

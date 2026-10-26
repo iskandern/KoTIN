@@ -180,14 +180,14 @@ fun ViewerMenu(
       ({ disconnectObserver(observer) })
     }) {
       if (onClose != null) {
-        Div({ classes("menu-head") }) {
+        Div({ classes("menu-head"); ui("menu-head") }) {
           Div({ classes("title") }) { Text("KoTIN") }
-          Div({ classes("close"); style { property("width", "44px"); property("height", "44px") } }) {
+          Div({ classes("close"); ui("menu-close"); style { property("width", "44px"); property("height", "44px") } }) {
             IconBox(Icon.Close, stringResource(Res.string.close_menu), 44, onClose, "12px", iconSize = 16)
           }
         }
       }
-      Div({ classes("menu-top") }) {
+      Div({ classes("menu-top"); ui("menu-top") }) {
         // система координат — сразу под именем файла; на десктопе и планшете имени в меню нет, строка — первой
         if (loaded != null && (onClose != null || loaded.geometry.coordinateSystems.isNotEmpty())) Div {
           if (onClose != null) FileTitle(loaded)
@@ -195,9 +195,9 @@ fun ViewerMenu(
         }
         if (loaded != null) SceneSummary(loaded, ui.showMillis)
         Div({ classes("actions") }) {
-          ActionButton(stringResource(Res.string.open_file), primary = true, onClick = onOpenFile)
+          ActionButton(stringResource(Res.string.open_file), primary = true, tag = "menu-open-file", onClick = onOpenFile)
           if (loaded != null) {
-            ActionButton(stringResource(Res.string.home_view), primary = false) { viewModel.sendCameraCommand(CameraCommand.Home) }
+            ActionButton(stringResource(Res.string.home_view), primary = false, tag = "menu-home") { viewModel.sendCameraCommand(CameraCommand.Home) }
           }
         }
         // вид, с которым чертёж сохранён в AutoCAD (VPORT *Active); без него кнопки нет
@@ -209,17 +209,17 @@ fun ViewerMenu(
           }
         }
       }
-      Div({ classes("menu-divider") })
+      Div({ classes("menu-divider"); ui("menu-divider") })
 
       val available = loaded?.let { remember(it.scene) { AvailableControls(it.scene) } }
       if (loaded != null && available != null) {
-        MenuSection(stringResource(Res.string.section_display), sections.display, rowHeight, { sections.display = !sections.display }) {
+        MenuSection("section-display", stringResource(Res.string.section_display), sections.display, rowHeight, { sections.display = !sections.display }) {
           DisplayChecks(loaded.scene, available, ui.settings, ui.autoLabels, rowHeight, viewModel::changeSettings, viewModel::setFlattenDrawing)
         }
         ElementsSection(loaded.scene, ui.settings, ui.selection?.layer, ui.selection?.objectId to sections.layerRequest, sections, rowHeight, viewModel::changeSettings)
       }
 
-      MenuSection(stringResource(Res.string.section_settings), sections.settings, rowHeight, { sections.settings = !sections.settings }) {
+      MenuSection("section-settings", stringResource(Res.string.section_settings), sections.settings, rowHeight, { sections.settings = !sections.settings }) {
         Div({ style { property("display", "flex"); property("flex-direction", "column"); property("gap", "8px") } }) {
           if (loaded != null && available != null) {
             // плоская сцена (план, лист) — высота ноль, чипы ничего не меняют
@@ -297,10 +297,11 @@ private external fun disconnectObserver(observer: JsAny)
 
 /** Раздел меню: заголовок со стрелкой сворачивает и раскрывает [content]. */
 @Composable
-private fun MenuSection(title: String, open: Boolean, rowHeight: Int, onToggle: () -> Unit, content: @Composable () -> Unit) {
+private fun MenuSection(tag: String, title: String, open: Boolean, rowHeight: Int, onToggle: () -> Unit, content: @Composable () -> Unit) {
   // область нажатия — как у строк раздела: скруглённая, с теми же полями
   Div({
     classes("menu-section-head", "ripple")
+    ui(tag)
     attr("role", "button")
     attr("aria-expanded", open.toString())
     style { property("height", (rowHeight + 4).px) }
@@ -427,7 +428,7 @@ private fun ElementsSection(
   val surfaceColors = remember(scene) { surfaceColors(scene) }
   val groups = remember(scene) { layers.groupBy { it.group } }
   val title = if (groups.keys.any { it.isNotEmpty() }) Res.string.elements_title else Res.string.layers_title
-  MenuSection(stringResource(title, layers.size), sections.elements, rowHeight, { sections.elements = !sections.elements }) {
+  MenuSection("section-elements", stringResource(title, layers.size), sections.elements, rowHeight, { sections.elements = !sections.elements }) {
     Div({ style { property("display", "flex"); property("gap", "8px"); property("padding", "6px 0 6px 8px") } }) {
       SmallButton(stringResource(Res.string.layers_all)) { onChange(settings.copy(hiddenLayers = stationingHidden)) }
       SmallButton(stringResource(Res.string.layers_none)) { onChange(settings.copy(hiddenLayers = stationingHidden + layers.map { it.name })) }
@@ -535,9 +536,10 @@ private fun ChoiceChip(label: String, selected: Boolean, weighted: Boolean = fal
 
 /** Кнопка меню 44 dp: основная — синяя, вторая — белая с рамкой. */
 @Composable
-private fun ActionButton(label: String, primary: Boolean, onClick: () -> Unit) {
+private fun ActionButton(label: String, primary: Boolean, tag: String? = null, onClick: () -> Unit) {
   Div({
     classes("action", "body-medium", "ripple", if (primary) "primary" else "secondary")
+    if (tag != null) ui(tag)
     attr("role", "button")
     onClick { onClick() }
   }) { Span({ classes("ellipsis") }) { Text(label) } }
@@ -579,6 +581,7 @@ private fun FpsText() {
 /** Атрибуты панели меню, чтобы не пересоздавать лямбду на каждой перекомпоновке экрана. */
 internal fun AttrsScope.menuPanel(top: Int, width: Int, shown: Boolean) {
   classes("menu-panel", "appear", "soft-12")
+  ui("menu-panel")
   classIf(shown, "in")
   style {
     property("top", top.px)
