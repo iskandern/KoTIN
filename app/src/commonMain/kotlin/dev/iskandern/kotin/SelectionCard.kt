@@ -314,7 +314,7 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: Color?, onShowLay
 @Composable
 private fun CandidateSwitch(selection: ObjectSelection, height: Dp, onPick: (Int) -> Unit, onStep: (Int) -> Unit) {
   val count = selection.candidates.size
-  var expanded by remember(selection.candidates) { mutableStateOf(false) }
+  var expanded by remember(selection.candidates) { mutableStateOf(Stories.current?.candidatesOpen == true) }
   Column(Modifier.padding(top = 10.dp).background(KotinColors.Subtle, RoundedCornerShape(14.dp)).padding(4.dp)) {
     AnimatedVisibility(
       expanded, Modifier.weight(1f, fill = false),

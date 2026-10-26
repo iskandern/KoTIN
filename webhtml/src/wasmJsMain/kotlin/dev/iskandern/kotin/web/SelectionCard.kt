@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import dev.iskandern.kotin.ObjectSelection
+import dev.iskandern.kotin.Stories
 import dev.iskandern.kotin.attributeName
 import dev.iskandern.kotin.localized
 import dev.iskandern.kotin.model.SceneAttribute
@@ -209,7 +210,7 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: String?, onShowLa
 @Composable
 private fun CandidateSwitch(selection: ObjectSelection, height: Int, onPick: (Int) -> Unit, onStep: (Int) -> Unit) {
   val count = selection.candidates.size
-  var expanded by remember(selection.candidates) { mutableStateOf(false) }
+  var expanded by remember(selection.candidates) { mutableStateOf(Stories.current?.candidatesOpen == true) }
   Div({ classes("candidate-switch") }) {
     Appear(expanded) { shown ->
       Div({ classes("candidate-list-wrap"); classIf(shown, "in") }) {

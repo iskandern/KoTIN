@@ -24,6 +24,7 @@ import dev.iskandern.kotin.LabelTier
 import dev.iskandern.kotin.LoadState
 import dev.iskandern.kotin.PREF_LANGUAGE
 import dev.iskandern.kotin.SceneCameraController
+import dev.iskandern.kotin.Stories
 import dev.iskandern.kotin.UiStrings
 import dev.iskandern.kotin.ViewSettings
 import dev.iskandern.kotin.ViewerViewModel
@@ -129,10 +130,10 @@ private const val POINTER_MERGE = 48
  * до него сцены нет, а интерфейс (пустой экран, меню, открытие файла) уже работает.
  */
 @Composable
-fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean) {
+fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean, injected: ViewerViewModel? = null) {
   val prefs = rememberPrefsStore()
   // сохранённый выбор плашек отдаём модели при создании: до первого кадра, без вспышки и без записи поверх сохранённого
-  val viewModel = remember { ViewerViewModel(ViewSettings(showOutlierPointers = prefs.load(PREF_OUTLIER_POINTERS) != "0")) }
+  val viewModel = injected ?: remember { ViewerViewModel(ViewSettings(showOutlierPointers = prefs.load(PREF_OUTLIER_POINTERS) != "0")) }
   val ui by viewModel.state.collectAsState()
   LaunchedEffect(initialSource) {
     if (initialSource != null) viewModel.openInitial(initialSource)
@@ -150,7 +151,7 @@ fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean) {
   val outlierPointersOn = ui.settings.showOutlierPointers
   LaunchedEffect(outlierPointersOn) { prefs.save(PREF_OUTLIER_POINTERS, if (outlierPointersOn) null else "0") }
   // подсказку о выборе, скрытую крестиком, больше не показываем
-  var hintHidden by remember { mutableStateOf(prefs.load(PREF_HINT_HIDDEN) != null) }
+  var hintHidden by remember { mutableStateOf(prefs.load(PREF_HINT_HIDDEN) != null || Stories.current?.hintHidden == true) }
   val sections = remember { MenuSections() }
   val languageScope = rememberCoroutineScope()
 
@@ -203,7 +204,7 @@ fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean) {
       val composeMillis = medianFrameMillis(frames)
       viewModel.onFramesMeasured(drawnFrameMillis(drawn, windowMillis, composeMillis))
     }
-    if (filamentReady && shown != null && camera != null) {
+    if (filamentReady && shown != null && camera != null && !Stories.noScene) {
       val engine = rememberFilamentEngine()
       val selected = sceneSelection?.takeIf { shown === current }
       val hits = remember(selected) { selected?.let(::candidateHits) }
@@ -303,7 +304,7 @@ fun ViewerScreen(initialSource: DrawingSource?, filamentReady: Boolean) {
       val colors = remember(current.scene) { surfaceColors(current.scene) }
       val swatch = { info: SceneObject -> layerSwatch(colors, info.layer, info.color) }
       // карточка открывается свёрнутой; новый выбор сворачивает её снова, листание соседей — нет
-      var expanded by remember(selection?.candidates) { mutableStateOf(false) }
+      var expanded by remember(selection?.candidates) { mutableStateOf(Stories.current?.expanded == true) }
       val collapsedHeight = (height * SELECTION_LIMIT).toInt()
       if (phone) {
         // телефон: шторка снизу во всю ширину; развёрнутая — до строки ≡

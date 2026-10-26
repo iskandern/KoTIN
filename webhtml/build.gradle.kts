@@ -14,7 +14,7 @@ val composeResources = "$appSrc/commonMain/composeResources"
 // Экраны и всё, что держится на Compose UI (Modifier, material3, шрифты Compose, Compose Resources)
 val appUiFiles = listOf(
     "AxisIndicator", "Brand", "CameraButtons", "CameraGestures", "CoordinateSystemView", "DrawingPointer", "FileCard",
-    "Fonts", "KotinIcons", "PhoneLayout", "SceneView", "SelectionCard", "Theme", "ViewerMenu", "ViewerScreen",
+    "Fonts", "KotinIcons", "PhoneLayout", "SceneView", "SelectionCard", "Theme", "UiTag", "ViewerMenu", "ViewerScreen",
 ).map { "dev/iskandern/kotin/$it.kt" } + "dev/iskandern/kotin/scene/GlyphAtlasRaster.kt"
 val appWebUiFiles = listOf("Main", "Fonts.wasmJs").map { "dev/iskandern/kotin/$it.kt" }
 
@@ -157,6 +157,6 @@ tasks.named<ProcessResources>("wasmJsProcessResources") {
         into("composeResources/dev.iskandern.kotin.resources")
     }
     from("$appSrc/wasmJsMain/resources") {
-        include("*.png", "*.ico", "*.svg", "site.webmanifest", "filament-kmp.js", "filament-kmp.wasm")
+        include("*.png", "*.ico", "*.svg", "site.webmanifest", "filament-kmp.js", "filament-kmp.wasm", "stories/**")
     }
 }

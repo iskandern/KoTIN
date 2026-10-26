@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  История интерфейса: рельеф «Рельеф» 100 × 100 м, трасса «Ось 1» по северу 50 с пикетами через 20 м
+  и три точки съёмки «Т1»…«Т3» в одном месте (восток 50, север 50) — кандидаты одного нажатия.
+  Сгенерирован scripts/gen_story_files.py.
+-->
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-01-01" time="00:00:00">
+	<Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter"/></Units>
+	<CgPoints>
+		<CgPoint name="Т1" code="EP" desc="угол здания">50 50 101.0</CgPoint>
+		<CgPoint name="Т2" code="TREE" desc="дерево">50 50 101.25</CgPoint>
+		<CgPoint name="Т3" code="PK" desc="колодец">50 50 101.5</CgPoint>
+	</CgPoints>
+	<Surfaces>
+		<Surface name="Рельеф">
+			<Definition surfType="TIN">
+				<Pnts>
+					<P id="1">0.0 0.0 100.0</P>
+					<P id="2">0.0 50.0 101.5</P>
+					<P id="3">0.0 100.0 100.0</P>
+					<P id="4">50.0 0.0 100.5</P>
+					<P id="5">50.0 50.0 102.0</P>
+					<P id="6">50.0 100.0 100.5</P>
+					<P id="7">100.0 0.0 101.0</P>
+					<P id="8">100.0 50.0 102.5</P>
+					<P id="9">100.0 100.0 101.0</P>
+				</Pnts>
+				<Faces>
+					<F>1 2 5</F>
+					<F>1 5 4</F>
+					<F>2 3 6</F>
+					<F>2 6 5</F>
+					<F>4 5 8</F>
+					<F>4 8 7</F>
+					<F>5 6 9</F>
+					<F>5 9 8</F>
+				</Faces>
+			</Definition>
+		</Surface>
+	</Surfaces>
+	<Alignments>
+		<Alignment name="Ось 1" length="100" staStart="0">
+			<CoordGeom><Line><Start>50 0</Start><End>50 100</End></Line></CoordGeom>
+			<Profile><ProfAlign name="Ось 1_V"><PVI>0 100.5</PVI><PVI>50 102</PVI><PVI>100 101</PVI></ProfAlign></Profile>
+		</Alignment>
+	</Alignments>
+</LandXML>

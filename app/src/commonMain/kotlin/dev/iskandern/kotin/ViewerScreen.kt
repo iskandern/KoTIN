@@ -137,7 +137,7 @@ fun ViewerScreen(initialSource: DrawingSource? = null, injected: ViewerViewModel
   val outlierPointersOn = ui.settings.showOutlierPointers
   LaunchedEffect(outlierPointersOn) { prefs.save(PREF_OUTLIER_POINTERS, if (outlierPointersOn) null else "0") }
   // подсказку о выборе, скрытую крестиком, больше не показываем
-  var hintHidden by remember { mutableStateOf(prefs.load(PREF_HINT_HIDDEN) != null) }
+  var hintHidden by remember { mutableStateOf(prefs.load(PREF_HINT_HIDDEN) != null || Stories.current?.hintHidden == true) }
   // смена языка ждёт загрузки его строк — вне ключа языка, чтобы не отменилась
   val languageScope = rememberCoroutineScope()
   // разделы меню переживают смену языка
@@ -201,7 +201,7 @@ fun ViewerScreen(initialSource: DrawingSource? = null, injected: ViewerViewModel
         val composeMillis = medianFrameMillis(frames)
         viewModel.onFramesMeasured(drawnFrameMillis(drawn, windowMillis, composeMillis))
       }
-      if (shown != null && camera != null) {
+      if (shown != null && camera != null && !Stories.noScene) {
         val density = LocalDensity.current.density
         // номера кандидатов выбора рисует сцена, нажатие на них — onTap
         val selected = sceneSelection?.takeIf { shown === current }
@@ -326,7 +326,7 @@ fun ViewerScreen(initialSource: DrawingSource? = null, injected: ViewerViewModel
           val swatch = { info: SceneObject -> layerSwatch(colors, info.layer, info.color) }
           // карточка открывается свёрнутой (не выше SELECTION_LIMIT экрана); новый выбор — новый набор кандидатов —
           // сворачивает её снова, листание соседей — нет
-          var expanded by remember(selection?.candidates) { mutableStateOf(false) }
+          var expanded by remember(selection?.candidates) { mutableStateOf(Stories.current?.expanded == true) }
           val collapsedHeight = maxHeight * SELECTION_LIMIT
           if (phone) {
             // телефон: шторка снизу во всю ширину; развёрнутая — до строки ≡. Разворачивают, сворачивают и закрывают

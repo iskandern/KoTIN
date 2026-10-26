@@ -1,6 +1,7 @@
 package dev.iskandern.kotin
 
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,8 +20,23 @@ private external fun addHashListener(callback: () -> Unit): JsAny
 @JsFun("(listener) => window.removeEventListener('hashchange', listener)")
 private external fun removeHashListener(listener: JsAny)
 
-// index.html?file=путь/к.dxf или index.html#путь/к.dxf — открыть файл с того же сервера; смена #… открывает другой
-fun main() = FilamentApp {
+// index.html?file=путь/к.dxf или index.html#путь/к.dxf — открыть файл с того же сервера; смена #… открывает другой;
+// index.html?story=<имя> — история интерфейса (см. Stories)
+fun main() {
+  val story = storyFromUrl()
+  if (story != null) {
+    exportComposeLayout()
+    FilamentApp {
+      val viewModel = remember { ViewerViewModel() }
+      LaunchedEffect(viewModel) { runStory(story, viewModel) }
+      ViewerScreen(injected = viewModel)
+    }
+  } else {
+    viewerApp()
+  }
+}
+
+private fun viewerApp() = FilamentApp {
   var url by remember { mutableStateOf(hashFile() ?: fileParameter()) }
   DisposableEffect(Unit) {
     val listener = addHashListener { url = hashFile() }

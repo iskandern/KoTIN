@@ -268,6 +268,23 @@ class ViewerViewModel(initialSettings: ViewSettings = ViewSettings()) : ViewMode
     }
   }
 
+  /**
+   * Выбор объектов [ids] показанной сцены как кандидатов одного нажатия, выбран первый — без луча и камеры (истории
+   * интерфейса, см. [Stories]).
+   */
+  fun selectObjects(ids: List<Int>) {
+    val shown = _state.value.shownScene ?: return
+    lastTap = null
+    selectJob?.cancel()
+    selectJob = viewModelScope.launch {
+      val selection = withContext(Dispatchers.Default) {
+        val candidates = ids.mapNotNull { id -> shown.scene.objects.getOrNull(id)?.let { PickCandidate(PickHit(id, 0.0), it.kind, it.name) } }
+        selectionOf(shown.scene, candidates, 0)
+      }
+      _state.update { if (it.shownScene === shown) it.copy(selection = selection) else it }
+    }
+  }
+
   /** Переход к кандидату [index] текущего выбора (стрелки и список в карточке, номер в сцене). */
   fun selectCandidate(index: Int) {
     val shown = _state.value.shownScene ?: return
