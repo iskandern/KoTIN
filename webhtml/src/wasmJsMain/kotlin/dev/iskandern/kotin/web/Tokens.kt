@@ -77,6 +77,7 @@ fun applyDesignTokens() {
     "axis-z" to cssArgb(t.AXIS_Z),
     "los" to bezier(t.LINEAR_OUT_SLOW_IN),
     "fos" to bezier(t.FAST_OUT_SLOW_IN),
+    "cell-line" to "${t.CELL_LINE}px",
     "motion" to "${t.MOTION_MS}ms",
     "exit" to "${t.EXIT_MS}ms",
     "appear-scale" to t.APPEAR_SCALE.toString(),

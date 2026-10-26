@@ -240,9 +240,10 @@ private fun attributeText(attribute: SceneAttribute, swapXY: Boolean): Annotated
 private fun AttributeRow(left: SceneAttribute, right: SceneAttribute?, swapXY: Boolean, modifier: Modifier) {
   Layout(
     {
-      // общая высота строк — та же сумма, что была у двух текстов (16 + 19 sp); своя у каждой — вдвое дороже раскладка
-      Text(attributeText(left, swapXY), lineHeight = CELL_LINE)
-      if (right != null) Text(attributeText(right, swapXY), lineHeight = CELL_LINE)
+      // строки названия и значения — одной высоты CELL_LINE; своя у каждой — вдвое дороже раскладка. Основа абзаца —
+      // шрифт значения: с основой bodyLarge Skia рисовала строку на 1,5 px выше CELL_LINE
+      Text(attributeText(left, swapXY), fontSize = 14.sp, fontFamily = MonoFamily, lineHeight = CELL_LINE)
+      if (right != null) Text(attributeText(right, swapXY), fontSize = 14.sp, fontFamily = MonoFamily, lineHeight = CELL_LINE)
     },
     modifier.drawBehind {
       val gap = CELL_GAP.toPx()
@@ -257,7 +258,10 @@ private fun AttributeRow(left: SceneAttribute, right: SceneAttribute?, swapXY: B
     val padY = CELL_PADDING_Y.roundToPx()
     val width = ((constraints.maxWidth - gap) / 2).coerceAtLeast(0)
     val placeables = texts.map { it.measure(Constraints(maxWidth = (width - 2 * padX).coerceAtLeast(0))) }
-    layout(constraints.maxWidth, (placeables.maxOfOrNull { it.height } ?: 0) + 2 * padY) {
+    // высота — целым числом строк CELL_LINE: абзац из двух шрифтов Skia меряет на доли пикселя выше
+    val line = CELL_LINE.roundToPx()
+    val lines = ((placeables.maxOfOrNull { it.height } ?: 0) + line / 2) / line
+    layout(constraints.maxWidth, lines * line + 2 * padY) {
       placeables.forEachIndexed { i, text -> text.place(i * (width + gap) + padX, padY) }
     }
   }
@@ -268,7 +272,7 @@ private val CELL_RADIUS = 10.dp
 private val CELL_PADDING_X = 10.dp
 private val CELL_PADDING_Y = 8.dp
 private val CELL_GAP = 8.dp
-private val CELL_LINE = 17.5.sp
+private val CELL_LINE = DesignTokens.CELL_LINE.sp
 
 /** Доля ширины, на которую сдвигается содержимое карточки при смене кандидата. */
 private const val SLIDE_PART = 10

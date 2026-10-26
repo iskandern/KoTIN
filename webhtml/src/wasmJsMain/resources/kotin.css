@@ -220,7 +220,7 @@ body {
 .attr-scroll::-webkit-scrollbar { display: none; }
 .attr-grid { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
 .attr-row { display: flex; gap: 8px; }
-.attr-cell { flex: 1 1 0; min-width: 0; border-radius: 10px; background: var(--subtle); padding: 8px 10px; line-height: 17.5px; }
+.attr-cell { flex: 1 1 0; min-width: 0; border-radius: 10px; background: var(--subtle); padding: 8px 10px; line-height: var(--cell-line); }
 .attr-cell.empty { background: none; }
 .attr-cell .label { display: block; width: fit-content; max-width: 100%; color: var(--muted); font-size: 12px; }
 .attr-cell .value { display: block; width: fit-content; max-width: 100%; color: var(--ink); font-size: 14px; font-family: var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
