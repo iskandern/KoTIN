@@ -217,7 +217,7 @@ fun ViewerMenu(
       // (без имени и без систем блока нет: пустой добавил бы зазор)
       if (loaded != null && (onClose != null || loaded.geometry.coordinateSystems.isNotEmpty())) Column {
         if (onClose != null) FileTitle(loaded)
-        CoordinateSystems(loaded.geometry.coordinateSystems, Modifier.padding(top = if (onClose != null) 1.dp else 0.dp))
+        CoordinateSystems(loaded.geometry.coordinateSystems)
       }
       if (loaded != null) SceneSummary(loaded, ui.showMillis)
       Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -316,7 +316,7 @@ private fun SceneSummary(loaded: LoadState.Loaded, showMillis: Long?) = Selectio
       scene.surfaces.size, scene.surfaces.sumOf { it.vertexCount }, scene.surfaces.sumOf { it.triangleCount },
       scene.lines.sumOf { it.lineCount }, scene.fills.sumOf { it.triangleCount }, scene.labels.size, scene.points.size,
     ),
-    color = KotinColors.Muted, fontSize = 13.sp, lineHeight = 19.sp,
+    color = KotinColors.Muted, fontSize = 13.sp, lineHeight = 20.sp,
   )
   val timing = stringResource(Res.string.timing, loaded.parseMillis, loaded.buildMillis)
   val showTiming = if (showMillis != null) stringResource(Res.string.timing_show, showMillis) else ""
@@ -503,14 +503,14 @@ fun CheckRow(
     horizontalArrangement = Arrangement.spacedBy(10.dp),
   ) {
     CheckBox(checked)
-    swatch?.let { Box(Modifier.size(12.dp).background(it, RoundedCornerShape(3.dp))) }
+    swatch?.let { Box(Modifier.size(12.dp).background(it, RoundedCornerShape(4.dp))) }
     Text(label, color = KotinColors.Ink, style = MaterialTheme.typography.bodyMedium)
   }
 }
 
 @Composable
 private fun CheckBox(checked: Boolean) {
-  val shape = RoundedCornerShape(5.dp)
+  val shape = RoundedCornerShape(4.dp)
   Box(
     Modifier
       .size(20.dp)

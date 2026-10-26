@@ -134,10 +134,10 @@ private fun ProgressBar(progress: Float?) {
 private fun LoadErrorDetails(failed: LoadState.Failed, shown: LoadState.Loaded?, onDismiss: () -> Unit) {
   val known = isForeignFormat(failed.message)
   Div({ classes("details"); ui("load-error-details") }) {
-    Div({ style { property("color", "var(--ink)"); property("font-size", "13px"); property("line-height", "17px") } }) {
+    Div({ style { property("color", "var(--ink)"); property("font-size", "13px"); property("line-height", "16px") } }) {
       Text(if (known) localized(failed.message) else stringResource(Res.string.load_failed_reason))
     }
-    if (shown != null) Div({ style { property("color", "var(--muted)"); property("font-size", "12px"); property("line-height", "15px") } }) {
+    if (shown != null) Div({ style { property("color", "var(--muted)"); property("font-size", "12px"); property("line-height", "16px") } }) {
       Text(stringResource(Res.string.load_failed_kept, shown.name))
     }
     if (!known) Div({
@@ -188,7 +188,7 @@ fun EmptyState(onOpen: () -> Unit) {
 @Composable
 fun FileTitle(loaded: LoadState.Loaded) {
   Div({ classes("selectable"); style { property("display", "flex"); property("flex-direction", "column"); property("gap", "2px") } }) {
-    Div({ style { property("color", "var(--ink)"); property("font-size", "16px"); property("line-height", "21px"); property("font-weight", "600"); property("overflow-wrap", "anywhere") } }) {
+    Div({ style { property("color", "var(--ink)"); property("font-size", "16px"); property("line-height", "20px"); property("font-weight", "600"); property("overflow-wrap", "anywhere") } }) {
       Text(loaded.name)
     }
     Div({ style { property("color", "var(--muted)"); property("font-size", "13px"); property("line-height", "18px") } }) { Text(fileMeta(loaded)) }

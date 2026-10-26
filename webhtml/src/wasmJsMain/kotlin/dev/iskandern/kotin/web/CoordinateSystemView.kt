@@ -25,16 +25,16 @@ import org.jetbrains.compose.resources.stringResource
 /**
  * Система координат из файла — строка в меню под именем файла: «EPSG 28406 · имя ⌄» (без кода — «WKT · имя» или
  * только имя); нажатие раскрывает все атрибуты, как они записаны, по блоку на элемент. Ничего не проверяется.
- * Систем нет — ничего не показывается. Новый файл открывается свёрнутым. [top] — отступ сверху, px.
+ * Систем нет — ничего не показывается. Новый файл открывается свёрнутым.
  */
 @Composable
-fun CoordinateSystems(systems: List<CoordinateSystemInfo>, top: Int = 0) {
+fun CoordinateSystems(systems: List<CoordinateSystemInfo>) {
   if (systems.isEmpty()) return
   var expanded by remember(systems) { mutableStateOf(false) }
   val first = systems.first()
   val code = first.code
   val description = stringResource(Res.string.crs_expand)
-  Div({ if (top > 0) style { property("padding-top", "${top}px") } }) {
+  Div {
     // без подсветки нажатия: подложка у строки выглядела бы кнопкой (решение владельца)
     Div({
       classes("crs-row")

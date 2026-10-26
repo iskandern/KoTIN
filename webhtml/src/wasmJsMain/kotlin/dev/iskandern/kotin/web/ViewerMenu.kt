@@ -191,7 +191,7 @@ fun ViewerMenu(
         // система координат — сразу под именем файла; на десктопе и планшете имени в меню нет, строка — первой
         if (loaded != null && (onClose != null || loaded.geometry.coordinateSystems.isNotEmpty())) Div {
           if (onClose != null) FileTitle(loaded)
-          CoordinateSystems(loaded.geometry.coordinateSystems, top = if (onClose != null) 1 else 0)
+          CoordinateSystems(loaded.geometry.coordinateSystems)
         }
         if (loaded != null) SceneSummary(loaded, ui.showMillis)
         Div({ classes("actions") }) {
@@ -318,7 +318,7 @@ private fun MenuSection(tag: String, title: String, open: Boolean, rowHeight: In
 private fun SceneSummary(loaded: LoadState.Loaded, showMillis: Long?) {
   val scene = loaded.scene
   Div({ classes("selectable"); style { property("display", "flex"); property("flex-direction", "column"); property("gap", "10px") } }) {
-    Div({ style { property("color", "var(--muted)"); property("font-size", "13px"); property("line-height", "19px"); property("white-space", "pre-line") } }) {
+    Div({ style { property("color", "var(--muted)"); property("font-size", "13px"); property("line-height", "20px"); property("white-space", "pre-line") } }) {
       Text(
         stringResource(
           Res.string.scene_stats,

@@ -291,7 +291,7 @@ private fun SelectionTitle(selection: ObjectSelection, swatch: Color?, onShowLay
     Column(Modifier.weight(1f)) {
       Text(
         info.kind + if (info.name.isNotEmpty()) " · ${localized(info.name)}" else "",
-        color = KotinColors.Ink, fontSize = 16.sp, lineHeight = 21.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.uiTag("selection-name"),
+        color = KotinColors.Ink, fontSize = 16.sp, lineHeight = 20.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.uiTag("selection-name"),
       )
       if (info.layer.isNotEmpty()) DisableSelection {
         // подсветка нажатия — скруглённая и чуть шире текста, сам текст на месте
@@ -411,7 +411,7 @@ fun CandidateNumber(number: Int, selected: Boolean, modifier: Modifier = Modifie
   Box(modifier.size(CANDIDATE_MARK).drawBehind { drawCircle(fill.value) }, contentAlignment = Alignment.Center) {
     BasicText(
       number.toString(), color = { ink.value },
-      style = TextStyle(fontSize = 11.sp, lineHeight = 11.sp, fontFamily = MonoFamily, fontWeight = FontWeight.SemiBold),
+      style = TextStyle(fontSize = 11.sp, lineHeight = 12.sp, fontFamily = MonoFamily, fontWeight = FontWeight.SemiBold),
     )
   }
 }

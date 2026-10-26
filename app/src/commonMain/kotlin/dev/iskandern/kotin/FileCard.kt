@@ -120,7 +120,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
             Row(verticalAlignment = Alignment.CenterVertically) {
               Text(
                 meta, Modifier.weight(1f, fill = false), color = if (failed != null) KotinColors.Error else KotinColors.Muted,
-                fontSize = 12.sp, lineHeight = 15.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                fontSize = 12.sp, lineHeight = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis,
               )
               if (failed != null) {
                 Icon(KotinIcons.ChevronDown, null, Modifier.padding(start = 2.dp).size(14.dp).rotate(if (expanded) 180f else 0f), tint = KotinColors.Error)
@@ -138,7 +138,7 @@ fun FileCard(loadState: LoadState, shown: LoadState.Loaded?, height: Dp, onOpen:
       if (failed != null && expanded) LoadErrorDetails(failed, shown, onDismiss)
     }
     if (loading) {
-      val mod = Modifier.align(Alignment.BottomStart).fillMaxWidth().height(3.dp)
+      val mod = Modifier.align(Alignment.BottomStart).fillMaxWidth().height(4.dp)
       val p = progress
       if (p != null) LinearProgressIndicator(progress = { p }, modifier = mod) else LinearProgressIndicator(mod)
     }
@@ -155,9 +155,9 @@ private fun LoadErrorDetails(failed: LoadState.Failed, shown: LoadState.Loaded?,
   Column(Modifier.uiTag("load-error-details").padding(start = 12.dp, end = 12.dp, bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
     Text(
       if (known) localized(failed.message) else stringResource(Res.string.load_failed_reason),
-      color = KotinColors.Ink, fontSize = 13.sp, lineHeight = 17.sp,
+      color = KotinColors.Ink, fontSize = 13.sp, lineHeight = 16.sp,
     )
-    if (shown != null) Text(stringResource(Res.string.load_failed_kept, shown.name), color = KotinColors.Muted, fontSize = 12.sp, lineHeight = 15.sp)
+    if (shown != null) Text(stringResource(Res.string.load_failed_kept, shown.name), color = KotinColors.Muted, fontSize = 12.sp, lineHeight = 16.sp)
     if (!known) SelectionContainer {
       Text(
         localized(failed.message), color = KotinColors.Muted, fontFamily = MonoFamily, fontSize = 11.sp, lineHeight = 14.sp,
@@ -195,7 +195,7 @@ fun EmptyState(onOpen: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun FileTitle(loaded: LoadState.Loaded) {
   SelectionContainer { Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-    Text(loaded.name, color = KotinColors.Ink, fontSize = 16.sp, lineHeight = 21.sp, fontWeight = FontWeight.SemiBold)
+    Text(loaded.name, color = KotinColors.Ink, fontSize = 16.sp, lineHeight = 20.sp, fontWeight = FontWeight.SemiBold)
     Text(fileMeta(loaded), color = KotinColors.Muted, fontSize = 13.sp, lineHeight = 18.sp)
   } }
 }
