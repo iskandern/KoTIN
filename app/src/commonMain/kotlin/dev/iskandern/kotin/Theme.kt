@@ -11,37 +11,37 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 
-/** Цвета интерфейса KoTIN: светлая тема, карточки поверх светлой сцены. */
+/** Цвета интерфейса KoTIN: светлая тема, карточки поверх светлой сцены; значения — [DesignTokens]. */
 object KotinColors {
   /** Фон сцены — тот же, что `BACKGROUND` в SceneView и `DxfColors.BACKGROUND`. */
-  val Scene = Color(0xFFE3E7EB)
-  val Card = Color(0xFFFFFFFF)
+  val Scene = Color(DesignTokens.SCENE)
+  val Card = Color(DesignTokens.CARD)
   /** Подложка внутри карточки: пустой слот, поля свойств. */
-  val Subtle = Color(0xFFF3F5F7)
-  val Outline = Color(0xFFD3D9DF)
-  val Ink = Color(0xFF15202B)
-  val Muted = Color(0xFF56636F)
-  val Accent = Color(0xFF1F5EFF)
-  val AccentSoft = Color(0xFFE8EEFF)
-  val AccentInk = Color(0xFF1440B8)
-  val Warning = Color(0xFF8A5A00)
-  val Error = Color(0xFFC4312A)
+  val Subtle = Color(DesignTokens.SUBTLE)
+  val Outline = Color(DesignTokens.OUTLINE)
+  val Ink = Color(DesignTokens.INK)
+  val Muted = Color(DesignTokens.MUTED)
+  val Accent = Color(DesignTokens.ACCENT)
+  val AccentSoft = Color(DesignTokens.ACCENT_SOFT)
+  val AccentInk = Color(DesignTokens.ACCENT_INK)
+  val Warning = Color(DesignTokens.WARNING)
+  val Error = Color(DesignTokens.ERROR)
   /** Выбранное: подложка карточки и строки слоя (подсветка в сцене — [Highlight]). */
-  val Selection = Color(0x47FFD600)
+  val Selection = Color(DesignTokens.SELECTION)
   /** Жёлтый подсветки выбранного в сцене (HIGHLIGHT_RGB в SceneView). */
-  val Highlight = Color(0xFFF5C400)
+  val Highlight = Color(DesignTokens.HIGHLIGHT)
   /** Рамка пустого флажка. */
-  val CheckOutline = Color(0xFF8A96A1)
+  val CheckOutline = Color(DesignTokens.CHECK_OUTLINE)
   /** Ручка шторки на телефоне. */
-  val Handle = Color(0xFFC7CED5)
+  val Handle = Color(DesignTokens.HANDLE)
   /** Затемнение [Ink]: сцена под боковым меню, нажатая кнопка карточки, тёмная плашка-подсказка. */
-  val Scrim = Ink.copy(alpha = 0.32f)
-  val Pressed = Ink.copy(alpha = 0.10f)
-  val Hint = Ink.copy(alpha = 0.86f)
+  val Scrim = Ink.copy(alpha = DesignTokens.SCRIM_ALPHA)
+  val Pressed = Ink.copy(alpha = DesignTokens.PRESSED_ALPHA)
+  val Hint = Ink.copy(alpha = DesignTokens.HINT_ALPHA)
   /** Оси индикатора OXYZ: тёмные насыщенные, читаются на белом круге. */
-  val AxisX = Color(0xFFD03A3A)
-  val AxisY = Color(0xFF23894C)
-  val AxisZ = Color(0xFF2F6FE0)
+  val AxisX = Color(DesignTokens.AXIS_X)
+  val AxisY = Color(DesignTokens.AXIS_Y)
+  val AxisZ = Color(DesignTokens.AXIS_Z)
 }
 
 private val LightScheme = lightColorScheme(

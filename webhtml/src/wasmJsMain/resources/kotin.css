@@ -1,30 +1,8 @@
-/* KoTIN на DOM: те же цвета (KotinColors), шрифты, размеры и тени, что у Compose-версии (app) */
+/* KoTIN на DOM: те же цвета, шрифты, размеры и тени, что у Compose-версии (app) — токены DesignTokens */
 :root {
-  --scene: #E3E7EB;
-  --card: #FFFFFF;
-  --subtle: #F3F5F7;
-  --outline: #D3D9DF;
-  --ink: #15202B;
-  --muted: #56636F;
-  --accent: #1F5EFF;
-  --accent-soft: #E8EEFF;
-  --accent-ink: #1440B8;
-  --warning: #8A5A00;
-  --error: #C4312A;
-  --selection: rgba(255, 214, 0, 0.278);
-  --highlight: #F5C400;
-  --check-outline: #8A96A1;
-  --handle: #C7CED5;
-  --scrim: rgba(21, 32, 43, 0.32);
-  --pressed: rgba(21, 32, 43, 0.10);
-  --hint: rgba(21, 32, 43, 0.86);
-  /* LinearOutSlowInEasing и FastOutSlowInEasing Compose */
-  --los: cubic-bezier(0, 0, 0.2, 1);
-  --fos: cubic-bezier(0.4, 0, 0.2, 1);
+  /* цвета, кривые, длительности и тени — из DesignTokens: их выставляет applyDesignTokens() до первой композиции */
   --golos: "Golos Text", sans-serif;
   --mono: "JetBrains Mono", monospace;
-  /* floatingCard: тень 3 dp */
-  --float-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 1px 1.5px rgba(0, 0, 0, 0.10);
 }
 
 @font-face { font-family: "Golos Text"; font-weight: 400; font-display: block; src: url("composeResources/dev.iskandern.kotin.resources/font/golos_text_regular.ttf"); }
@@ -39,7 +17,7 @@
 html, body { width: 100%; height: 100%; overflow: hidden; background: var(--scene); }
 body {
   /* MaterialTheme: текст по умолчанию — bodyLarge (16/24 sp, разрядка 0,5 sp) */
-  font-family: var(--golos); font-size: 16px; line-height: 24px; letter-spacing: 0.5px; color: #000;
+  font-family: var(--golos); font-size: 16px; line-height: 24px; letter-spacing: 0.5px; color: var(--black);
   -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
   user-select: none; -webkit-user-select: none;
   /* текст Compose: пробелы и переводы строк как есть, длинное слово переносится */
@@ -64,7 +42,7 @@ body {
 
 /* clickable: подсветка ripple Material — наведение 8 %, нажатие 10 % цвета содержимого (чёрного) */
 .ripple { position: relative; overflow: hidden; }
-.ripple::after { content: ""; position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; transition: opacity 15ms linear; border-radius: inherit; }
+.ripple::after { content: ""; position: absolute; inset: 0; background: var(--black); opacity: 0; pointer-events: none; transition: opacity 15ms linear; border-radius: inherit; }
 @media (hover: hover) { .ripple:hover::after { opacity: 0.08; } }
 .ripple:active::after { opacity: 0.10; }
 
@@ -77,23 +55,15 @@ body {
  * appearingCard + Appear: масштаб 0,94 → 1 от угла, прозрачность — появление 200 мс, уход 150 мс (LinearOutSlowIn).
  * Тень — softShadow: 8 скруглённых слоёв с суммарной непрозрачностью 0,16, сдвиг вниз 0,3 высоты
  */
-.appear { --appear-ms: 150ms; opacity: 0; transform: scale(0.94); transition: opacity var(--appear-ms) var(--los), transform var(--appear-ms) var(--los); }
-.appear.in { --appear-ms: 200ms; opacity: 1; transform: none; }
-.fade { opacity: 0; transition: opacity 200ms var(--fos); }
+.appear { --appear-ms: var(--exit); opacity: 0; transform: scale(var(--appear-scale)); transition: opacity var(--appear-ms) var(--los), transform var(--appear-ms) var(--los); }
+.appear.in { --appear-ms: var(--motion); opacity: 1; transform: none; }
+.fade { opacity: 0; transition: opacity var(--motion) var(--fos); }
 .fade.in { opacity: 1; }
 
-.soft-8 { box-shadow:
-  0 2.4px 0 1px rgba(21,32,43,.02), 0 2.4px 0 2px rgba(21,32,43,.02), 0 2.4px 0 3px rgba(21,32,43,.02), 0 2.4px 0 4px rgba(21,32,43,.02),
-  0 2.4px 0 5px rgba(21,32,43,.02), 0 2.4px 0 6px rgba(21,32,43,.02), 0 2.4px 0 7px rgba(21,32,43,.02), 0 2.4px 0 8px rgba(21,32,43,.02); }
-.soft-12 { box-shadow:
-  0 3.6px 0 1.5px rgba(21,32,43,.02), 0 3.6px 0 3px rgba(21,32,43,.02), 0 3.6px 0 4.5px rgba(21,32,43,.02), 0 3.6px 0 6px rgba(21,32,43,.02),
-  0 3.6px 0 7.5px rgba(21,32,43,.02), 0 3.6px 0 9px rgba(21,32,43,.02), 0 3.6px 0 10.5px rgba(21,32,43,.02), 0 3.6px 0 12px rgba(21,32,43,.02); }
-.soft-16 { box-shadow:
-  0 4.8px 0 2px rgba(21,32,43,.02), 0 4.8px 0 4px rgba(21,32,43,.02), 0 4.8px 0 6px rgba(21,32,43,.02), 0 4.8px 0 8px rgba(21,32,43,.02),
-  0 4.8px 0 10px rgba(21,32,43,.02), 0 4.8px 0 12px rgba(21,32,43,.02), 0 4.8px 0 14px rgba(21,32,43,.02), 0 4.8px 0 16px rgba(21,32,43,.02); }
-.soft-24 { box-shadow:
-  0 7.2px 0 3px rgba(21,32,43,.02), 0 7.2px 0 6px rgba(21,32,43,.02), 0 7.2px 0 9px rgba(21,32,43,.02), 0 7.2px 0 12px rgba(21,32,43,.02),
-  0 7.2px 0 15px rgba(21,32,43,.02), 0 7.2px 0 18px rgba(21,32,43,.02), 0 7.2px 0 21px rgba(21,32,43,.02), 0 7.2px 0 24px rgba(21,32,43,.02); }
+.soft-8 { box-shadow: var(--soft-8); }
+.soft-12 { box-shadow: var(--soft-12); }
+.soft-16 { box-shadow: var(--soft-16); }
+.soft-24 { box-shadow: var(--soft-24); }
 
 /* ---------- строка «≡ + карточка файла» ---------- */
 .top-row { position: absolute; left: 16px; top: 16px; display: flex; gap: 8px; align-items: flex-start; }
@@ -124,15 +94,15 @@ body {
 .empty-state {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(100% - 48px); max-width: 420px;
   padding: 32px 28px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 16px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14), 0 1px 3px rgba(0, 0, 0, 0.10);
+  box-shadow: var(--empty-shadow);
 }
 .empty-state .hint-title { color: var(--ink); font-size: 20px; line-height: 26px; font-weight: 600; text-align: center; }
 .empty-state .hint { color: var(--muted); font-size: 13px; line-height: 18px; text-align: center; }
 .m3-button {
-  height: 48px; min-width: 58px; padding: 0 24px; border-radius: 12px; background: var(--accent); color: #fff;
+  height: 48px; min-width: 58px; padding: 0 24px; border-radius: 12px; background: var(--accent); color: var(--white);
   display: flex; align-items: center; justify-content: center; font-size: 14px; line-height: 20px; letter-spacing: 0.1px; font-weight: 600;
 }
-.m3-button.ripple::after { background: #fff; }
+.m3-button.ripple::after { background: var(--white); }
 @media (hover: hover) { .m3-button.ripple:hover::after { opacity: 0.08; } }
 .m3-button.ripple:active::after { opacity: 0.10; }
 
@@ -147,8 +117,8 @@ body {
 /* края прокрутки гаснут маской: содержимое у края уходит в прозрачность — к фону меню, каким бы ни был фон строки */
 .menu-scroll {
   --fade-top: 0px; --fade-bottom: 0px;
-  -webkit-mask-image: linear-gradient(transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
-  mask-image: linear-gradient(transparent, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent);
+  -webkit-mask-image: linear-gradient(transparent, var(--black) var(--fade-top), var(--black) calc(100% - var(--fade-bottom)), transparent);
+  mask-image: linear-gradient(transparent, var(--black) var(--fade-top), var(--black) calc(100% - var(--fade-bottom)), transparent);
 }
 .menu-scroll.fade-top { --fade-top: 20px; }
 .menu-scroll.fade-bottom { --fade-bottom: 20px; }
@@ -164,7 +134,7 @@ body {
 .check-row.indent { padding-left: 34px; }
 .check-row.highlighted { background: var(--selection); }
 .check-row .label { color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
-.checkbox { width: 20px; height: 20px; flex: none; border-radius: 5px; border: 2px solid var(--check-outline); display: flex; align-items: center; justify-content: center; color: #fff; }
+.checkbox { width: 20px; height: 20px; flex: none; border-radius: 5px; border: 2px solid var(--check-outline); display: flex; align-items: center; justify-content: center; color: var(--white); }
 .checkbox.on { background: var(--accent); border: none; }
 .swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; }
 .chip {
@@ -178,8 +148,8 @@ body {
 .chips.scroll { overflow-x: auto; scrollbar-width: none; }
 .chips.scroll::-webkit-scrollbar { display: none; }
 .action { height: 44px; border-radius: 12px; padding: 0 12px; display: flex; align-items: center; justify-content: center; white-space: nowrap; min-width: 0; }
-.action.primary { background: var(--accent); color: #fff; font-weight: 600; }
-.action.primary.ripple::after { background: #fff; }
+.action.primary { background: var(--accent); color: var(--white); font-weight: 600; }
+.action.primary.ripple::after { background: var(--white); }
 .action.secondary { background: var(--card); border: 1px solid var(--outline); color: var(--ink); }
 .actions { display: flex; gap: 8px; }
 .actions > .action { flex: 1 1 0; }
@@ -204,7 +174,7 @@ body {
 .camera-group { border-radius: 14px; padding: 4px; display: flex; gap: 2px; }
 .mode-segment { border-radius: 10px; padding: 0 14px; display: flex; align-items: center; justify-content: center; color: var(--ink); white-space: nowrap; }
 .mode-segment.on { background: var(--ink); color: var(--card); font-weight: 600; }
-.camera-rail { position: absolute; right: 16px; top: 50%; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform 200ms var(--fos); }
+.camera-rail { position: absolute; right: 16px; top: 50%; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: transform var(--motion) var(--fos); }
 .rail-zoom { border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; }
 .rail-zoom .sep { height: 1px; background: var(--scene); }
 .rail-mode { border-radius: 50%; }
@@ -235,9 +205,9 @@ body {
 /* выделяемый текст — по ширине текста: правее него шапку тянут, а выделение не тянется до края */
 .selection-title .layer { display: inline-block; color: var(--accent); font-size: 13px; line-height: 18px; margin-left: -4px; padding: 2px 4px; border-radius: 6px; overflow-wrap: anywhere; }
 .selection-title .partial { color: var(--muted); font-size: 12px; }
-.card-button { border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); transition: transform 200ms var(--los); }
-.card-button::after { content: ""; position: absolute; inset: 0; background: var(--pressed); opacity: 0; transition: opacity 200ms var(--los); pointer-events: none; }
-.card-button:active { transform: scale(0.94); transition-duration: 75ms; }
+.card-button { border-radius: 10px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex: none; color: var(--ink); transition: transform var(--motion) var(--los); }
+.card-button::after { content: ""; position: absolute; inset: 0; background: var(--pressed); opacity: 0; transition: opacity var(--motion) var(--los); pointer-events: none; }
+.card-button:active { transform: scale(var(--appear-scale)); transition-duration: 75ms; }
 .card-button:active::after { opacity: 1; transition-duration: 75ms; }
 .card-button.subtle { background: var(--subtle); }
 .card-button.card { background: var(--card); }
@@ -254,8 +224,8 @@ body {
 @keyframes slide-from-left { from { transform: translateX(-10%); } }
 @keyframes fade-in { from { opacity: 0; } }
 .candidate-switch { margin-top: 10px; background: var(--subtle); border-radius: 14px; padding: 4px; display: flex; flex-direction: column; flex: none; min-height: 0; }
-.candidate-list-wrap { overflow: hidden; display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 150ms ease-out, opacity 150ms ease-out; }
-.candidate-list-wrap.in { grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 200ms var(--los), opacity 200ms var(--fos); }
+.candidate-list-wrap { overflow: hidden; display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows var(--exit) ease-out, opacity var(--exit) ease-out; }
+.candidate-list-wrap.in { grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows var(--motion) var(--los), opacity var(--motion) var(--fos); }
 .candidate-list-wrap > div { min-height: 0; }
 .candidate-list { padding-bottom: 4px; max-height: 176px; overflow-y: auto; scrollbar-width: none; }
 .candidate-list::-webkit-scrollbar { display: none; }
@@ -265,7 +235,7 @@ body {
 .candidate-number {
   width: 22px; height: 22px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center;
   background: var(--ink); color: var(--card); font-family: var(--mono); font-size: 11px; line-height: 11px; font-weight: 600; letter-spacing: 0;
-  transition: background-color 200ms var(--fos), color 200ms var(--fos);
+  transition: background-color var(--motion) var(--fos), color var(--motion) var(--fos);
 }
 .candidate-number.on { background: var(--highlight); color: var(--ink); }
 .switch-row { display: flex; gap: 4px; align-items: center; flex: none; }
@@ -276,22 +246,20 @@ body {
 
 /* ---------- плашки-подсказки ---------- */
 .hint-plate { border-radius: 14px; background: var(--hint); display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 14px; }
-.hint-plate .text { flex: 1; color: #fff; font-size: 13px; line-height: 18px; min-width: 0; }
-.hint-plate .hide { border-radius: 10px; background: rgba(255, 255, 255, 0.14); color: #fff; }
-.hint-plate .action-hint { min-height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.14); padding: 0 12px; display: flex; align-items: center; color: #fff; font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; }
+.hint-plate .text { flex: 1; color: var(--white); font-size: 13px; line-height: 18px; min-width: 0; }
+.hint-plate .hide { border-radius: 10px; background: var(--on-hint); color: var(--white); }
+.hint-plate .action-hint { min-height: 36px; border-radius: 10px; background: var(--on-hint); padding: 0 12px; display: flex; align-items: center; color: var(--white); font-size: 13px; line-height: 18px; font-weight: 600; white-space: nowrap; }
 
 /* ---------- телефон: шторка и боковое меню ---------- */
-.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--card); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; transition: transform 200ms var(--fos); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--card); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; transition: transform var(--motion) var(--fos); }
 .sheet::before { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 48px; background: var(--card); }
 .sheet .handle-area { height: 24px; flex: none; display: flex; align-items: center; justify-content: center; touch-action: none; }
 .sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: var(--handle); }
 .drawer-scrim { position: absolute; inset: 0; background: var(--scrim); }
-.drawer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card); border-radius: 0 20px 20px 0; transform: translateX(-100%); transition: transform 200ms var(--fos); display: flex; flex-direction: column; overflow: hidden; }
+.drawer { position: absolute; left: 0; top: 0; bottom: 0; background: var(--card); border-radius: 0 20px 20px 0; transform: translateX(-100%); transition: transform var(--motion) var(--fos); display: flex; flex-direction: column; overflow: hidden; }
 /*
  * Тень меню — та же 0,16 в 8 слоёв на 24 px, но копиями со сдвигом вправо, а не кольцами со сдвигом вниз: у краёв
  * экрана кольца заливали вырез скругления и торчали углом, а копии скруглены как само меню
  */
-.drawer { box-shadow:
-  3px 0 0 rgba(21,32,43,.02), 6px 0 0 rgba(21,32,43,.02), 9px 0 0 rgba(21,32,43,.02), 12px 0 0 rgba(21,32,43,.02),
-  15px 0 0 rgba(21,32,43,.02), 18px 0 0 rgba(21,32,43,.02), 21px 0 0 rgba(21,32,43,.02), 24px 0 0 rgba(21,32,43,.02); }
+.drawer { box-shadow: var(--drawer-shadow); }
 .drawer.in { transform: none; }

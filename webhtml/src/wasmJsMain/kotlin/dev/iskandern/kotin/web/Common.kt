@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
+import dev.iskandern.kotin.DesignTokens
 import dev.iskandern.kotin.web.dom.AttrsScope
 import dev.iskandern.kotin.web.dom.Div
 import dev.iskandern.kotin.web.dom.SvgPath
@@ -99,10 +100,10 @@ fun Appear(visible: Boolean, exitMs: Long = EXIT_MS, content: @Composable (shown
 }
 
 /** Длительность ухода панели, мс (EXIT_MS app). */
-const val EXIT_MS = 150L
+const val EXIT_MS = DesignTokens.EXIT_MS.toLong()
 
 /** Длительность появления и исчезновения панелей, мс (MOTION_MS app). */
-const val MOTION_MS = 200L
+const val MOTION_MS = DesignTokens.MOTION_MS.toLong()
 
 /** Последнее не-null значение [value]: панель, которая гаснет, показывает то, что было в ней до закрытия. */
 @Composable

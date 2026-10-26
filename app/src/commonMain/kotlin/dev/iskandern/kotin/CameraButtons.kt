@@ -50,7 +50,7 @@ import dev.iskandern.kotin.resources.zoom_out
 
 
 /** Белая плавающая карточка поверх сцены: мягкая тень, рамка; жесты по ней до сцены не доходят. */
-fun Modifier.floatingCard(shape: Shape, elevation: Dp = 3.dp): Modifier =
+fun Modifier.floatingCard(shape: Shape, elevation: Dp = DesignTokens.FLOAT_ELEVATION.dp): Modifier =
   shadow(elevation, shape, clip = false).background(KotinColors.Card, shape).border(1.dp, KotinColors.Outline, shape).blockSceneGestures()
 
 /**
@@ -102,15 +102,15 @@ fun DrawScope.drawSoftShadow(shape: Shape, elevation: Dp, a: Float = 1f) {
 }
 
 // суммарная непрозрачность тени у самой карточки, число слоёв и смещение вниз (доля высоты)
-private const val SHADOW_ALPHA = 0.16f
-private const val SHADOW_STEPS = 8
-private const val SHADOW_OFFSET = 0.3f
+private const val SHADOW_ALPHA = DesignTokens.SHADOW_ALPHA
+private const val SHADOW_STEPS = DesignTokens.SHADOW_STEPS
+private const val SHADOW_OFFSET = DesignTokens.SHADOW_OFFSET
 
 /** Масштаб, с которого панель вырастает при появлении. */
-private const val APPEAR_SCALE = 0.94f
+private const val APPEAR_SCALE = DesignTokens.APPEAR_SCALE
 
 /** Длительность ухода панели, мс. */
-internal const val EXIT_MS = 150
+internal const val EXIT_MS = DesignTokens.EXIT_MS
 
 /**
  * Показывает [content], пока [visible], и ещё на время ухода: [content] получает ход появления 0..1 — для

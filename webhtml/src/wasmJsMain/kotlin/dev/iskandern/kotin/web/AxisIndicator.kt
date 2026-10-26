@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
+import dev.iskandern.kotin.DesignTokens
 import dev.iskandern.kotin.SceneCameraController
 import dev.iskandern.kotin.axesOnScreen
 import dev.iskandern.kotin.web.dom.Div
@@ -76,10 +77,10 @@ fun AxisIndicator(controller: SceneCameraController, swapXY: Boolean, onHome: ()
   }
 }
 
-private const val SIZE = 72
+private const val SIZE = DesignTokens.AXIS_SIZE
 
 /** Длина оси — доля стороны индикатора. */
 private const val AXIS_LENGTH = 0.32f
 
 private val AXIS_NAMES = listOf("X", "Y", "Z")
-private val AXIS_COLORS = listOf("#D03A3A", "#23894C", "#2F6FE0")
+private val AXIS_COLORS = listOf("var(--axis-x)", "var(--axis-y)", "var(--axis-z)")

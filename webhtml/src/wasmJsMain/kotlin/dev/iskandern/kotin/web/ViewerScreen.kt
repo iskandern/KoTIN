@@ -16,6 +16,7 @@ import androidx.compose.runtime.withFrameNanos
 import dev.iskandern.kotin.AppLanguage
 import dev.iskandern.kotin.CameraCommand
 import dev.iskandern.kotin.CameraUiState
+import dev.iskandern.kotin.DesignTokens
 import dev.iskandern.kotin.DeviceSpeed
 import dev.iskandern.kotin.DrawingSource
 import dev.iskandern.kotin.FRAME_CHECK_FRAMES
@@ -78,33 +79,35 @@ private const val POSE_SETTLE_MS = 300L
  */
 private class ScreenSizes(val panelWidth: Int, val barHeight: Int, val cameraButton: Int, val rowHeight: Int)
 
-private val DESKTOP = ScreenSizes(panelWidth = 360, barHeight = 44, cameraButton = 40, rowHeight = 40)
+private fun sizesOf(tokens: DesignTokens.Sizes) = ScreenSizes(tokens.panelWidth, tokens.barHeight, tokens.cameraButton, tokens.rowHeight)
+
+private val DESKTOP = sizesOf(DesignTokens.DESKTOP)
 
 /** Планшет (600–1199 dp): меню уже, кнопки крупнее — под палец. */
-private val TABLET = ScreenSizes(panelWidth = 340, barHeight = 48, cameraButton = 48, rowHeight = 44)
+private val TABLET = sizesOf(DesignTokens.TABLET)
 
 /** Телефон (уже 600 dp): меню — боковая панель, кнопки 52 dp колонкой у правого края, строки меню 48 dp. */
-private val PHONE = ScreenSizes(panelWidth = 332, barHeight = 48, cameraButton = 52, rowHeight = 48)
+private val PHONE = sizesOf(DesignTokens.PHONE)
 
-private fun isPhone(width: Int) = width < 600
+private fun isPhone(width: Int) = width < DesignTokens.PHONE_MAX_WIDTH
 
 private fun screenSizes(width: Int): ScreenSizes = when {
   isPhone(width) -> PHONE
-  width < 1200 -> TABLET
+  width < DesignTokens.TABLET_MAX_WIDTH -> TABLET
   else -> DESKTOP
 }
 
 /** Индикатор осей: размер. */
-private const val AXIS_SIZE = 72
+private const val AXIS_SIZE = DesignTokens.AXIS_SIZE
 
 /** Отступ плавающих элементов от краёв экрана и между ними. */
-private const val EDGE = 16
+private const val EDGE = DesignTokens.EDGE
 
 /** Ширина карточки выбранного объекта. */
-private const val SELECTION_WIDTH = 340
+private const val SELECTION_WIDTH = DesignTokens.SELECTION_WIDTH
 
 /** Высота свёрнутой карточки выбранного — доля высоты окна. */
-private const val SELECTION_LIMIT = 0.45f
+private const val SELECTION_LIMIT = DesignTokens.SELECTION_LIMIT
 
 /** Подсказка о выборе скрыта крестиком (ключ PrefsStore). */
 private const val PREF_HINT_HIDDEN = "selection_hint_hidden"

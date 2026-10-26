@@ -284,7 +284,7 @@ fun CandidateNumber(number: Int, selected: Boolean) {
 @Composable
 fun SelectionHint(text: String, onHide: () -> Unit, attrs: AttrsScope.() -> Unit) = HintPlate(text, attrs) {
   Div({ classes("hide"); style { property("width", "36px"); property("height", "36px") } }) {
-    IconBox(Icon.Close, stringResource(Res.string.hide_hint), 36, onHide, color = "#fff", iconSize = 14)
+    IconBox(Icon.Close, stringResource(Res.string.hide_hint), 36, onHide, color = "var(--white)", iconSize = 14)
   }
 }
 

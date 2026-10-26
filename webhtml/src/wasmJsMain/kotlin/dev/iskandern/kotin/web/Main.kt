@@ -31,6 +31,7 @@ private var filamentReady by mutableStateOf(false)
 
 // index.html?file=путь/к.dxf или index.html#путь/к.dxf — открыть файл с того же сервера; смена #… открывает другой
 fun main() {
+  applyDesignTokens()
   Filament.initJs { filamentReady = true }
   renderComposable(document.getElementById("root")!!) {
     var url by remember { mutableStateOf(hashFile() ?: fileParameter()) }

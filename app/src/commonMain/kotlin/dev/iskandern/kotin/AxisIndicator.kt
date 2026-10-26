@@ -101,7 +101,7 @@ fun AxisIndicator(controller: SceneCameraController, swapXY: Boolean, onHome: ()
   }
 }
 
-private val AXIS_INDICATOR_SIZE = 72.dp
+private val AXIS_INDICATOR_SIZE = DesignTokens.AXIS_SIZE.dp
 
 /** Длина оси — доля стороны индикатора. */
 private const val AXIS_LENGTH = 0.32f

@@ -513,7 +513,7 @@ fun CheckRow(
     onClick { onChange(!checked) }
   }, ref = if (ref == null) null else { element -> ref[0] = element as HTMLElement; ({ ref[0] = null }) }) {
     Div({ classes("checkbox"); classIf(checked, "on") }) {
-      if (checked) IconView(Icon.Check, 14, "#fff")
+      if (checked) IconView(Icon.Check, 14, "var(--white)")
     }
     swatch?.let { Div({ classes("swatch"); style { property("background", it) } }) }
     Span({ classes("label", "body-medium") }) { Text(label) }

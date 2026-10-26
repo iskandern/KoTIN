@@ -79,34 +79,37 @@ private val PANEL_SHAPE = RoundedCornerShape(16.dp)
  */
 private class ScreenSizes(val panelWidth: Dp, val barHeight: Dp, val cameraButton: Dp, val rowHeight: Dp)
 
-private val DESKTOP = ScreenSizes(panelWidth = 360.dp, barHeight = 44.dp, cameraButton = 40.dp, rowHeight = 40.dp)
+private fun sizesOf(tokens: DesignTokens.Sizes) =
+  ScreenSizes(tokens.panelWidth.dp, tokens.barHeight.dp, tokens.cameraButton.dp, tokens.rowHeight.dp)
+
+private val DESKTOP = sizesOf(DesignTokens.DESKTOP)
 
 /** Планшет (600–1199 dp): меню уже, кнопки крупнее — под палец. */
-private val TABLET = ScreenSizes(panelWidth = 340.dp, barHeight = 48.dp, cameraButton = 48.dp, rowHeight = 44.dp)
+private val TABLET = sizesOf(DesignTokens.TABLET)
 
 /** Телефон (уже 600 dp): меню — боковая панель, кнопки 52 dp колонкой у правого края, строки меню 48 dp. */
-private val PHONE = ScreenSizes(panelWidth = 332.dp, barHeight = 48.dp, cameraButton = 52.dp, rowHeight = 48.dp)
+private val PHONE = sizesOf(DesignTokens.PHONE)
 
 /** Телефонная раскладка (T16): ≡ и оси по углам, кнопки камеры колонкой, шторка выбора, боковое меню. */
-private fun isPhone(width: Dp) = width < 600.dp
+private fun isPhone(width: Dp) = width < DesignTokens.PHONE_MAX_WIDTH.dp
 
 private fun screenSizes(width: Dp): ScreenSizes = when {
   isPhone(width) -> PHONE
-  width < 1200.dp -> TABLET
+  width < DesignTokens.TABLET_MAX_WIDTH.dp -> TABLET
   else -> DESKTOP
 }
 
 /** Индикатор осей: размер и отступ — чтобы строка состояния файла на телефоне его не задевала. */
-private val AXIS_SIZE = 72.dp
+private val AXIS_SIZE = DesignTokens.AXIS_SIZE.dp
 
 /** Отступ плавающих элементов от краёв экрана и между ними. */
-private val EDGE = 16.dp
+private val EDGE = DesignTokens.EDGE.dp
 
 /** Ширина карточки выбранного объекта. */
-private val SELECTION_WIDTH = 340.dp
+private val SELECTION_WIDTH = DesignTokens.SELECTION_WIDTH.dp
 
 /** Высота свёрнутой карточки выбранного — доля высоты окна. */
-private const val SELECTION_LIMIT = 0.45f
+private const val SELECTION_LIMIT = DesignTokens.SELECTION_LIMIT
 
 /** Подсказка о выборе скрыта крестиком (ключ [PrefsStore]). */
 private const val PREF_HINT_HIDDEN = "selection_hint_hidden"
@@ -457,7 +460,7 @@ private const val POINTER_SLOW_MS = 100L
 private val POINTER_MERGE = 48.dp
 
 /** Длительность появления и исчезновения панелей, мс. */
-internal const val MOTION_MS = 200
+internal const val MOTION_MS = DesignTokens.MOTION_MS
 
 /** Последнее не-null значение [value]: панель, которая гаснет, показывает то, что было в ней до закрытия. */
 @Composable

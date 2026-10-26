@@ -418,7 +418,7 @@ val CANDIDATE_MARK = 22.dp
 /** Тёмная плашка-подсказка «Удерживайте нажатие…» с крестиком: скрытая не возвращается (запоминается). */
 @Composable
 fun SelectionHint(text: String, onHide: () -> Unit, modifier: Modifier = Modifier) = HintPlate(text, modifier) {
-  Box(Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = 0.14f))) {
+  Box(Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = DesignTokens.ON_HINT_ALPHA))) {
     IconBox(KotinIcons.Close, stringResource(Res.string.hide_hint), 36.dp, onHide, tint = Color.White, iconSize = 14.dp)
   }
 }
@@ -427,7 +427,7 @@ fun SelectionHint(text: String, onHide: () -> Unit, modifier: Modifier = Modifie
 @Composable
 fun ActionHint(text: String, action: String, onAction: () -> Unit, modifier: Modifier = Modifier) = HintPlate(text, modifier) {
   Box(
-    Modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = 0.14f))
+    Modifier.heightIn(min = 36.dp).clip(RoundedCornerShape(10.dp)).background(Color.White.copy(alpha = DesignTokens.ON_HINT_ALPHA))
       .clickable(role = Role.Button, onClick = onAction).padding(horizontal = 12.dp),
     contentAlignment = Alignment.Center,
   ) {
